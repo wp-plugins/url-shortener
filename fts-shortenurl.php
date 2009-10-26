@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: URL Shortener
-Plugin URI: http://fusedthought.com
+Plugin URI: http://fusedthought.com/downloads/url-shortener-wordpress-plugin/
 Description: This plugin integrates multiple URL Shortening service with your WordPress.org installation. Brings a similar functionality of WordPress.com's WP.me shortlinks feature but using 3rd partly URL Shorteners. 
 Author: Gerald Yeo (Fusedthought)
 Author URI: http://fusedthought.com
