@@ -10,7 +10,7 @@ Integration of URL Shortening Services with WordPress. Allows generating of shor
 
 == Description ==
 
-[URL Shortener](http://fusedthought.com/downloads/url-shortener-wordpress-plugin/ "URL Shortener") plugin integrates multiple URL Shortening service with your WordPress.org installation. Brings a similar functionality of WordPress.com's WP.me shortlinks feature but using 3rd partly URL Shorteners.
+[URL Shortener](http://fusedthought.com/downloads/url-shortener-wordpress-plugin/ "URL Shortener") plugin integrates multiple URL Shortening service with your WordPress.org installation. Brings a similar functionality of WordPress.com's WP.me shortlinks feature but using 3rd party URL Shorteners.
 
 Current supported services are: 
 
