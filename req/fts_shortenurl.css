@@ -1,0 +1,13 @@
+.hideit{display: none;}
+.showit{display: block;}
+span.pluginbyline{font-size: 0.6em; display: block; font-weight: normal;}
+
+.APIConfig{margin: 2em; border-left: 2px #999 solid; padding-left: 1em;}
+.sectheaders{display: block; border-bottom: 1px #000 solid; font-size: 1.4em; margin-top: 8em;}
+select{font-size: 1em !important;}
+input{font-size: 1.3em; line-height: 1.4em; margin: 1em 1em 1em 0; border: 1px #777 solid !important;}
+input.apipassval{width: 50%;}
+.apifields{display: block;}
+#reqfielderror {border: 1px #FFAFAF solid; background: #FFEFEF; padding: 1em; margin: 1em; display: none; width: 50%; font-weight: bold;}
+
+
