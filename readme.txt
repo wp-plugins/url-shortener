@@ -1,5 +1,5 @@
-=== URL Shortener ===
-Contributors: geraldyeo
+=== URL Shortening Services Integration ===
+Contributors: Gerald Yeo
 Donate link: http://fusedthought.com/donate/
 Tags: url-shortener, short-url, url, shorten, tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, cl.gs
 Requires at least: 2.7
@@ -10,7 +10,7 @@ Integration of URL Shortening Services with WordPress. Gives you the options of 
 
 == Description ==
 
-[URL Shortener](http://fusedthought.com/downloads/url-shortener-wordpress-plugin/ "URL Shortener") plugin integrates multiple URL Shortening service with your WordPress.org installation. Brings a similar functionality of WordPress.com's WP.me shortlinks feature but using 3rd partly URL Shorteners.
+[URL Shortening Services Integration](http://fusedthought.com/downloads/url-shortener-wordpress-plugin/ "URL Shortener") plugin integrates multiple URL Shortening service with your WordPress.org installation. Brings a similar functionality of WordPress.com's WP.me shortlinks feature but using 3rd partly URL Shorteners.
 
 Current supported services are: 
 
