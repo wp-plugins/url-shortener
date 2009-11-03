@@ -1,5 +1,5 @@
 === URL Shortener ===
-Contributors: Gerald Yeo
+Contributors: geraldyeo
 Donate link: http://fusedthought.com/donate/
 Tags: url-shortener, short-url, url, shorten, tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, cl.gs
 Requires at least: 2.7
