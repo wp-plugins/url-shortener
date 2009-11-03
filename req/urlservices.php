@@ -4,9 +4,9 @@ function createshorturl($apiservice, $url) {
 	
 	switch ($apiservice){
 		case 'tinyurl':
-			$gettinyurl = file_get_contents("http://tinyurl.com/api-create.php?url=".$url);  
-			return $gettinyurl;  
-		break;
+			$geturl = file_get_contents("http://tinyurl.com/api-create.php?url=".urlencode($url));  
+			return $geturl;  
+			break;
 			
 		case 'supr':
 			$apilogin = htmlentities($globe_fts_urlfx['apiuser_supr'], ENT_QUOTES);
@@ -17,44 +17,44 @@ function createshorturl($apiservice, $url) {
 				$url .= $apiuser;
 				$url .= $apipass;
 			}
-			$getsupr = file_get_contents("http://su.pr/api/simpleshorten?url=".$url);  
-			return $getsupr; 
-		break;
+			$geturl = file_get_contents("http://su.pr/api/simpleshorten?url=".urlencode($url));  
+			return $geturl; 
+			break;
 			
 		case 'isgd':
-			$getisgd = file_get_contents("http://is.gd/api.php?longurl=".$url);  
-			return $getisgd;  
+			$geturl = file_get_contents("http://is.gd/api.php?longurl=".urlencode($url));  
+			return $geturl;  
 			break;
 		
 		case 'bitly':
 			$apilogin = htmlentities($globe_fts_urlfx['apiuser_bitly'], ENT_QUOTES);
 			$apiloginpass = htmlentities($globe_fts_urlfx['apikey_bitly'], ENT_QUOTES);
 			if ($apilogin == '' || $apiloginpass == ''){} else {
-				$getbitlystr = file_get_contents('http://api.bit.ly/shorten?version=2.0.1&longUrl='.urlencode($url).'&login='.$apilogin.'&apiKey='.$apiloginpass);
-				$json = processjson($getbitlystr);
-				$getbitly = $json->results->$url->shortUrl;
+				$bitlystr = file_get_contents('http://api.bit.ly/shorten?version=2.0.1&longUrl='.urlencode($url).'&login='.$apilogin.'&apiKey='.$apiloginpass);
+				$json = processjson($bitlystr);
+				$geturl = $json->results->$url->shortUrl;
 			}
-			return $getbitly;
+			return $geturl;
 			break;
 		
 		case 'trim':
 			$apilogin = htmlentities($globe_fts_urlfx['apiuser_trim'], ENT_QUOTES);
 			$apiloginpass = htmlentities($globe_fts_urlfx['apikey_trim'], ENT_QUOTES);
 			if ($apilogin == '' || $apiloginpass == ''){} else {
-				$gettrimstr = file_get_contents('http://api.tr.im/api/trim_url.json?url='.urlencode($url).'&username='.$apilogin.'&password='.$apiloginpass);
-				$json = processjson($gettrimstr);
-				$gettrim = $json->url;
+				$trimstr = file_get_contents('http://api.tr.im/api/trim_url.json?url='.urlencode($url).'&username='.$apilogin.'&password='.$apiloginpass);
+				$json = processjson($trimstr);
+				$geturl = $json->url;
 			}
-			return $gettrim;
+			return $geturl;
 			break;
 		
-		case 'snip':
+		case 'snipurl':
 			$apilogin = htmlentities($globe_fts_urlfx['apiuser_snip'], ENT_QUOTES);
 			$apiloginpass = htmlentities($globe_fts_urlfx['apikey_snip'], ENT_QUOTES);
 			if ($apilogin == '' || $apiloginpass == ''){} else {
-				$getsnip = snipurlapi($url, $apilogin, $apiloginpass);
+				$geturl = snipurlapi($url, $apilogin, $apiloginpass);
 			}
-			return $getsnip;
+			return $geturl;
 			break;
 		
 		case 'cligs':
@@ -64,8 +64,8 @@ function createshorturl($apiservice, $url) {
 				$url .= $apipass;
 				$url .= '&appid=ftsplugin';
 			}
-			$getcligs = file_get_contents("http://cli.gs/api/v1/cligs/create?url=".$url);  
-			return $getcligs;		
+			$geturl = file_get_contents("http://cli.gs/api/v1/cligs/create?url=".urlencode($url));  
+			return $geturl;		
 			break;	
 		
 		case 'shortie':
@@ -77,9 +77,52 @@ function createshorturl($apiservice, $url) {
 				$url .= '&email='.$apiemail;
 				$url .= '&secretKey='.$apiloginpass;			
 			}
-			$getshortie = file_get_contents("http://short.ie/api?url=".$url);  
-			return $getshortie;		
+			$geturl = file_get_contents("http://short.ie/api?url=".urlencode($url));  
+			return $geturl;		
 			break;	
+		
+		case 'shortto':
+			$geturl = file_get_contents("http://short.to/s.txt?url=".urlencode($url));  
+			return $geturl;  
+			break;
+		
+		case 'chilpit':
+			$geturl = file_get_contents("http://chilp.it/api.php?url=".urlencode($url));  
+			return $geturl;  
+			break;
+
+		case 'pingfm':
+			$apiurl = 'http://api.ping.fm/v1/url.create';
+			$apiloginpass = htmlentities($globe_fts_urlfx['apikey_pingfm'], ENT_QUOTES);
+			$body = array(
+				'api_key' => 'f51e33510d3cbe2ff1e16a4a4897f099',
+				'user_app_key' => $apiloginpass,
+				'long_url' => $url
+			);
+			$xml = urlxmlresult($apiurl, 'POST', $body );
+			if ($xml) {
+				$thexml = new SimpleXMLElement($xml);
+				$geturl = $thexml->short_url;				
+			}	
+			return $geturl;
+			break;
+		
+		case 'smsh':
+			$smshstr = file_get_contents("http://smsh.me/?api=json&url=".urlencode($url));
+			$json = processjson($smshstr);
+			$geturl = $json->body;
+			return $geturl;
+			break;
+		
+		case 'unu':
+			$geturl = file_get_contents("http://u.nu/unu-api-simple?url=".urlencode($url));  
+			return $geturl; 
+			break;
+		
+		case 'unfakeit':
+			$geturl = file_get_contents("http://unfake.it/?a=api&url=".urlencode($url));  
+			return $geturl; 
+			break;
 		
 		default:
 			break;
@@ -98,4 +141,14 @@ function snipurlapi($url, $user, $key){
 	require_once(dirname(__FILE__).'/snipurl.php');
 	return $data;
 }
+
+function urlxmlresult($url, $method='POST', $body=array() ){
+	$request = new WP_Http;
+	$result = $request->request( $url, array( 'method' => $method, 'body' => $body) ); 
+	
+	if($result['body']){
+		return $result['body'];
+	} else {};
+
+};
 ?>

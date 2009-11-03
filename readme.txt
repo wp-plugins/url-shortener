@@ -1,18 +1,30 @@
 === URL Shortener ===
 Contributors: Gerald Yeo
 Donate link: http://fusedthought.com/donate/
-Tags: url-shortener, short-url, url, shorten, tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, cl.gs
+Tags: url-shortener, short-url, url, shorten,  tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, cl.gs, short.to, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, social, tweet, twitter
 Requires at least: 2.7
 Tested up to: 2.8.5
-Stable tag: 1.4
+Stable tag: 1.5
 
-Integration of URL Shortening Services with WordPress. Allows generating of shorturl with various services upon post/page publishing. 
+Use your own URL Shortener or integrate 3rd Party Services with WordPress. Allows generating of shorturl with various services upon post/page publishing. 
 
 == Description ==
 
-[URL Shortener](http://fusedthought.com/downloads/url-shortener-wordpress-plugin/ "URL Shortener") plugin integrates multiple URL Shortening service with your WordPress.org installation. Brings a similar functionality of WordPress.com's WP.me shortlinks feature but using 3rd party URL Shorteners.
+[URL Shortener](http://fusedthought.com/downloads/url-shortener-wordpress-plugin/ "URL Shortener") plugin allows you to create your own short url using the WordPress Post ID (for eg: http://yoursite/POST-ID ). It provides two method of redirection, namely, wp_rewrite redirect and template_redirection (template redirect).
 
-Current supported services are: 
+It also integrates multiple URL Shortening service with your WordPress.org installation bringing a similar functionality to that of WordPress.com's WP.me shortlinks feature but using 3rd party URL Shorteners. 
+
+To show the generated links in your template just include this function within the loop:
+
+'<?php fts_show_shorturl($post); ?>'
+
+As of Version 1.5, I've added an on-demand shortening function for use in the templates:
+
+'<?php fts_shorturl('http://www.google.com', 'supr'); ?>'
+
+Version 1.5 also brings about an updated administration page.
+
+**Current supported services are: **
 
 * tinyurl 
 * is.gd 
@@ -20,8 +32,21 @@ Current supported services are:
 * bit.ly 
 * tr.im
 * short.ie 
-* snipurl
+* snipurl (aka Snurl / Snipr / Sn.im)
 * cl.gs
+* short.to
+* ping.fm
+* chilp.it
+* smsh (aka sm00sh)
+* u.nu
+* unfake.it 
+
+
+**Future Versions:**
+
+*  I am still looking into creating a URL Management page to manage all the generated URLs within the site.
+*  Twitter and Facebook posting integration?
+*  More services can be added upon request.
 
 == Installation ==
 
@@ -31,11 +56,19 @@ Current supported services are:
 
 
 == Screenshots ==
-1. post/page integration
-1. plugin admin interface
+1. post/page integration(ver 1.4)
+1. plugin admin interface (ver 1.4)
+1. plugin admin interface (ver 1.5)
 
 
 == Changelog ==
+
+= 1.5 =
+* Added on-demand shortening function: fts_shorturl()
+* Added supported for ping.fm, chilp.it, short.to, sm00sh, u.nu, unfake.it  
+* Added personal shortening service using post id (http://yoursite/POST-ID)
+* Added Prefix option for personal shortening service (http://yoursite/prefix/POST-ID)
+* Added template redirection and WP_Rewrite redirection methods
 
 = 1.4 =
 * First Public Release
