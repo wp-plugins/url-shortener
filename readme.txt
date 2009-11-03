@@ -24,7 +24,7 @@ As of Version 1.5, I've added an on-demand shortening function for use in the te
 
 Version 1.5 also brings about an updated administration page.
 
-** Current supported services are: **
+**Current supported services are:**
 
 * tinyurl 
 * is.gd 
