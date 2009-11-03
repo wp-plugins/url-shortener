@@ -16,11 +16,11 @@ It also integrates multiple URL Shortening service with your WordPress.org insta
 
 To show the generated links in your template just include this function within the loop:
 
-'<?php fts_show_shorturl($post); ?>'
+`<?php fts_show_shorturl($post); ?>`
 
 As of Version 1.5, I've added an on-demand shortening function for use in the templates:
 
-'<?php fts_shorturl('http://www.google.com', 'supr'); ?>'
+`<?php fts_shorturl('http://www.google.com', 'supr'); ?>`
 
 Version 1.5 also brings about an updated administration page.
 
