@@ -60,9 +60,9 @@ function fts_shortenurl($post_ID){
 	if (!$got_shorturl){
 		$posturl = get_permalink($post_ID);
 		
-		//$selectedservice = $globe_fts_urlfx['urlservice'];
-		//$short = createshorturl($selectedservice, $posturl);
-		$short = $posturl; //for testing
+		$selectedservice = $globe_fts_urlfx['urlservice'];
+		$short = createshorturl($selectedservice, $posturl);
+		//$short = $posturl; //for testing
 		
 		if($short){
 			update_post_meta($post_ID, 'shorturl', $short);
