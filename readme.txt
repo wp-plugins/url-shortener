@@ -4,7 +4,7 @@ Donate link: http://fusedthought.com/donate/
 Tags: url-shortener, short-url, url, shorten,  tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, cl.gs, short.to, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, social, tweet, twitter
 Requires at least: 2.7
 Tested up to: 2.8.5
-Stable tag: 1.5
+Stable tag: 1.5.1
 
 Use your own URL Shortener or integrate 3rd Party Services with WordPress. Allows generating of shorturl with various services upon post/page publishing. 
 
