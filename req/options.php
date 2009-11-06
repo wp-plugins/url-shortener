@@ -41,8 +41,8 @@ function draw_fts_shortenurl_page(){
 			<div class="nl optsect">
 				<label class="mainopt">Enable Shortening Service Integration:</label>
 				<select name="fts_urlfx[urlserviceenable]" id="urlserviceenable">
-					<option value="yes" <?php selected( 'yes', $fts_urlfx['urlserviceenable'] ); ?>>Yes &nbsp;</option>
 					<option value="no" <?php selected( 'no', $fts_urlfx['urlserviceenable'] ); ?>>No &nbsp;</option>
+					<option value="yes" <?php selected( 'yes', $fts_urlfx['urlserviceenable'] ); ?>>Yes &nbsp;</option>		
 				</select>
 			
 			
@@ -198,8 +198,8 @@ function draw_fts_shortenurl_page(){
 			<div class="nl optsect" id="ownserviceprefix">
 				<label class="mainopt">Enable Short URLs using Post ID: </label>
 				<select name="fts_urlfx[ownservice]" id="ownserviceoption" >
-					<option value="yes"<?php selected( 'yes', $fts_urlfx['ownservice'] ); ?>>Yes &nbsp;</option>				
 					<option value="no"<?php selected( 'no', $fts_urlfx['ownservice'] ); ?>>No &nbsp;</option>
+					<option value="yes"<?php selected( 'yes', $fts_urlfx['ownservice'] ); ?>>Yes &nbsp;</option>					
 				</select>	
 			
 			
