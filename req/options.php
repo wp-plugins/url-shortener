@@ -41,8 +41,8 @@ function draw_fts_shortenurl_page(){
 			<div class="nl optsect">
 				<label class="mainopt">Enable Shortening Service Integration:</label>
 				<select name="fts_urlfx[urlserviceenable]" id="urlserviceenable">
-					<option value="no" <?php selected( 'no', $fts_urlfx['urlserviceenable'] ); ?>>No &nbsp;</option>
 					<option value="yes" <?php selected( 'yes', $fts_urlfx['urlserviceenable'] ); ?>>Yes &nbsp;</option>
+					<option value="no" <?php selected( 'no', $fts_urlfx['urlserviceenable'] ); ?>>No &nbsp;</option>
 				</select>
 			
 			
@@ -156,7 +156,8 @@ function draw_fts_shortenurl_page(){
 						<div class="APIConfig">
 							<div id="userkey_pingfm" class="<?php if ($fts_urlfx['urlservice'] != 'pingfm'){ echo "hideit";} else {echo "showit";} ?> req">
 								<label class="apifields">User Key (Required)</label>
-								<input class="apipassval" type="text" name="fts_urlfx[apikey_pingfm]" value="<?php echo $fts_urlfx['apikey_pingfm']; ?>" />
+								<input class="apipassval" type="text" id="apikey_pingfm" name="fts_urlfx[apikey_pingfm]" value="<?php echo $fts_urlfx['apikey_pingfm']; ?>" />
+								<input class="apipassval" type="hidden" id="apiuser_pingfm" name="fts_urlfx[apiuser_pingfm]" value="nil" />
 							</div>
 						</div>
 						
@@ -198,8 +199,8 @@ function draw_fts_shortenurl_page(){
 			<div class="nl optsect" id="ownserviceprefix">
 				<label class="mainopt">Enable Short URLs using Post ID: </label>
 				<select name="fts_urlfx[ownservice]" id="ownserviceoption" >
-					<option value="no"<?php selected( 'no', $fts_urlfx['ownservice'] ); ?>>No &nbsp;</option>
 					<option value="yes"<?php selected( 'yes', $fts_urlfx['ownservice'] ); ?>>Yes &nbsp;</option>				
+					<option value="no"<?php selected( 'no', $fts_urlfx['ownservice'] ); ?>>No &nbsp;</option>
 				</select>	
 			
 			

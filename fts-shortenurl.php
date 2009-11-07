@@ -5,7 +5,7 @@ Plugin URI: http://fusedthought.com/downloads/url-shortener-wordpress-plugin/
 Description: This plugin integrates multiple URL Shortening service with your WordPress.org installation. Brings a similar functionality of WordPress.com's WP.me shortlinks feature but using 3rd partly URL Shorteners. 
 Author: Gerald Yeo
 Author URI: http://fusedthought.com
-Version: 1.5.1
+Version: 1.5.2
 /*
 
 /* Release History :
@@ -23,6 +23,8 @@ Version: 1.5.1
 				Added ping.fm, chilp.it, short.to, sm00sh, u.nu, unfake.it 
 				Added personal shortening service using post id
 				Added Prefix option for personal shortening service
+	1.5.1 :	Bugfix: Short URL generated was the same as post URL
+	1.5.2 :	Bugfix: Pingfm key not saving.
 */
 
 /* 
