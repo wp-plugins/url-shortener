@@ -46,7 +46,7 @@ Version 1.5 also brings about an updated administration options page.
 
 **Notes on Awe.sm usage:**
 
-*  CUstom domain can be configured in your Awe.sm account on the awe.sm website.
+*  Custom domain can be configured in your Awe.sm account on the awe.sm website.
 
 
 **Future Versions:**
