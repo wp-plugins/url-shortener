@@ -11,13 +11,14 @@ function createshorturl($apiservice, $url) {
 		case 'supr':
 			$apilogin = htmlentities($globe_fts_urlfx['apiuser_supr'], ENT_QUOTES);
 			$apiloginpass = htmlentities($globe_fts_urlfx['apikey_supr'], ENT_QUOTES);
+			$url = urlencode($url);
 			if ($apilogin == '' || $apiloginpass == ''){} else {
 				$apiuser = "&login=".$apilogin;
 				$apipass = "&apiKey=".$apiloginpass ;
 				$url .= $apiuser;
 				$url .= $apipass;
 			}
-			$geturl = file_get_contents("http://su.pr/api/simpleshorten?url=".urlencode($url));  
+			$geturl = file_get_contents("http://su.pr/api/simpleshorten?url=".$url);  
 			return $geturl; 
 			break;
 			
@@ -59,25 +60,27 @@ function createshorturl($apiservice, $url) {
 		
 		case 'cligs':
 			$apiloginpass = htmlentities($globe_fts_urlfx['apikey_cligs'], ENT_QUOTES);
+			$url = urlencode($url);
 			if ($apiloginpass == ''){} else {
 				$apipass = "&key=".$apiloginpass ;
 				$url .= $apipass;
 				$url .= '&appid=ftsplugin';
 			}
-			$geturl = file_get_contents("http://cli.gs/api/v1/cligs/create?url=".urlencode($url));  
+			$geturl = file_get_contents("http://cli.gs/api/v1/cligs/create?url=".$url);  
 			return $geturl;		
 			break;	
 		
 		case 'shortie':
 			$apiemail = htmlentities($globe_fts_urlfx['apiuser_shortie'], ENT_QUOTES);
 			$apiloginpass = htmlentities($globe_fts_urlfx['apikey_shortie'], ENT_QUOTES);
+			$url = urlencode($url);
 			if ($apiloginpass == '' || $apiemail==''){} else {
 				$url .= '&format=plain';
 				$url .= '&private=true';
 				$url .= '&email='.$apiemail;
 				$url .= '&secretKey='.$apiloginpass;			
 			}
-			$geturl = file_get_contents("http://short.ie/api?url=".urlencode($url));  
+			$geturl = file_get_contents("http://short.ie/api?url=".$url);  
 			return $geturl;		
 			break;	
 		
@@ -94,6 +97,7 @@ function createshorturl($apiservice, $url) {
 		case 'pingfm':
 			$apiurl = 'http://api.ping.fm/v1/url.create';
 			$apiloginpass = htmlentities($globe_fts_urlfx['apikey_pingfm'], ENT_QUOTES);
+			$url = urlencode($url);
 			$body = array(
 				'api_key' => 'f51e33510d3cbe2ff1e16a4a4897f099',
 				'user_app_key' => $apiloginpass,
@@ -124,6 +128,14 @@ function createshorturl($apiservice, $url) {
 			return $geturl; 
 			break;
 		
+		case 'awesm':
+			$apiloginpass = htmlentities($globe_fts_urlfx['apikey_awesm'], ENT_QUOTES);
+			if ($apiloginpass == ''){} else {
+				$geturl = awesmapi($url, $apiloginpass);
+			}
+			return $geturl;
+			break;
+		
 		default:
 			break;
 	}
@@ -139,6 +151,11 @@ function processjson($jsonurl){
 
 function snipurlapi($url, $user, $key){
 	require_once(dirname(__FILE__).'/snipurl.php');
+	return $data;
+}
+
+function awesmapi($url, $key){
+	require_once(dirname(__FILE__).'/awesm.php');
 	return $data;
 }
 

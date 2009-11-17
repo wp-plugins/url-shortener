@@ -1,10 +1,10 @@
 === URL Shortener ===
 Contributors: geraldyeo
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9508048
-Tags: url-shortener, short-url, url, shorten,  tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, cl.gs, short.to, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, social, tweet, twitter
+Tags: url-shortener, short-url, url, shorten,  tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, cl.gs, short.to, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, awe.sm, social, tweet, twitter
 Requires at least: 2.7
-Tested up to: 2.8.5
-Stable tag: 1.5.2
+Tested up to: 2.8.6
+Stable tag: 1.6
 
 Use your own URL Shortener or integrate 3rd Party Services with WordPress. Allows generating of shorturl with various services upon post/page publishing. 
 
@@ -42,6 +42,11 @@ Version 1.5 also brings about an updated administration options page.
 * smsh (aka sm00sh)
 * u.nu
 * unfake.it 
+* awe.sm
+
+**Notes on Awe.sm usage:**
+
+*  CUstom domain can be configured in your Awe.sm account on the awe.sm website.
 
 
 **Future Versions:**
@@ -70,6 +75,10 @@ Version 1.5 also brings about an updated administration options page.
 
 
 == Changelog ==
+
+= 1.6 =
+* Added support for Awe.sm (user request)
+* Changed URL Generation method hook for future/scheduled posts
 
 = 1.5.2 =
 * Bugfix: Pingfm key not saving.

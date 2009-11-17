@@ -67,6 +67,7 @@ function draw_fts_shortenurl_page(){
 							<option value="smsh" <?php selected( 'smsh', $fts_urlfx['urlservice'] ); ?>>sm00sh / smsh &nbsp;</option>
 							<option value="unu" <?php selected( 'unu', $fts_urlfx['urlservice'] ); ?>>u.nu &nbsp;</option>
 							<option value="unfakeit" <?php selected( 'unfakeit', $fts_urlfx['urlservice'] ); ?>>unfake.it &nbsp;</option>
+							<option value="awesm" <?php selected( 'awesm', $fts_urlfx['urlservice'] ); ?>>awe.sm &nbsp;</option>
 						</select>
 						
 						<div class="reqfielderror"></div>
@@ -178,7 +179,15 @@ function draw_fts_shortenurl_page(){
 								<p>No authentication / further configurations needed for this service.</p>
 							</div>
 						</div>
-				
+						
+						<div class="APIConfig">
+							<div id="userkey_awesm" class="<?php if ($fts_urlfx['urlservice'] != 'awesm'){ echo "hideit";} else {echo "showit";} ?> req">
+								<label class="apifields">User Key (Required)</label>
+								<input class="apipassval" type="text" id="apikey_awesm" name="fts_urlfx[apikey_awesm]" value="<?php echo $fts_urlfx['apikey_awesm']; ?>" />
+								<input class="apipassval" type="hidden" id="apiuser_awesm" name="fts_urlfx[apiuser_awesm]" value="nil" />
+							</div>
+						</div>
+						
 					</fieldset>
 					<fieldset>
 						<div class="nl">
