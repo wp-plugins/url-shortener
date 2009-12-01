@@ -1,6 +1,6 @@
 === URL Shortener ===
 Contributors: geraldyeo
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9508048
+Donate link: http://fusedthought.com/donate
 Tags: url-shortener, short-url, url, shorten,  tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, cl.gs, short.to, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, awe.sm, social, tweet, twitter
 Requires at least: 2.7
 Tested up to: 2.8.6
