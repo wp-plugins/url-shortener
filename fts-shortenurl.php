@@ -10,7 +10,7 @@ Version: 1.6.2
 /*
 
 /* 
- * Use "echo fts_show_shorturl($post)" to display link in a post
+ * Use "fts_show_shorturl($post)" to display link in a post
  */
 
 global $globe_fts_urlfx;
