@@ -12,6 +12,7 @@ fieldset{margin: 2em; border: 2px #ccc solid; padding: 2em 1em;}
 .APIConfig{margin: 2em; border-left: 2px #090 solid; padding-left: 1em;}
 .sectheaders{display: block; border-bottom: 1px #000 solid; font-size: 1.4em; margin-top: 2em;}
 select{font-size: 1em !important;}
+#snipprefixsel{min-weight: 200px; margin-top: 0.5em;}
 
 input.apipassval{width: 50%;}
 .apifields{display: block;}

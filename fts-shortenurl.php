@@ -6,31 +6,8 @@ Plugin URI: http://fusedthought.com/downloads/url-shortener-wordpress-plugin/
 Description: This plugin integrates multiple URL Shortening service with your WordPress.org installation. Brings a similar functionality of WordPress.com's WP.me shortlinks feature but using 3rd partly URL Shorteners. Supports own domain URL Shortener awe.sm as well.
 Author: Gerald Yeo
 Author URI: http://fusedthought.com
-Version: 1.6.1
+Version: 1.6.2
 /*
-
-/* Release History :
-  	1.0.0	:	Initial Private release.
-					supports TinyURL, is.gd		
- 	1.1.0	:	Added support for bit.ly, tr.im
-					Added "Remove buttons" in post/page edit.
-					Added option for automatic shorturl generation.
-					Changed Custom Field name from fts_shorturl to shorturl
- 	1.2.0	:	Added support for su.pr
-	1.3.0	:	Added support for snipurl, cl.gs, Short.ie
-	1.4.0	:	First Public Release
-					Added simple validation to options page	
-	1.5.0	:	Added on-demand shortening function
-					Added ping.fm, chilp.it, short.to, sm00sh, u.nu, unfake.it 
-					Added personal shortening service using post id
-					Added Prefix option for personal shortening service
-	1.5.1	:	Bugfix: Short URL generated was the same as post URL
-	1.5.2	:	Bugfix: Pingfm key not saving.
-	1.6.0	:	Added Support for Awe.sm
-					Changed URL Generation method hook for future/scheduled posts.
-	1.6.1	:	Bugfix: future/scheduled posts not generating Short URL.
-					
-*/
 
 /* 
  * Use "echo fts_show_shorturl($post)" to display link in a post

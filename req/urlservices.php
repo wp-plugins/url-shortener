@@ -52,8 +52,9 @@ function createshorturl($apiservice, $url) {
 		case 'snipurl':
 			$apilogin = htmlentities($globe_fts_urlfx['apiuser_snip'], ENT_QUOTES);
 			$apiloginpass = htmlentities($globe_fts_urlfx['apikey_snip'], ENT_QUOTES);
+			$urlprefix = $globe_fts_urlfx['snipprefix'];
 			if ($apilogin == '' || $apiloginpass == ''){} else {
-				$geturl = snipurlapi($url, $apilogin, $apiloginpass);
+				$geturl = snipurlapi($url, $apilogin, $apiloginpass, $urlprefix);
 			}
 			return $geturl;
 			break;
@@ -149,8 +150,28 @@ function processjson($jsonurl){
 	return $parseit;
 }
 
-function snipurlapi($url, $user, $key){
+function snipurlapi($url, $user, $key, $urlprefix){
+	switch ($urlprefix){
+		case 'snurl':
+			$urltoget = "http://snurl.com/site/getsnip";
+			break;
+		case 'snipurl':
+			$urltoget = "http://snipurl.com/site/getsnip";
+			break;
+		case 'snim':
+			$urltoget = "http://sn.im/site/getsnip";
+			break;				
+		default:
+			$urltoget = "http://snipr.com/site/getsnip";
+			break;
+	
+	}
 	require_once(dirname(__FILE__).'/snipurl.php');
+	
+	if ($urlprefix == 'snim'){
+		$data = str_replace('snurl.com', 'sn.im', $data);
+	}
+	
 	return $data;
 }
 

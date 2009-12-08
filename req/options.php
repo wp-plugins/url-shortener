@@ -58,7 +58,7 @@ function draw_fts_shortenurl_page(){
 							<option value="isgd" <?php selected( 'isgd', $fts_urlfx['urlservice'] ); ?>>is.gd &nbsp;</option>
 							<option value="bitly" <?php selected( 'bitly', $fts_urlfx['urlservice'] ); ?>>bit.ly &nbsp;</option>
 							<option value="trim" <?php selected( 'trim', $fts_urlfx['urlservice'] ); ?>>tr.im &nbsp;</option>
-							<option value="snipurl" <?php selected( 'snipurl', $fts_urlfx['urlservice'] ); ?>>Snipr / Snipurl / Snurl &nbsp;</option>
+							<option value="snipurl" <?php selected( 'snipurl', $fts_urlfx['urlservice'] ); ?>>Sn.im / Snipr / Snipurl / Snurl &nbsp;</option>
 							<option value="cligs" <?php selected( 'cligs', $fts_urlfx['urlservice'] ); ?>>Cligs (Cl.gs &nbsp;)</option>
 							<option value="shortie" <?php selected( 'shortie', $fts_urlfx['urlservice'] ); ?>>Short.ie &nbsp;</option>
 							<option value="shortto" <?php selected( 'shortto', $fts_urlfx['urlservice'] ); ?>>Short.to &nbsp;</option>
@@ -118,11 +118,19 @@ function draw_fts_shortenurl_page(){
 						</div>
 		
 						<div class="APIConfig">
-							<div id="userkey_snipurl" class="<?php if ($fts_urlfx['urlservice'] != 'snip'){ echo "hideit";} else {echo "showit";} ?> req">
+							<div id="userkey_snipurl" class="<?php if ($fts_urlfx['urlservice'] != 'snipurl'){ echo "hideit";} else {echo "showit";} ?> req">
 								<label class="apifields">API User (Required)</label> 
 								<input class="apiuserval" type="text" id="apiuser_snipurl" name="fts_urlfx[apiuser_snip]" value="<?php echo $fts_urlfx['apiuser_snip']; ?>" />
 								<label class="apifields">API Key (Required)</label>
 								<input class="apipassval" type="text" id="apikey_snipurl" name="fts_urlfx[apikey_snip]" value="<?php echo $fts_urlfx['apikey_snip']; ?>" />
+								<label class="apifields">Select Prefix (Default: Snipr.com)</label>
+								<select name="fts_urlfx[snipprefix]" id="snipprefixsel" >
+									<option value="snipr" <?php selected( 'snipr', $fts_urlfx['snipprefix'] ); ?>>Snipr.com &nbsp;</option>									
+									<option value="snim" <?php selected( 'snim', $fts_urlfx['snipprefix'] ); ?>>Sn.im &nbsp;</option>			
+									<option value="snurl" <?php selected( 'snurl', $fts_urlfx['snipprefix'] ); ?>>Snurl.com &nbsp;</option>
+									<option value="snipurl" <?php selected( 'snipurl', $fts_urlfx['snipprefix'] ); ?>>Snipurl.com &nbsp;</option>
+								</select>
+								
 							</div>
 						</div>
 		

@@ -1,10 +1,10 @@
 === URL Shortener ===
 Contributors: geraldyeo
-Donate link: http://fusedthought.com/donate
-Tags: url-shortener, short-url, url, shorten,  tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, cl.gs, short.to, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, awe.sm, social, tweet, twitter, url shortener
+Donate link: http://fusedthought.com/donate/
+Tags: url-shortener, short-url, url, shorten,  tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, cl.gs, short.to, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, awe.sm, social, tweet, twitter
 Requires at least: 2.7
 Tested up to: 2.8.6
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 
 Use your own URL Shortener or integrate 3rd Party Services with WordPress. Allows generating of shorturl with various services upon post/page publishing. 
 
@@ -75,6 +75,9 @@ Version 1.5 also brings about an updated administration options page.
 
 
 == Changelog ==
+
+= 1.6.2 =
+* Added prefix choosing support for Sn.im / Snipr / Snipurl / Snurl
 
 = 1.6.1 =
 * Bugfix: future/scheduled posts not generating Short URL.
