@@ -77,7 +77,7 @@ Version 1.5 also brings about an updated administration options page.
 == Changelog ==
 
 = 1.6.3 =
-* 2.9 Compatibility check.
+* WordPress 2.9 Compatibility check.
 * IF stats plugin enabled, "Show Short URL" button in edit page beside "view" is removed.
 
 = 1.6.2 =
