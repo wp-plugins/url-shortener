@@ -289,7 +289,7 @@ function fts_shorturl_posts_metabox($post){
 				<h4>How To:</h4>
 				<p>Short URL will be generated upon publishing the post/page.</p>
 				<p>To disable automatic generation, set "Enable Automatic Short URL Generation upon publish" in the <a href="options-general.php?page=shorturl">URL Shortener options page</a> to "No".</p>
-				<input id="shortlink" type="hidden" name="get-shortlink" value="Enabled" />
+				<input id="urlshortlink" type="hidden" name="get-shortlink" value="Enabled" />
 				<script type="text/javascript">
 				/* <![CDATA[ */
 				jQuery(document).ready(function($){
@@ -302,12 +302,12 @@ function fts_shorturl_posts_metabox($post){
 			<?php } else {?>
 				<h4>How To:</h4>
 				<p>Check the generate short URL option to enable short URL generation upon publishing the post/page.</p>
-				<div id="fts_shorturl_nojs"><div style="font-weight: bold; padding: 1em; margin-top: 2em;background: #D2FFCF;">Generate Short URL on publish: <input id="shortlink" type="checkbox" name="get-shortlink" value="Enabled" /></div></div>
+				<div id="fts_shorturl_nojs"><div style="font-weight: bold; padding: 1em; margin-top: 2em;background: #D2FFCF;">Generate Short URL on publish: <input id="urlshortlink" type="checkbox" name="get-shortlink" value="Enabled" /></div></div>
 				<script type="text/javascript">
 				/* <![CDATA[ */
 				jQuery(document).ready(function($){
 					$('#fts_shorturl_nojs').html('');
-					$('#misc-publishing-actions').append('<div class="misc-pub-section">Short URL Status: <strong>No Short URL</strong></div><div style="font-weight: bold; padding: 1em; margin-top: 2em;background: #D2FFCF;">Generate Short URL on publish: <input id="shortlink" type="checkbox" name="get-shortlink" value="Enabled" /></div>');		
+					$('#misc-publishing-actions').append('<div class="misc-pub-section">Short URL Status: <strong>No Short URL</strong></div><div style="font-weight: bold; padding: 1em; margin-top: 2em;background: #D2FFCF;">Generate Short URL on publish: <input id="urlshortlink" type="checkbox" name="get-shortlink" value="Enabled" /></div>');		
 				});//global	
 				/* ]]> */
 				</script>
@@ -321,14 +321,16 @@ function fts_shorturl_posts_metabox($post){
 			</div>
 			<script type="text/javascript">
 			/* <![CDATA[ */
-			jQuery(document).ready(function($){					  		
-				$('#edit-slug-box').append('<span id="show-shortlink-button"><a class="button" href="#">Show Short URL</a></span>');	
+			jQuery(document).ready(function($){	
+				<?php if (!function_exists('get_shortlink') ){?>  		
+					$('#edit-slug-box').append('<span id="show-shortlink-button"><a class="button" href="#">Show Short URL</a></span>');	
+				<?php }?>
+				$('#misc-publishing-actions').append('<div class="misc-pub-section"><div id="shortlinkstatustop" style="display: inline;">Short URL Status: <strong id="show-shortlink-button"><a href="#">Generated</a></strong></div>&nbsp;<input type="submit" class="button" name="remove-shortlink" id="remove-shortlink-button1" value="Remove" /></div>');
+				
 				$('#show-shortlink-button a').click(function(){ 
 					prompt('Short URL:', '<?php echo $shorturl; ?>'); 
 					return false;
 				});	
-				
-				$('#misc-publishing-actions').append('<div class="misc-pub-section"><div id="shortlinkstatustop" style="display: inline;">Short URL Status: <strong>Generated </strong></div><input type="submit" class="button" name="remove-shortlink" id="remove-shortlink-button1" value="Remove" /></div>');
 				
 				$('#remove-shortlink-button').click(function(){ 
 					$('#shortlinkstatus').html('Removing short URL...');

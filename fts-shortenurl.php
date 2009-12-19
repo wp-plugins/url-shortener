@@ -6,7 +6,7 @@ Plugin URI: http://fusedthought.com/downloads/url-shortener-wordpress-plugin/
 Description: This plugin integrates multiple URL Shortening service with your WordPress.org installation. Brings a similar functionality of WordPress.com's WP.me shortlinks feature but using 3rd partly URL Shorteners. Supports own domain URL Shortener awe.sm as well.
 Author: Gerald Yeo
 Author URI: http://fusedthought.com
-Version: 1.6.2
+Version: 1.6.3
 /*
 
 /* 
