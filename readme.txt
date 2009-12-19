@@ -78,7 +78,7 @@ Version 1.5 also brings about an updated administration options page.
 
 = 1.6.3 =
 * WordPress 2.9 Compatibility check.
-* IF stats plugin enabled, "Show Short URL" button in edit page beside "view" is removed.
+* If WordPress.com stats plugin enabled, "Show Short URL" button in edit page beside "view" is removed.
 
 = 1.6.2 =
 * Added prefix choosing support for Sn.im / Snipr / Snipurl / Snurl
