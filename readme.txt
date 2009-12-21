@@ -87,8 +87,8 @@ You can try out the following URL Shorterning services via the [URL Shortener Ad
 == Changelog ==
 
 = 1.7 =
-* Added a beta module and option
-* Addon functions for beta service display.
+* Included an Addon module option
+* Addon functions for additional service display
 * Directory structure cleanup
 
 = 1.6.3 =
