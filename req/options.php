@@ -1,4 +1,5 @@
 <?php
+
 function fts_shortenurl_init(){
 	global $globe_fts_urlfx;
 	//name - db
@@ -10,17 +11,24 @@ function fts_shortenurl_init(){
 function fts_shortenurl_cssjs(){
 	//css JS
 	$plugin_url = WP_PLUGIN_URL.'/'.plugin_basename( dirname(dirname(__FILE__)) );
-	wp_enqueue_script('fts_shortenurl_js', $plugin_url.'/req/fts_shortenurl.js',array('jquery'),1.0);
-	wp_enqueue_style('fts_shortenurl_css', $plugin_url.'/req/fts_shortenurl.css');
+	wp_enqueue_script('fts_shortenurl_js', $plugin_url.'/req/display/fts_shortenurl.js',array('jquery'),1.0);
+	wp_enqueue_style('fts_shortenurl_css', $plugin_url.'/req/display/fts_shortenurl.css');
 }
 
 function draw_fts_shortenurl_page(){
+	global $addonurl;
+	global $globe_fts_urlfx;
 	$plugin_loc = WP_PLUGIN_URL.'/'.plugin_basename( dirname(dirname(__FILE__)) );
+	$plugin_logo = '<img src="'.$plugin_loc.'/plugin-logo.jpg" alt="" />';
 ?>
 	<div class="wrap">
 		<h2>URL Shortener<span class="pluginbyline">by <a href="http://fusedthought.com">Gerald Yeo</a> (Fusedthought.com)</span></h2>
 		<div class="logo">
-			<a href="http://fusedthought.com/downloads/url-shortener-wordpress-plugin/"><img src="<?php echo $plugin_loc; ?>/plugin-logo.jpg" alt="" /></a>
+			<a href="http://fusedthought.com/downloads/url-shortener-wordpress-plugin/">
+				<?php if($globe_fts_urlfx['urlbetaservices'] == 'yes' && function_exists('fts_url_beta_logo')){
+					fts_url_beta_logo();
+				}else{echo $plugin_logo; }?>
+			</a>
 		</div>
 		<p>This plugin allows you to :
 			<ul class="ptshow">
@@ -68,6 +76,9 @@ function draw_fts_shortenurl_page(){
 							<option value="unu" <?php selected( 'unu', $fts_urlfx['urlservice'] ); ?>>u.nu &nbsp;</option>
 							<option value="unfakeit" <?php selected( 'unfakeit', $fts_urlfx['urlservice'] ); ?>>unfake.it &nbsp;</option>
 							<option value="awesm" <?php selected( 'awesm', $fts_urlfx['urlservice'] ); ?>>awe.sm &nbsp;</option>
+							<?php if ($fts_urlfx['urlbetaservices'] == 'yes' && function_exists('fts_url_beta_list')){
+							echo fts_url_beta_list();
+							}?>
 						</select>
 						
 						<div class="reqfielderror"></div>
@@ -196,6 +207,9 @@ function draw_fts_shortenurl_page(){
 							</div>
 						</div>
 						
+						<?php if ($fts_urlfx['urlbetaservices'] == 'yes' && function_exists('fts_url_beta_listinfo')){
+						echo fts_url_beta_listinfo();
+						}?>
 					</fieldset>
 					<fieldset>
 						<div class="nl">
@@ -204,6 +218,16 @@ function draw_fts_shortenurl_page(){
 								<option value="yes" <?php selected( 'yes', $fts_urlfx['urlautogen'] ); ?>>Yes &nbsp;</option>				
 								<option value="no" <?php selected( 'no', $fts_urlfx['urlautogen'] ); ?>>No &nbsp;</option>
 							</select>
+						</div>
+					</fieldset>
+					<fieldset>
+						<div class="nl">
+							<label class="betaserv">Enable Addon Module (for beta features): </label>
+							<select name="fts_urlfx[urlbetaservices]" id="urlbetaservices" >
+								<option value="no" <?php selected( 'no', $fts_urlfx['betaservices'] ); ?>>No &nbsp;</option>							
+								<option class="betaservopt" value="yes" <?php selected( 'yes', $fts_urlfx['urlbetaservices'] ); ?>>Yes &nbsp;</option>				
+							</select>
+							<p><strong>Note: </strong>The <a href="<?php print $addonurl;?>">URL Shortener Beta Addon</a> Module/Plugin has to be enabled.</p>
 						</div>
 					</fieldset>
 				</div>

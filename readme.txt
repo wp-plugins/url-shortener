@@ -1,10 +1,10 @@
 === URL Shortener ===
 Contributors: geraldyeo
 Donate link: http://fusedthought.com/donate/
-Tags: url-shortener, short-url, url, shorten,  tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, cl.gs, short.to, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, awe.sm, social, tweet, twitter
+Tags: url-shortener, short-url, url, shorten, shortener, tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, cl.gs, short.to, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, awe.sm, social, tweet, twitter, goo.gl
 Requires at least: 2.7
 Tested up to: 2.9
-Stable tag: 1.6.3
+Stable tag: 1.7
 
 Use your own URL Shortener or integrate 3rd Party Services with WordPress. Allows generating of shorturl with various services upon post/page publishing. 
 
@@ -26,6 +26,9 @@ As of Version 1.5, I've added an on-demand shortening function for use in the te
 
 Version 1.5 also brings about an updated administration options page.
 
+
+Version 1.7 now enables the inclusion of a addon module which will enable URL Shortening Services which are undergoing testing but not official supported under this main plugin. For more information, visit the [URL Shortener beta addon module information page](http://fusedthought.com/downloads/addon-module-for-url-shortener-wordpress-plugin/ "URL Shortener beta addon module information page")  
+
 **Current supported services are:**
 
 * tinyurl 
@@ -44,9 +47,16 @@ Version 1.5 also brings about an updated administration options page.
 * unfake.it 
 * awe.sm
 
+
 **Notes on Awe.sm usage:**
 
 *  Custom domain can be configured in your Awe.sm account on the awe.sm website.
+
+
+** Addon Module Service list **
+
+* goo.gl (Google URL Shortener)
+You can try out the following URL Shorterning services via the [URL Shortener Addon Module](http://fusedthought.com/downloads/addon-module-for-url-shortener-wordpress-plugin/ "URL Shortener Addon Module.")
 
 
 **Future Versions:**
@@ -75,6 +85,11 @@ Version 1.5 also brings about an updated administration options page.
 
 
 == Changelog ==
+
+= 1.7 =
+* Added a beta module and option
+* Addon functions for beta service display.
+* Directory structure cleanup
 
 = 1.6.3 =
 * WordPress 2.9 Compatibility check.

@@ -1,24 +1,26 @@
 <?php
-
 /*
 Plugin Name: URL Shortener
 Plugin URI: http://fusedthought.com/downloads/url-shortener-wordpress-plugin/
-Description: This plugin integrates multiple URL Shortening service with your WordPress.org installation. Brings a similar functionality of WordPress.com's WP.me shortlinks feature but using 3rd partly URL Shorteners. Supports own domain URL Shortener awe.sm as well.
+Description: This plugin integrates multiple URL Shortening service with your WordPress.org installation. Brings a similar functionality of WordPress.com's WP.me shortlinks feature but using 3rd partly URL Shorteners. Supports own domain URL Shortener awe.sm as well. <a href="http://fusedthought.com/downloads/addon-module-for-url-shortener-wordpress-plugin/">Addon module for beta-supported services available</a>.
 Author: Gerald Yeo
 Author URI: http://fusedthought.com
-Version: 1.6.3
-/*
+Version: 1.7
+*/
 
 /* 
  * Use "fts_show_shorturl($post)" to display link in a post
+ * On Demand shortening eg: "fts_shorturl('http://www.google.com', 'supr');"
  */
 
 global $globe_fts_urlfx;
+global $addonurl;
+$addonurl = "http://fusedthought.com/downloads/addon-module-for-url-shortener-wordpress-plugin/";
 
 require_once( dirname(__FILE__) . '/req/urlservices.php' );
 require_once( dirname(__FILE__) . '/req/options.php' );
-require_once( dirname(__FILE__) . '/req/wprewriteredirect.php' );
-require_once( dirname(__FILE__) . '/req/templateredirect.php' );
+require_once( dirname(__FILE__) . '/req/services/wprewriteredirect.php' );
+require_once( dirname(__FILE__) . '/req/services/templateredirect.php' );
 
 function fts_show_shorturl($post){
 	$postid = $post->ID;
@@ -68,7 +70,7 @@ function fts_shortenurl_remove($post_ID){
 }
 
 function fts_shortenurl_actions($links) {
-	$links[] = '<a href="options-general.php?page=shorturl" style="font-weight:bold">Settings</a>';
+	$links[] = '<a href="options-general.php?page=shorturl">Settings</a>';
 	return $links;
 }
 

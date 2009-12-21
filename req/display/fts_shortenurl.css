@@ -24,3 +24,6 @@ input.apipassval{width: 50%;}
 .nl ol{ padding: 1em;}
 
 #htre input{width: 50%; display: block;}
+.betaserv{color: #a00;}
+.betaservopt{background: #FFCACB;}
+.betaservdes{background: #FFCACB; padding: 1em; font-size: 1.2em;}

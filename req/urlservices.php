@@ -1,5 +1,5 @@
 <?php
-function createshorturl($apiservice, $url) {  
+function createshorturl($apiservice, $url, $beta = NULL) {  
 	global $globe_fts_urlfx;
 	
 	switch ($apiservice){
@@ -136,8 +136,12 @@ function createshorturl($apiservice, $url) {
 			}
 			return $geturl;
 			break;
-		
+
 		default:
+			if ($globe_fts_urlfx['urlbetaservices'] == 'yes' && function_exists('fts_url_beta_services')){
+				$geturl = fts_url_beta_services($url);
+				return $geturl;
+			}	
 			break;
 	}
 
@@ -166,7 +170,7 @@ function snipurlapi($url, $user, $key, $urlprefix){
 			break;
 	
 	}
-	require_once(dirname(__FILE__).'/snipurl.php');
+	require_once(dirname(__FILE__).'/services/snipurl.php');
 	
 	if ($urlprefix == 'snim'){
 		$data = str_replace('snurl.com', 'sn.im', $data);
@@ -176,11 +180,11 @@ function snipurlapi($url, $user, $key, $urlprefix){
 }
 
 function awesmapi($url, $key){
-	require_once(dirname(__FILE__).'/awesm.php');
+	require_once(dirname(__FILE__).'/services/awesm.php');
 	return $data;
 }
 
-function urlxmlresult($url, $method='POST', $body=array() ){
+function urlxmlresult($url, $method='POST', $body=array()){
 	$request = new WP_Http;
 	$result = $request->request( $url, array( 'method' => $method, 'body' => $body) ); 
 	
