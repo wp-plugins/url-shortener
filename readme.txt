@@ -27,7 +27,7 @@ As of Version 1.5, I've added an on-demand shortening function for use in the te
 Version 1.5 also brings about an updated administration options page.
 
 
-Version 1.7 now enables the inclusion of a addon module which will enable URL Shortening Services which are undergoing testing but not official supported under this main plugin. For more information, visit the [URL Shortener beta addon module information page](http://fusedthought.com/downloads/addon-module-for-url-shortener-wordpress-plugin/ "URL Shortener beta addon module information page")  
+Version 1.7 now enables the inclusion of a addon module which will enable URL Shortening Services which are undergoing testing but not official supported under this main plugin. For more information, visit the [URL Shortener Addon Module information page](http://fusedthought.com/downloads/addon-module-for-url-shortener-wordpress-plugin/ "URL Shortener Addon Module information page")  
 
 **Current supported services are:**
 
@@ -53,7 +53,7 @@ Version 1.7 now enables the inclusion of a addon module which will enable URL Sh
 *  Custom domain can be configured in your Awe.sm account on the awe.sm website.
 
 
-** Addon Module Service list **
+**Addon Module Service list**
 
 * goo.gl (Google URL Shortener)
 You can try out the following URL Shorterning services via the [URL Shortener Addon Module](http://fusedthought.com/downloads/addon-module-for-url-shortener-wordpress-plugin/ "URL Shortener Addon Module.")
