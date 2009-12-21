@@ -227,7 +227,7 @@ function draw_fts_shortenurl_page(){
 								<option value="no" <?php selected( 'no', $fts_urlfx['betaservices'] ); ?>>No &nbsp;</option>							
 								<option class="betaservopt" value="yes" <?php selected( 'yes', $fts_urlfx['urlbetaservices'] ); ?>>Yes &nbsp;</option>				
 							</select>
-							<p><strong>Note: </strong>The <a href="<?php print $addonurl;?>">URL Shortener Beta Addon</a> Module/Plugin has to be enabled.</p>
+							<p><strong>Note: </strong>The <a href="<?php print $addonurl;?>">URL Shortener Addon Module</a>  has to be enabled.</p>
 						</div>
 					</fieldset>
 				</div>
