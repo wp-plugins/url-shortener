@@ -54,7 +54,9 @@ Version 1.7 now enables the inclusion of a addon module which will enable URL Sh
 
 
 **Addon Module Service list**
+
 You can try out the following URL Shorterning services via the [URL Shortener Addon Module](http://fusedthought.com/downloads/addon-module-for-url-shortener-wordpress-plugin/ "URL Shortener Addon Module.")
+
 * goo.gl (Google URL Shortener)
 
 
