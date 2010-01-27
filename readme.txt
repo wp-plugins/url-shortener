@@ -22,6 +22,10 @@ On-demand shortening function (V1.5) is also for use in your templates:
 
 `<?php fts_shorturl('http://www.google.com', 'supr'); ?>`
 
+
+Latest: Version 2.0 now supports bulk editing and generation of Short URLs.
+
+
 **Services currently supported are:**
 
 * tinyurl 
@@ -46,21 +50,15 @@ On-demand shortening function (V1.5) is also for use in your templates:
 *  Custom domain can be configured in your Awe.sm account on the awe.sm website.
 
 
+**Addon Module**
+
+Version 1.7 enables the inclusion of a addon module which will enable URL Shortening Services which are undergoing testing but not official supported under this main plugin. For more information, visit the [URL Shortener Addon Module information page](http://fusedthought.com/downloads/addon-module-for-url-shortener-wordpress-plugin/ "URL Shortener Addon Module information page")  
+
 **Addon Module Service list**
 
 *  goo.gl (Google URL Shortener)
 *  Digg
 *  Voizle
-
-
-**Highlights:**
-
-Version 1.5 also brings about an updated administration options page.
-
-Version 1.7 now enables the inclusion of a addon module which will enable URL Shortening Services which are undergoing testing but not official supported under this main plugin. For more information, visit the [URL Shortener Addon Module information page](http://fusedthought.com/downloads/addon-module-for-url-shortener-wordpress-plugin/ "URL Shortener Addon Module information page")  
-
-Version 2.0 now supports bulk editing and generation of Short URLs.
-
 
 **Future Versions:**
 
