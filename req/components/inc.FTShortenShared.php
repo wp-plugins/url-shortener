@@ -8,7 +8,7 @@ require_once(dirname(__FILE__).'/class.json.php');
 
 if (!class_exists('FTShortenShared')){
 	class FTShortenShared {
-		protected function openurl($url, $useragent = 'false', $posttype = 'GET', $postfield = '') {
+		function openurl($url, $useragent = 'false', $posttype = 'GET', $postfield = '') {
 			if (function_exists('curl_init')) {
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $url);
@@ -31,13 +31,13 @@ if (!class_exists('FTShortenShared')){
 			}
 		}//end fx open url	
 		
-		protected function processjson($url){
+		function processjson($url){
 			$json = new Services_JSON();
 			$result = $json->decode($url);
 			return $result;
 		}//end json process
 		
-		protected function processxml($url, $method='POST', $body=array()){
+		function processxml($url, $method='POST', $body=array()){
 			$request = new WP_Http;
 			$result = $request->request( $url, array( 'method' => $method, 'body' => $body) ); 
 			if($result['body']){return $result['body'];}		
