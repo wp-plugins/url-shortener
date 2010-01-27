@@ -1,5 +1,4 @@
 jQuery(document).ready(function($){
-
 	
 	$('#urlservicesel').each(function(){
 		$(this).change(function(){	
@@ -39,14 +38,14 @@ jQuery(document).ready(function($){
 		$(this).change(function(){	
 			var target = $(this).val();
 			if (target == "yes"){
-				$('#enableownservice').fadeIn(300);
+
+			$('#enableownservice').fadeIn(300);
 			} else {
 				$('#enableownservice').fadeOut(300);	
 			}
 
 		});
 	});
-
 
 	$('#ownredirecttypeoption').each(function(){
 		$(this).change(function(){	
@@ -73,7 +72,10 @@ jQuery(document).ready(function($){
 
 		});
 	});
-
+	$('#aserv-des').hide();
+	$('#aserv').click(function(){
+		$('#aserv-des').toggle(300);
+		return false;
+	});
 	
 });
-

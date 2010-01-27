@@ -21,7 +21,7 @@ $snipformat_includepk = "";            	// SET TO "Y" IF YOU WANT THE PRIVATE KE
 //----------------------------------
 // NO NEED TO EDIT BEYOND THIS POINT
 //----------------------------------
-$URL        = $urltoget;
+$URL        = $apiurl;
 $sniplink   = rawurlencode($sniplink);
 $snipnick   = rawurlencode($snipnick);
 $sniptitle  = rawurlencode($sniptitle);

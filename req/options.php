@@ -1,13 +1,4 @@
 <?php
-
-function fts_shortenurl_init(){
-	global $globe_fts_urlfx;
-	//name - db
-	register_setting('fts_shortenurl','fts_urlfx');
-	$globe_fts_urlfx = get_option('fts_urlfx');
-
-}
-
 function fts_shortenurl_cssjs(){
 	//css JS
 	$plugin_url = WP_PLUGIN_URL.'/'.plugin_basename( dirname(dirname(__FILE__)) );
@@ -17,7 +8,7 @@ function fts_shortenurl_cssjs(){
 
 function draw_fts_shortenurl_page(){
 	global $addonurl;
-	global $globe_fts_urlfx;
+	global $fts_urlfx;
 	$plugin_loc = WP_PLUGIN_URL.'/'.plugin_basename( dirname(dirname(__FILE__)) );
 	$plugin_logo = '<img src="'.$plugin_loc.'/plugin-logo.jpg" alt="" />';
 ?>
@@ -25,7 +16,7 @@ function draw_fts_shortenurl_page(){
 		<h2>URL Shortener<span class="pluginbyline">by <a href="http://fusedthought.com">Gerald Yeo</a> (Fusedthought.com)</span></h2>
 		<div class="logo">
 			<a href="http://fusedthought.com/downloads/url-shortener-wordpress-plugin/">
-				<?php if($globe_fts_urlfx['urlbetaservices'] == 'yes' && function_exists('fts_url_beta_logo')){
+				<?php if($fts_urlfx['urlbetaservices'] == 'yes' && function_exists('fts_url_beta_logo')){
 					fts_url_beta_logo();
 				}else{echo $plugin_logo; }?>
 			</a>
@@ -36,12 +27,10 @@ function draw_fts_shortenurl_page(){
 				<li>Generate Short URLs using 3rd Party Services</li>
 			</ul>
 		</p>
-		<p>It bring's the one-click URL Shortening functionality of WordPress.com blogs to your WordPress.org installation.</p>
-		<p>As WP.me is exclusive to WordPress.com users, this plugin supports a variety of other URL Shortening services. </p>	
+		<p>It bring's the one-click/automated URL Shortening functionality to your WordPress.org installation.</p>
 		
 		<form id="shorturloptions" method="post" action="options.php">
 			<?php settings_fields('fts_shortenurl'); ?>
-			<?php $fts_urlfx = get_option('fts_urlfx'); ?>
 			
 			<h4 class="sectheaders">Integration Options</h4>
 			
@@ -55,7 +44,7 @@ function draw_fts_shortenurl_page(){
 			
 			
 				<div id="enableurlservice" class="sub <?php if ($fts_urlfx['urlserviceenable'] != 'yes'){ echo "mhideit";} else {echo "mshowit";} ?>">
-		
+
 					<fieldset title="URL Shortening Service">
 						<label for="urlservicesel">You're using:</label>
 						
@@ -66,7 +55,7 @@ function draw_fts_shortenurl_page(){
 							<option value="isgd" <?php selected( 'isgd', $fts_urlfx['urlservice'] ); ?>>is.gd &nbsp;</option>
 							<option value="bitly" <?php selected( 'bitly', $fts_urlfx['urlservice'] ); ?>>bit.ly &nbsp;</option>
 							<option value="trim" <?php selected( 'trim', $fts_urlfx['urlservice'] ); ?>>tr.im &nbsp;</option>
-							<option value="snipurl" <?php selected( 'snipurl', $fts_urlfx['urlservice'] ); ?>>Sn.im / Snipr / Snipurl / Snurl &nbsp;</option>
+							<option value="snipurl" <?php selected( 'snipurl', $fts_urlfx['urlservice'] ); ?>>Snipr / Snipurl / Snurl &nbsp;</option>
 							<option value="cligs" <?php selected( 'cligs', $fts_urlfx['urlservice'] ); ?>>Cligs (Cl.gs &nbsp;)</option>
 							<option value="shortie" <?php selected( 'shortie', $fts_urlfx['urlservice'] ); ?>>Short.ie &nbsp;</option>
 							<option value="shortto" <?php selected( 'shortto', $fts_urlfx['urlservice'] ); ?>>Short.to &nbsp;</option>
@@ -88,7 +77,7 @@ function draw_fts_shortenurl_page(){
 								<p>Please select a service from the list provided.</p>
 							</div>
 						</div>
-						
+
 						<div class="APIConfig">
 							<div id="userkey_tinyurl" class="<?php if ($fts_urlfx['urlservice'] != 'tinyurl'){ echo "hideit";} else {echo "showit";} ?>">
 								<p>No authentication / further configurations needed for this service</p>
@@ -222,12 +211,12 @@ function draw_fts_shortenurl_page(){
 					</fieldset>
 					<fieldset>
 						<div class="nl">
-							<label class="betaserv">Enable Addon Module (for beta features): </label>
+							<label class="betaserv">Enable Addon Module (for bonus/beta services): </label>
 							<select name="fts_urlfx[urlbetaservices]" id="urlbetaservices" >
 								<option value="no" <?php selected( 'no', $fts_urlfx['betaservices'] ); ?>>No &nbsp;</option>							
 								<option class="betaservopt" value="yes" <?php selected( 'yes', $fts_urlfx['urlbetaservices'] ); ?>>Yes &nbsp;</option>				
-							</select>
-							<p><strong>Note: </strong>The <a href="<?php print $addonurl;?>">URL Shortener Addon Module</a>  has to be enabled.</p>
+							</select> <a id="aserv" href="#">[?]</a>
+							<p><strong>Note: </strong>The <a href="<?php print $addonurl;?>">URL Shortener Addon Module</a>  has to be installed and activated.</p><p id="aserv-des" class="none">The addon module provides bonus services (highlighted in green) and beta services (highlighted in red) which are not available in the main URL Shortener Plugin.</p>
 						</div>
 					</fieldset>
 				</div>
@@ -247,8 +236,7 @@ function draw_fts_shortenurl_page(){
 			
 			
 				<div id="enableownservice" class="sub <?php if ($fts_urlfx['ownservice'] != 'yes'){ echo "ehideit";} else {echo "eshowit";} ?>">
-					<fieldset title="Own Service Options">
-						
+					<fieldset title="Own Service Options">	
 						<div id="ownredirecttype"  class="nl" >
 							<label>Select type of redirect: </label>		
 							<select name="fts_urlfx[ownservicetype]"  id="ownredirecttypeoption">
@@ -284,12 +272,9 @@ function draw_fts_shortenurl_page(){
 			<div class="reqfielderror"></div>
 			<p class="submit">
 				<input type="submit" id="submit-button" class="button-primary" value="<?php _e('Save Changes') ?>" />
-			</p>
-			
-		</form>
-		
+			</p>		
+		</form>	
 	</div>
-
 <?php
 }
 
@@ -301,15 +286,16 @@ function fts_shorturl_page_addons($post){
 }
 
 function fts_shorturl_posts_metabox($post){
-	global $globe_fts_urlfx;
+	global $fts_urlfx;
 	$postid = $post->ID;
 	$shorturl = get_post_meta($postid, 'shorturl', true);
+	$anothershorturl = get_post_meta($postid, 'short_url', true);
+	if ($fts_urlfx['urlserviceenable'] == 'yes'){
 	
-	if ($globe_fts_urlfx['urlserviceenable'] == 'yes'){
-		if($globe_fts_urlfx['urlservice'] != 'none' && !$shorturl){
+		if($fts_urlfx['urlservice'] != 'none' && !$shorturl && !$anothershorturl){
 			wp_nonce_field( 'fts_shortenurl', '_ajax_ftsshorturl', false );	
 			
-			if($globe_fts_urlfx['urlautogen'] == 'yes'){?>
+			if($fts_urlfx['urlautogen'] == 'yes'){?>
 				<h4>How To:</h4>
 				<p>Short URL will be generated upon publishing the post/page.</p>
 				<p>To disable automatic generation, set "Enable Automatic Short URL Generation upon publish" in the <a href="options-general.php?page=shorturl">URL Shortener options page</a> to "No".</p>
@@ -318,8 +304,7 @@ function fts_shorturl_posts_metabox($post){
 				/* <![CDATA[ */
 				jQuery(document).ready(function($){
 					$('#misc-publishing-actions').append('<div class="misc-pub-section">Short URL Generation: <strong>Auto</strong></div>');
-		
-				});//global	
+				});	
 				/* ]]> */
 				</script>
 			
@@ -337,22 +322,27 @@ function fts_shorturl_posts_metabox($post){
 				</script>
 	
 			<?php }//sutogen
-		} elseif($globe_fts_urlfx['urlservice'] != 'none') { ?>
+
+		} elseif($fts_urlfx['urlservice'] != 'none' ) { 	
+			if($shorturl){
+				$displayshorturl = $shorturl;
+			} else {
+				$displayshorturl = $anothershorturl;
+			}?>
 				
 			<div style="text-align: left;">
-				<p id="shortlinkstatus"><strong>Your current short URL is: </strong><br /><a href="<?php echo $shorturl;?>"><?php echo $shorturl;?></a></p>
-				<p style="text-align: right"><input type="submit" class="button" id="remove-shortlink-button" name="remove-shortlink" value="Remove Short URL" /></p>
+				<p id="shortlinkstatus"><strong>Your current short URL is: </strong><br /><a href="<?php echo $displayshorturl;?>"><?php echo $displayshorturl;?></a></p><p style="text-align: right"><input type="submit" class="button" id="remove-shortlink-button" name="remove-shortlink" value="Remove Short URL" /></p>
 			</div>
 			<script type="text/javascript">
 			/* <![CDATA[ */
 			jQuery(document).ready(function($){	
 				<?php if (!function_exists('get_shortlink') ){?>  		
-					$('#edit-slug-box').append('<span id="show-shortlink-button"><a class="button" href="#">Show Short URL</a></span>');	
+					$('#edit-slug-box').append('<span class="show-shortlink-button"><a class="button" href="#">Show Short URL</a></span>');	
 				<?php }?>
-				$('#misc-publishing-actions').append('<div class="misc-pub-section"><div id="shortlinkstatustop" style="display: inline;">Short URL Status: <strong id="show-shortlink-button"><a href="#">Generated</a></strong></div>&nbsp;<input type="submit" class="button" name="remove-shortlink" id="remove-shortlink-button1" value="Remove" /></div>');
+				$('#misc-publishing-actions').append('<div class="misc-pub-section"><div id="shortlinkstatustop" style="display: inline;">Short URL Status: <strong class="show-shortlink-button"><a href="#">Generated</a></strong></div>&nbsp;<input type="submit" class="button" name="remove-shortlink" id="remove-shortlink-button1" value="Remove" /></div>');
 				
-				$('#show-shortlink-button a').click(function(){ 
-					prompt('Short URL:', '<?php echo $shorturl; ?>'); 
+				$('.show-shortlink-button a').click(function(){ 
+					prompt('Short URL:', '<?php echo $displayshorturl; ?>'); 
 					return false;
 				});	
 				
@@ -363,12 +353,12 @@ function fts_shorturl_posts_metabox($post){
 				$('#remove-shortlink-button1').click(function(){ 
 					$('#shortlinkstatustop').html('Shortlink Status: <strong>Removing....</strong>');
 					return true;
-				});
-				
+				});		
 			});
 			/* ]]> */
 			</script>
 		<?php
+		
 		} else {/*end urlservice else*/?>
 		<h4>Plugin Not Configured</h4>
 		<p>Please proceed to the <a href="options-general.php?page=shorturl">URL Shortener options page</a> to select your desired URL Shortening Service</p>
@@ -395,7 +385,6 @@ function fts_shorturl_add_page() {
 }
 
 if ( is_admin() ){ 
-	add_action('admin_init', 'fts_shortenurl_init');
 	add_action('load-post.php', 'fts_shorturl_posts_addons');
 	add_action('load-post-new.php', 'fts_shorturl_posts_addons');
 	add_action('load-page.php', 'fts_shorturl_page_addons');
