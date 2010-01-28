@@ -30,6 +30,7 @@ switch($selectedservice){
 		break;		
 	case 'pingfm':
 		$newshort->apikey = htmlentities($fts_urlfx['apikey_pingfm'], ENT_QUOTES);
+		$newshort->pingfmapi = 'f51e33510d3cbe2ff1e16a4a4897f099';
 		break;
 	case 'awesm':
 		$newshort->apikey =  htmlentities($fts_urlfx['apikey_awesm'], ENT_QUOTES);

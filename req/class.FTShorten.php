@@ -18,6 +18,7 @@ require_once(dirname(__FILE__).'/components/inc.FTShortenShared.php');
 if (!class_exists('FTShorten')){
 	class FTShorten extends FTShortenShared {
 		public $service, $url, $name, $apikey, $apiprefix, $apiextend;	
+		public $pingfmapi;
 		public function shorturl(){
 			$surl = urlencode($this->url);
 			$nurl = $this->url;
@@ -88,12 +89,12 @@ if (!class_exists('FTShorten')){
 				case 'pingfm':
 					$apiurl = 'http://api.ping.fm/v1/url.create';
 					$body = array(
-						'api_key' => 'f51e33510d3cbe2ff1e16a4a4897f099',
+						'api_key' => $this->pingfmapi,
 						'user_app_key' => $skey,
-						'long_url' => $surl
+						'long_url' => $nurl
 					);
 					$result = $this->processxml($apiurl, 'POST', $body);
-					if ($xml) {
+					if ($result) {
 						$xml = new SimpleXMLElement($result);
 						$data = $xml->short_url;				
 					}	
