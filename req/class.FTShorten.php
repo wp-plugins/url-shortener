@@ -48,7 +48,7 @@ if (!class_exists('FTShorten')){
 					if ($sname == '' || $skey == ''){} else {
 						$result = $this->openurl('http://api.bit.ly/shorten?version=2.0.1&longUrl='.$surl.'&login='.$sname.'&apiKey='.$skey);
 						$json = $this->processjson($result);
-						$data = $json->results->$url->shortUrl;
+						$data = $json->results->$nurl->shortUrl;
 					}
 					break;				
 				case 'trim':
