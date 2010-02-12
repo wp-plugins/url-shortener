@@ -4,7 +4,7 @@ Donate link: http://fusedthought.com/donate/
 Tags: url-shortener, short-url, url, shorten, shortener, tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, cl.gs, short.to, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, awe.sm, social, tweet, twitter, goo.gl, digg, Voizle
 Requires at least: 2.7
 Tested up to: 2.9.1
-Stable tag: 2.0.1
+Stable tag: 2.1
 
 Use your own URL Shortener or integrate 3rd Party Services with WordPress. Allows generating of shorturl with various services upon post/page publishing. 
 
@@ -16,7 +16,7 @@ The Short URL generated during post/page publishing is cache and thus generated 
 
 You can also create your own short url using the WordPress Post ID (for eg: http://yoursite/POST-ID ). It provides two method of redirection, namely, wp_rewrite redirect and template_redirection (template redirect).
 
-Version 2.1 also allows you to automatically post the title and short URL to twitter upon post/page publishing.
+Version 2.1 provides integration with [Simply Tweeted](http://fusedthought.com/downloads/simply-tweeted-wordpress-plugin/ "Simply Tweeted") allowing you to automatically post the title and (Short)URL to twitter upon post/page publishing.
 
 **Sample usage:**
 
@@ -65,6 +65,7 @@ Version 1.7 enables the inclusion of a addon module which will enable URL Shorte
 *  goo.gl (Google URL Shortener)
 *  Digg
 *  Voizle
+*  urli.nl
 
 **Future Versions:**
 
@@ -93,8 +94,10 @@ Version 1.7 enables the inclusion of a addon module which will enable URL Shorte
 == Changelog ==
 
 = 2.1 =
-* Twitter auto-post
-* Included updated class.FTShorten.
+* AJAX-ed entire Bulk Short URL code. 
+* Improved Security of Bulk Short URL Request.
+* Included updated class.FTShorten (v2.0)
+* Added support for auto-updating twitter (post name / url)
 
 = 2.0.1 =
 * Bugfix: Minor error posting to ping.fm

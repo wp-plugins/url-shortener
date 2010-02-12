@@ -15,13 +15,10 @@ function ownurlservice_rewrite($rewrite){
 		$wp_rewrite->rules = $ownservicerules + $wp_rewrite->rules;
 	}
 }
-
 function flushRules(){
 	global $wp_rewrite;
    	$wp_rewrite->flush_rules();
 }
-
 add_filter('generate_rewrite_rules', 'ownurlservice_rewrite');
 add_filter('init','flushRules');
-
 ?>

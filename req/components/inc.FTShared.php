@@ -12,7 +12,7 @@ require_once(dirname(__FILE__).'/class.json.php');
 
 if (!class_exists('FTShared')){
 	class FTShared {
-		function openurl($url, $useragent = 'false', $posttype = 'GET', $postfield = '') {
+		public function openurl($url, $useragent = 'false', $posttype = 'GET', $postfield = '') {
 			if (function_exists('curl_init')) {
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $url);
@@ -34,13 +34,13 @@ if (!class_exists('FTShared')){
 			}
 		}//end fx open url	
 		
-		function processjson($url){
+		public function processjson($url){
 			$json = new Services_JSON();
 			$result = $json->decode($url);
 			return $result;
 		}//end json process
 		
-		function processxml($url, $method='POST', $body=array()){
+		public function processxml($url, $method='POST', $body=array()){
 			$request = new WP_Http;
 			$result = $request->request( $url, array( 'method' => $method, 'body' => $body) ); 
 			if($result['body']){return $result['body'];}		

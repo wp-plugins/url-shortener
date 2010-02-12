@@ -30,7 +30,7 @@ jQuery(document).ready(function($){
 				var apiuserkey = jQuery.trim( $("#apikey_"+seltarget).val() );
 	
 				if (apiuserval == "" || apiuserkey == ""){
-					$('.reqfielderror').append('Please fill in both the API User and API Key as they are required.<br />');
+					$('.reqfielderror').append('Please fill in the API User/API Key as they are required.<br />');
 					errorcount = true;
 				}
 			}

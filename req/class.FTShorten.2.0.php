@@ -9,13 +9,10 @@
  * Also included in  URL Shortner Plugin for WordPress
  
  * Copyright Information and Usage
- * This class is packaged in the URL Shortener plugin and can also be downloaded via http://fusedthought.com.
- * Permission is granted for re-use of the class in other plugins provided the plugin is released under a similar license as my URL Shortener Plugin.
+ * This class is packaged in the URL Shortener plugin and is also available as a separate download from http://fusedthought.com/downloads/class-ftshorten.
+ * Permission is granted for re-use of the class in other plugins only if the that plugin is released under a similar license as the URL Shortener Plugin (http://fusedthought.com/downloads/url-shortener-wordpress-plugin/).
  * This class is not to be packaged as part of a commercial plugin or other any part of a paid download without prior notification to the author.
  * If in doubt, email your question to contact@fusedthought.com
-
- * Services supported:
- * tinyurl - is.gd - su.pr - bit.ly - tr.im - short.ie - snipurl - cl.gs - short.to - ping.fm - chilp.it - smoosh - smsh.me - u.nu - unfake.it - awe.sm -
  */
 require_once(dirname(__FILE__).'/components/inc.FTShared.php');
 
@@ -25,34 +22,34 @@ if (!class_exists('FTShorten')){
 		public $pingfmapi;
 	
 		protected function get_service($service, $url, $name = '', $userkey = ''){	
-			$eurl = rawurlencode($url);	
-			
+			$eurl = urlencode($url);	
 			$apiarray = array(
 				'tinyurl' => array(
 					'api'=>'http://tinyurl.com/api-create.php?url=[url]'
 					),
 				'supr' => array(
-					'api' => 'http://su.pr/api/simpleshorten?url=[url]',
-					'auth' => 'http://su.pr/api/simpleshorten?url=[url]&login=[user]&apiKey=[key]',
+					'api' => 'http://su.pr/api/shorten?longUrl=[url]',
+					'auth' => 'http://su.pr/api/shorten?longUrl=[url]&login=[user]&apiKey=[key]',
+					'type' => 'json'
 					),
-				'isgd' => array('
-					api'=>'http://is.gd/api.php?longurl=[url]'
+				'isgd' => array(
+					'api'=>'http://is.gd/api.php?longurl=[url]'
 					),
 				'bitly' => array(
 					'api' => 'http://bit.ly/api?url=[url]',
-					'auth' => 'http://api.bit.ly/shorten?version=2.0.1&longUrl=[url]&login=[user]&apiKey=[key]',
+					'auth' => 'http://api.bit.ly/shorten?version=2.0.1&format=json&longUrl=[url]&login=[user]&apiKey=[key]',
 					'type' => 'json'
 					),
 				'trim'  => array(
 					'api' => 'http://api.tr.im/api/trim_simple?url=[url]',
-					'auth' => 'http://api.tr.im/api/trim_url.json?url=[url]&username=[user]&password=[key]',
+					'auth' => 'http://api.tr.im/api/trim_url.json?url=[url]&username=[user]&password=[key]'
 					),
 				'cligs' => array(
 					'auth' => 'http://cli.gs/api/v1/cligs/create?url=[url]&key=[key]&appid=ftsplugin'
 					),
 				'shortie'=> array(
 					'api' => 'http://short.ie/api?url=[url]',
-					'auth' => 'http://short.ie/api?url=&format=plain&private=true&email=[user]&secretKey=[key]',
+					'auth' => 'http://short.ie/api?url=&format=plain&private=true&email=[user]&secretKey=[key]'
 					),
 				'shortto' => array(
 					'api'=>'ttp://short.to/s.txt?url=[url]'
@@ -67,7 +64,7 @@ if (!class_exists('FTShorten')){
 							'api_key' => $this->pingfmapi,
 							'user_app_key' => $userkey,
 							'long_url' => $url
-							),
+							)
 					),
 				'smsh' => array(
 					'api'=>'http://smsh.me/?api=json&url=[url]',
@@ -116,7 +113,6 @@ if (!class_exists('FTShorten')){
 				$api  = $selected['api'];
 			}
 			$api = str_replace('[url]',$eurl, $api);
-			
 			if ($useragent){
 				$ua = 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 GTB5';
 				ini_set('user_agent', "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 GTB5");
@@ -149,34 +145,24 @@ if (!class_exists('FTShorten')){
 					$data = $this->openurl($api, $ua, 'POST', $body);
 					break;	
 				default :
-					$data = $this->openurl($api, $ua);
+					$data = $this->openurl($api);
 					break;
 			}
 			if ($useragent){ini_restore('user_agent');};	
 			return $data;
 		}
-
 		protected function outpro($service, $result) {
 			$nurl = $this->url;
 			switch ($service){
-				case 'pingfm':
-					$data = $result->short_url;
-					break;
-				case 'bitly':
-					$data = $result->results->$nurl->shortUrl;
-					break;
-				case 'trim':
-					$data = $result->url;
-					break;
-				case 'smsh':
-					$data = $result->body;
-					break;	
-				default :
-					break;
+				case 'supr': $data = $result->results->$nurl->shortUrl; break;
+				case 'pingfm': $data = $result->short_url; break;
+				case 'bitly': $data = $result->results->$nurl->shortUrl; break;
+				case 'trim': $data = $result->url; break;
+				case 'smsh': $data = $result->body; break;	
+				default : break;
 			}
 			return $data;
 		}
-
 		public function shorturl(){
 			$nurl = $this->url;
 			$sservice = $this->service;

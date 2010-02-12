@@ -5,9 +5,8 @@ Plugin URI: http://fusedthought.com/downloads/url-shortener-wordpress-plugin/
 Description: This plugin integrates multiple URL Shortening service with your WordPress.org installation. Brings a similar functionality of WordPress.com's WP.me shortlinks feature but using 3rd partly URL Shorteners. Supports own domain URL Shortener awe.sm as well. An <a href="http://fusedthought.com/downloads/addon-module-for-url-shortener-wordpress-plugin/">Addon module for additional services</a> also available.
 Author: Gerald Yeo
 Author URI: http://fusedthought.com
-Version: 2.0.1
+Version: 2.1-Beta
 */
-
 /* 
  * Use "fts_show_shorturl($post)" to display link in a post
  * On Demand shortening eg: "fts_shorturl('http://www.google.com', 'supr');"
@@ -16,9 +15,8 @@ Version: 2.0.1
  //classe and global
 global $fts_urlfx;
 global $addonurl;
-global $fts_tweeted;
 $addonurl[0] = "http://fusedthought.com/downloads/addon-module-for-url-shortener-wordpress-plugin/";
-$addonurl[1] = "http://fusedthought.com/downloads/tweeted-wordpress-plugin/";
+$addonurl[1] = "http://fusedthought.com/downloads/simply-tweeted-wordpress-plugin/";
 require_once( dirname(__FILE__) . '/req/class.FTShorten.2.0.php');
 require_once( dirname(__FILE__) . '/req/wprewriteredirect.php');
 require_once( dirname(__FILE__) . '/req/templateredirect.php');
@@ -29,8 +27,7 @@ function fts_shortenurl_init(){
 	global $fts_urlfx;
 	//name - db
 	register_setting('fts_shortenurl','fts_urlfx');
-	register_setting('fts_shortenurl','fts_tweeted');
-	$fts_urlfx = get_option('fts_urlfx');
+	$fts_urlfx = get_option('fts_urlfx');	
 }
 if ( is_admin() ){add_action('admin_init', 'fts_shortenurl_init', 9);}
 function fts_show_shorturl($post){
@@ -57,15 +54,13 @@ function fts_shortenurl_actions($links) {
 	$links[] = '<a href="options-general.php?page=shorturl">Settings</a>';
 	return $links;
 }
-function fts_shortenurl($post_ID, $typeofpost = 'none', $tweet = true){
+function fts_shortenurl($post_ID, $typeofpost = 'none', $tweet = true, $res = false){
 	global $fts_urlfx;
-	global $fts_tweeted;
 	$got_shorturl = get_post_meta($post_ID, 'shorturl', true);
 	$got_other_shorturl = get_post_meta($post_ID, 'short_url', true);
 	// Generate short URL
 	if (!$got_shorturl){
-		if ($got_other_shorturl){
-		}else{
+		if (!$got_other_shorturl){
 			if ($typeofpost == 'post'){
 				$posturl = get_option('home')."/index.php?p=".$post_ID;
 			}elseif($typeofpost == 'page'){
@@ -74,16 +69,17 @@ function fts_shortenurl($post_ID, $typeofpost = 'none', $tweet = true){
 				$posturl = get_permalink($post_ID);
 			}
 			$selectedservice = $fts_urlfx['urlservice'];
-			//require( dirname(__FILE__) . '/fts-shortenurl-logic.php' );	
-			$short = $posturl; //for testing	
+			require( dirname(__FILE__) . '/fts-shortenurl-logic.php' );	
+			//$short = $posturl.'-test'; //for testing	
 			if($short){
 				update_post_meta($post_ID, 'shorturl', $short);
-				if (fts_active('tweeted/tweeted.php') &&  $fts_tweeted['tweet'] == 'auto') {
+				if (fts_active('simply-tweeted/tweeted.php') && $fts_urlfx['tweet'] == 'auto') {
 					if($tweet){fts_tweet($post_ID, $short);}
 				}
-			}else{};
-		}
-	}
+				if ($res){return $short;}
+			}
+		}elseif ($res){return $got_other_shorturl;}
+	}elseif ($res){return $got_shorturl;}
 }
 function fts_shortenurl_gateway($post){
 	global $fts_urlfx;
@@ -94,7 +90,7 @@ function fts_shortenurl_gateway($post){
 	if ($fts_urlfx['urlserviceenable'] == 'yes'){
 		if($fts_urlfx['urlservice'] != 'none' && !$shorturl){	
 			if($fts_urlfx['urlautogen'] == 'yes'){	
-				fts_shortenurl($postid, $typeofpost);
+				fts_shortenurl($postid, $typeofpost, true);
 			} elseif($fts_urlfx['urlautogen'] == 'no' && $customyes == 'Enabled'){
 				fts_shortenurl($postid, $typeofpost, false);
 			}else{};

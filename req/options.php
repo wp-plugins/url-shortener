@@ -7,7 +7,6 @@ function fts_shortenurl_cssjs(){
 function draw_fts_shortenurl_page(){
 	global $addonurl;
 	global $fts_urlfx;
-	global $fts_tweeted;
 	$plugin_loc = WP_PLUGIN_URL.'/'.plugin_basename( dirname(dirname(__FILE__)) );
 	$plugin_logo = '<img src="'.$plugin_loc.'/plugin-logo.jpg" alt="" />';
 	?>
@@ -24,6 +23,7 @@ function draw_fts_shortenurl_page(){
 			<ul class="ptshow">
 				<li>Create shorter URLs using WordPress Post IDs, redirecting <em>http://yoursite/POST-ID</em> to the actual post.</li>
 				<li>Generate Short URLs using 3rd Party Services</li>
+				<li>Publish (Post Title and URL) to Twitter</li>
 			</ul>
 		</p>
 		<p>It bring's the one-click/automated URL Shortening functionality to your WordPress.org installation.</p>
@@ -61,7 +61,7 @@ function draw_fts_shortenurl_page(){
 							<option value="unu" <?php selected( 'unu', $fts_urlfx['urlservice'] ); ?>>u.nu &nbsp;</option>
 							<option value="unfakeit" <?php selected( 'unfakeit', $fts_urlfx['urlservice'] ); ?>>unfake.it &nbsp;</option>
 							<option value="awesm" <?php selected( 'awesm', $fts_urlfx['urlservice'] ); ?>>awe.sm &nbsp;</option>
-							<?php if ($fts_urlfx['urlbetaservices'] == 'yes' && fts_active('url-shortener-addon-2/fts-shortenurl-addon-module.php')){
+							<?php if ($fts_urlfx['urlbetaservices'] == 'yes' && fts_active('url-shortener-addon-module/fts-shortenurl-addon-module.php')){
 							echo fts_url_beta_list();
 							}?>
 						</select>
@@ -139,7 +139,7 @@ function draw_fts_shortenurl_page(){
 							</div>
 						</div>
 						
-						<?php if ($fts_urlfx['urlbetaservices'] == 'yes' && fts_active('url-shortener-addon-2/fts-shortenurl-addon-module.php')){
+						<?php if ($fts_urlfx['urlbetaservices'] == 'yes' && fts_active('url-shortener-addon-module/fts-shortenurl-addon-module.php')){
 						echo fts_url_beta_listinfo();
 						}?>
 					</fieldset>
@@ -152,14 +152,14 @@ function draw_fts_shortenurl_page(){
 							</select>
 						</div>
 					</fieldset>
-					<?php if (fts_active('tweeted/tweeted.php')){?>
+					<?php if (fts_active('simply-tweeted/tweeted.php')){?>
 					<fieldset class="mod">
 						<div class="nl">
 							<label>Post to Twitter:</label>
 							<select name="fts_tweeted[tweet]" id="urltweet" >
-								<option value="disable" <?php selected( 'disable', $fts_tweeted['tweet'] ); ?>>Disable &nbsp;</option>							
-								<option value="manual" <?php selected( 'manual', $fts_tweeted['tweet'] ); ?>>Manual &nbsp;</option>
-								<option value="auto" <?php selected( 'auto', $fts_tweeted['tweet'] ); ?>>Auto &nbsp;</option>				
+								<option value="disable" <?php selected( 'disable', $fts_urlfx['tweet'] ); ?>>Disable &nbsp;</option>							
+								<option value="manual" <?php selected( 'manual', $fts_urlfx['tweet'] ); ?>>Manual &nbsp;</option>
+								<option value="auto" <?php selected( 'auto', $fts_urlfx['tweet'] ); ?>>Auto &nbsp;</option>				
 							</select> <a class="aserv" href="#">[?]</a>
 							<div class="aserv-des none">
 								<p><strong>Disable</strong>: Entire Twitter module will be disabled</p>
@@ -167,16 +167,16 @@ function draw_fts_shortenurl_page(){
 								<p><strong>Auto</strong>: Automatically post your Title and the Short URL to Twitter upon post publishing.</p>
 								<p>(Format of update: "Title, Short URL")</p>
 							</div>
-							<div id="tweetdetails" class="<?php if ($fts_tweeted['tweet'] == 'manual' || $fts_tweeted['tweet'] == 'auto' ){ echo "eshowit";} else {echo "ehideit";} ?>">
+							<div id="tweetdetails" class="<?php if ($fts_urlfx['tweet'] == 'manual' || $fts_urlfx['tweet'] == 'auto' ){ echo "eshowit";} else {echo "ehideit";} ?>">
 								<label>Twitter Username (Required)</label> 
-								<input type="text" id="tweet_user" name="fts_tweeted[tweet_user]" value="<?php echo $fts_tweeted['tweet_user']; ?>" />
+								<input type="text" id="tweet_user" name="fts_tweeted[tweet_user]" value="<?php echo $fts_urlfx['tweet_user']; ?>" />
 								<label>Twitter Password (Required)</label> 
-								<input  type="password" id="tweet_pass" name="fts_tweeted[tweet_pass]" value="<?php echo $fts_tweeted['tweet_pass']; ?>" />
+								<input  type="password" id="tweet_pass" name="fts_tweeted[tweet_pass]" value="<?php echo $fts_urlfx['tweet_pass']; ?>" />
 							</div>
 						</div>
 					</fieldset>
 					<?php } ?>
-					<?php if (fts_active('url-shortener-addon-2/fts-shortenurl-addon-module.php')){?>
+					<?php if (fts_active('url-shortener-addon-module/fts-shortenurl-addon-module.php')){?>
 					<fieldset class="mod">
 						<div class="nl">
 							<label class="betaserv">Enable Addon Module (for bonus/beta services): </label>
@@ -190,14 +190,14 @@ function draw_fts_shortenurl_page(){
 					<?php } ?>
 					<?php 
 					$modulehighlight = '<div class="field"><p><strong>Additional plugins/modules which can be integrated:</strong></p><ol>';
-					if (!fts_active('tweeted/tweeted.php')){
-						$modulehighlight .= '<li><a href="'.$addonurl[1].'">Tweeted WordPress Plugin</a> - Update Twitter upon post/page publishing.</li>';
-					}
-					if (!fts_active('url-shortener-addon-2/fts-shortenurl-addon-module.php')){
+					if (!fts_active('url-shortener-addon-module/fts-shortenurl-addon-module.php')){
 						$modulehighlight .= '<li><a href="'.$addonurl[0].'">URL Shortener Addon Module</a> - Provides bonus or beta URL Shortener Services</li>';
 					}
+					if (!fts_active('simply-tweeted/tweeted.php')){
+						$modulehighlight .= '<li><a href="'.$addonurl[1].'">Tweeted</a> - No-frills Twitter Updater</li>';
+					}
 					$modulehighlight .='<ol></div>';
-					if (!fts_active('tweeted/tweeted.php') || !fts_active('url-shortener-addon-2/fts-shortenurl-addon-module.php')){
+					if (!fts_active('url-shortener-addon-module/fts-shortenurl-addon-module.php') || !fts_active('simply-tweeted/tweeted.php')){
 						print $modulehighlight;
 					}
 					?>
@@ -258,7 +258,6 @@ function fts_shorturl_page_addons($post){add_meta_box('ftsshortenurl', 'Short UR
 //Start Admin Page
 function fts_shorturl_posts_metabox($post){
 	global $fts_urlfx;
-	global $fts_tweeted;
 	$postid = $post->ID;
 	$shorturl = get_post_meta($postid, 'shorturl', true);
 	$anothershorturl = get_post_meta($postid, 'short_url', true);
@@ -277,10 +276,10 @@ function fts_shorturl_posts_metabox($post){
 				/* <![CDATA[ */
 				jQuery(document).ready(function($){
 					$('#misc-publishing-actions').append('<div class="misc-pub-section">Short URL Generation: <strong>Auto</strong></div>');
-					<?php if (fts_active('tweeted/tweeted.php')){
-						if($fts_tweeted['tweet'] == 'auto'){?>
+					<?php if (fts_active('simply-tweeted/tweeted.php')){
+						if($fts_urlfx['tweet'] == 'auto'){?>
 							$('#misc-publishing-actions').append('<div class="misc-pub-section">Post to Twitter: <strong>Auto</strong></div>');
-						<?php } elseif ($fts_tweeted['tweet'] == 'manual') {?>
+						<?php } elseif ($fts_urlfx['tweet'] == 'manual') {?>
 							$('#misc-publishing-actions').append('<div class="misc-pub-section">Post to Twitter: <strong>Manual</strong></div>');
 					<?php }}?>	
 				});	
@@ -296,12 +295,12 @@ function fts_shorturl_posts_metabox($post){
 				jQuery(document).ready(function($){
 					$('#fts_shorturl_nojs').html('');
 					$('#misc-publishing-actions').append('<div class="misc-pub-section">Short URL Status: <strong>No Short URL</strong></div>');				
-					<?php if (fts_active('tweeted/tweeted.php')){
-					if ($fts_tweeted['tweet'] == 'auto'){?>
+					<?php if (fts_active('simply-tweeted/tweeted.php')){
+					if ($fts_urlfx['tweet'] == 'auto'){?>
 					$('#misc-publishing-actions').append('<div class="misc-pub-section">Post to Twitter: <strong>Auto</strong></div>');
-					<?php }elseif ($fts_tweeted['tweet'] == 'manual') {?>
+					<?php }elseif ($fts_urlfx['tweet'] == 'manual') {?>
 					$('#misc-publishing-actions').append('<div class="misc-pub-section">Post to Twitter: <strong>Manual</strong></div>');
-					<?php }}?>					
+					<?php }}?>				
 					$('#misc-publishing-actions').append('<div style="font-weight: bold; padding: 1em; margin-top: 2em;background: #D2FFCF;">Generate Short URL on publish: <input id="urlshortlink" type="checkbox" name="get-shortlink" value="Enabled" /></div>');		
 				});//global	
 				/* ]]> */
@@ -326,10 +325,10 @@ function fts_shorturl_posts_metabox($post){
 					$('#edit-slug-box').append('<span class="show-shortlink-button"><a class="button" href="#">Show Short URL</a></span>');	
 				<?php }?>
 				$('#misc-publishing-actions').append('<div class="misc-pub-section"><div id="shortlinkstatustop" style="display: inline;">Short URL Status: <strong class="show-shortlink-button"><a href="#">Generated</a></strong></div>&nbsp;<input type="submit" class="button" name="remove-shortlink" id="remove-shortlink-button1" value="Remove" /></div>');
-				<?php if (fts_active('tweeted/tweeted.php')){
+				<?php if (fts_active('simply-tweeted/tweeted.php')){
 					if($got_tweet){ ?>
 						$('#misc-publishing-actions').append('<div class="misc-pub-section">Post to Twitter: <a href="<?php echo $got_tweet;?>"><strong>Published</strong></a></div>');
-				<?php } elseif ($fts_tweeted['tweet'] == 'manual' || $fts_tweeted['tweet'] == 'auto'){?>
+				<?php } elseif ($fts_urlfx['tweet'] == 'manual' || $fts_urlfx['tweet'] == 'auto'){?>
 					$('#misc-publishing-actions').append('<div class="misc-pub-section">Post to Twitter: <input type="submit" class="button" name="post-tweet" value="Click to Post" /></div>');
 				<?php }}?>
 				$('.show-shortlink-button a').click(function(){ 
