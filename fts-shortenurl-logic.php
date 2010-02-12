@@ -1,6 +1,5 @@
 <?php
 $newshort = new FTShorten();
-$newshort->service = $selectedservice;
 $newshort->url = $posturl;
 $newshort->apiextend = $fts_urlfx['urlbetaservices'];
 switch($selectedservice){				
@@ -19,7 +18,7 @@ switch($selectedservice){
 	case 'snipurl':
 		$newshort->name = htmlentities($fts_urlfx['apiuser_snip'], ENT_QUOTES);
 		$newshort->apikey = htmlentities($fts_urlfx['apikey_snip'], ENT_QUOTES);
-		$newshort->apiprefix = $fts_urlfx['snipprefix'];
+		$selectedservice = $fts_urlfx['snipprefix'];
 		break;		
 	case 'cligs':
 		$newshort->apikey = htmlentities($fts_urlfx['apikey_cligs'], ENT_QUOTES);
@@ -38,5 +37,6 @@ switch($selectedservice){
 	default:
 		break;
 }
+$newshort->service = $selectedservice;
 $short = $newshort->shorturl();
 ?>

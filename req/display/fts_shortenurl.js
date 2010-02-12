@@ -1,54 +1,74 @@
 jQuery(document).ready(function($){
-	
 	$('#urlservicesel').each(function(){
-		$(this).change(function(){	
+		function lc(){	
 			var target = $(this).val();
-			$('.hideit').hide();
-			$('.showit').hide();
-			$('.reqfielderror').hide();
-			$('.reqfielderror').hide();
+			$('.hideit, .showit').hide();
 			$('#userkey_'+target).fadeIn(300);
-		});
+		}					    
+		$(this).change(lc);
+		$(this).keypress(lc);
 	});
-	
 	$('#shorturloptions').submit(function() {
-		var seltarget = $('#urlservicesel').val();
-		var selid = $('#userkey_'+seltarget);
-		if ( selid.hasClass('req') ){
-			
-			var apiuserval = jQuery.trim( $("#apiuser_"+seltarget).val() );
-			var apiuserkey = jQuery.trim( $("#apikey_"+seltarget).val() );
+		var serviceenable = $('#urlserviceenable').val();
+		if (serviceenable == 'yes'){
+			$('.reqfielderror').html("");						   
+			var errorcount = false;
+			var tweetdetails = $('#urltweet').val();
+			if ( tweetdetails == 'auto' || tweetdetails == 'manual'){
+				var tweetuser = jQuery.trim( $('#tweet_user').val() );
+				var tweetpass = jQuery.trim( $('#tweet_pass').val() );
+				if(tweetuser == "" || tweetpass == ""){
+					$('.reqfielderror').append('Please fill in your Twitter Username and Password<br />');
+					errorcount = true;
+				}				
+			}						   
+			var seltarget = $('#urlservicesel').val();
+			var selid = $('#userkey_'+seltarget);
+			if ( selid.hasClass('req') ){
+				
+				var apiuserval = jQuery.trim( $("#apiuser_"+seltarget).val() );
+				var apiuserkey = jQuery.trim( $("#apikey_"+seltarget).val() );
 	
-			if (apiuserval == "" || apiuserkey == ""){
-				$('.reqfielderror').html('<p>Please fill in both the API User and API Key as they are required.</p>')
-				$('.reqfielderror').fadeIn(400);
-				return false;	
-			} else {
-				//alert('got values')
-				return true;	
+				if (apiuserval == "" || apiuserkey == ""){
+					$('.reqfielderror').append('Please fill in the API User/API Key as they are required.<br />');
+					errorcount = true;
+				}
 			}
-	
-		} else {
-			//alert('no req')
-			return true;
+			if (errorcount){
+				$('.reqfielderror').fadeIn(400);
+				return false;
+			} else {
+				$('.reqfielderror').hide();
+				return true;
+			}
 		}
 	});
-	
-	$('#ownserviceoption').each(function(){
-		$(this).change(function(){	
+	$('#urlserviceenable').each(function(){
+		function lc(){	
 			var target = $(this).val();
 			if (target == "yes"){
-
+				$('#enableurlservice').fadeIn(300);
+			} else {
+				$('#enableurlservice').fadeOut(300);	
+			}
+		}						  
+		$(this).change(lc);
+		$(this).keypress(lc);
+	});	
+	$('#ownserviceoption').each(function(){
+		function lc(){	
+			var target = $(this).val();
+			if (target == "yes"){
 			$('#enableownservice').fadeIn(300);
 			} else {
 				$('#enableownservice').fadeOut(300);	
-			}
-
-		});
+			}	
+		}	
+		$(this).change(lc);
+		$(this).keypress(lc);
 	});
-
 	$('#ownredirecttypeoption').each(function(){
-		$(this).change(function(){	
+		function lc(){	
 			var target = $(this).val();
 			if (target == "templateredirect"){
 				$('#htre').fadeOut(300);
@@ -58,24 +78,25 @@ jQuery(document).ready(function($){
 				$('#htre').fadeIn(300);	
 			}
 
-		});
+		}
+		$(this).change(lc);
+		$(this).keypress(lc);
 	});
-	
-	$('#urlserviceenable').each(function(){
-		$(this).change(function(){	
-			var target = $(this).val();
-			if (target == "yes"){
-				$('#enableurlservice').fadeIn(300);
-			} else {
-				$('#enableurlservice').fadeOut(300);	
-			}
-
-		});
-	});
-	$('#aserv-des').hide();
-	$('#aserv').click(function(){
-		$('#aserv-des').toggle(300);
+	$('.aserv-des').hide();
+	$('.aserv').click(function(){
+		$(this).next('.aserv-des').toggle(300);
 		return false;
 	});
-	
+	$('#urltweet').each(function(){
+		function lc(){	
+			var target = $(this).val();
+			if (target == 'manual' || target == 'auto'){
+				$('#tweetdetails').fadeIn(300);
+			} else {
+				$('#tweetdetails').fadeOut(300);	
+			}
+		}
+		$(this).change(lc);
+		$(this).keypress(lc);
+	});
 });
