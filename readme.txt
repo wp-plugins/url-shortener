@@ -4,7 +4,7 @@ Donate link: http://fusedthought.com/donate/
 Tags: url-shortener, short-url, url, shorten, shortener, tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, cl.gs, short.to, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, awe.sm, social, tweet, twitter, goo.gl, digg, Voizle
 Requires at least: 2.7
 Tested up to: 2.9.1
-Stable tag: 2.1
+Stable tag: 2.1.1
 
 Use your own URL Shortener or integrate 3rd Party Services with WordPress. Allows generating of shorturl with various services upon post/page publishing. 
 
@@ -92,6 +92,10 @@ Version 1.7 enables the inclusion of a addon module which will enable URL Shorte
 1. bulk editing options (ver 2.0)
 
 == Changelog ==
+
+= 2.1.1 =
+* Bugfix: Twitter User/Pass handling
+* Bugfix: Cli.gs non-authenticated processing
 
 = 2.1 =
 * AJAX-ed entire Bulk Short URL code. 
