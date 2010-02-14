@@ -156,7 +156,7 @@ function draw_fts_shortenurl_page(){
 					<fieldset class="mod">
 						<div class="nl">
 							<label>Post to Twitter:</label>
-							<select name="fts_tweeted[tweet]" id="urltweet" >
+							<select name="fts_urlfx[tweet]" id="urltweet" >
 								<option value="disable" <?php selected( 'disable', $fts_urlfx['tweet'] ); ?>>Disable &nbsp;</option>							
 								<option value="manual" <?php selected( 'manual', $fts_urlfx['tweet'] ); ?>>Manual &nbsp;</option>
 								<option value="auto" <?php selected( 'auto', $fts_urlfx['tweet'] ); ?>>Auto &nbsp;</option>				
@@ -169,9 +169,9 @@ function draw_fts_shortenurl_page(){
 							</div>
 							<div id="tweetdetails" class="<?php if ($fts_urlfx['tweet'] == 'manual' || $fts_urlfx['tweet'] == 'auto' ){ echo "eshowit";} else {echo "ehideit";} ?>">
 								<label>Twitter Username (Required)</label> 
-								<input type="text" id="tweet_user" name="fts_tweeted[tweet_user]" value="<?php echo $fts_urlfx['tweet_user']; ?>" />
+								<input type="text" id="tweet_user" name="fts_urlfx[tweet_user]" value="<?php echo $fts_urlfx['tweet_user']; ?>" />
 								<label>Twitter Password (Required)</label> 
-								<input  type="password" id="tweet_pass" name="fts_tweeted[tweet_pass]" value="<?php echo $fts_urlfx['tweet_pass']; ?>" />
+								<input  type="password" id="tweet_pass" name="fts_urlfx[tweet_pass]" value="<?php echo $fts_urlfx['tweet_pass']; ?>" />
 							</div>
 						</div>
 					</fieldset>
