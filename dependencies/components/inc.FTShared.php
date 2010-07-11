@@ -1,14 +1,18 @@
 <?php
 /*
-Sub-Package: URL Shortner Shared Fx
-Parent-Package: URL Shortener WordPress Plugin
-Requires: class.json
-*/
+ * URL Shortner Shared Functions
+ * @link: http://www.fusedthought.com/downloads#class-ftshorten/
+ * @author Gerald Yeo <contact@fusedthought.com>
+ * @version 2.0
+ * @package: class.FTShorten
+ * Requires: class.json
+ * Also included in  URL Shortner Plugin for WordPress
+ */
 require_once(dirname(__FILE__).'/class.json.php');
 
-if (!class_exists('FTShortenShared')){
-	class FTShortenShared {
-		function openurl($url, $useragent = 'false', $posttype = 'GET', $postfield = '') {
+if (!class_exists('FTShared')){
+	class FTShared {
+		public function openurl($url, $useragent = 'false', $posttype = 'GET', $postfield = '') {
 			if (function_exists('curl_init')) {
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $url);
@@ -20,8 +24,7 @@ if (!class_exists('FTShortenShared')){
 				if ($posttype == 'POST'){
 					curl_setopt($ch, CURLOPT_POST, 1);
 					curl_setopt($ch, CURLOPT_POSTFIELDS, $postfield);
-					curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
-					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);		
+					curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);	
 				}
 				$result = curl_exec($ch);
 				curl_close($ch);
@@ -31,13 +34,13 @@ if (!class_exists('FTShortenShared')){
 			}
 		}//end fx open url	
 		
-		function processjson($url){
+		public function processjson($url){
 			$json = new Services_JSON();
 			$result = $json->decode($url);
 			return $result;
 		}//end json process
 		
-		function processxml($url, $method='POST', $body=array()){
+		public function processxml($url, $method='POST', $body=array()){
 			$request = new WP_Http;
 			$result = $request->request( $url, array( 'method' => $method, 'body' => $body) ); 
 			if($result['body']){return $result['body'];}		

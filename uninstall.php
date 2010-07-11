@@ -1,13 +1,7 @@
 <?php
-/*
-Uninstall procedure (Removes the plugin cleanly in WP 2.7+)
-*/
-
-// Make sure that we are uninstalling
-if ( !defined('WP_UNINSTALL_PLUGIN') ) {
-    exit();
+//old versions
+if (defined('WP_UNINSTALL_PLUGIN')){
+	//global $FTS_URL_Shortener;
+	//$FTS_URL_Shortener->del_options();
 }
-
-// Leave no trail
-delete_option('fts_urlfx');
 ?>

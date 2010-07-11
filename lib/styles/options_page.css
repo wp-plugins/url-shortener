@@ -1,0 +1,17 @@
+#sr{width: 70px;}
+#ss{width: 300px;}
+.sname label{margin-left: 0.5em;}
+.rhs{background: #FFFFDF;}
+.rh{background: #E8FFCF !important;}
+.ssl label{padding-left: 20px;}
+.rh .ssl  label{background: url(tick.png) center left no-repeat;}
+th, td, table, tr, input{vertical-align: middle !important;}
+th, td, tr, input{margin: 5px !important;}
+.APIConfig label{font-weight: bold; padding-left: 5em;}
+.APIConfig input{border: 1px #999 solid !important;}
+.APIConfig label span, span.red{color: #c00;}
+.APIConfig .nc, .csc{padding-left: 5em;}
+#shorturl_options .fs0{margin: 1em 0 4em 0;}
+
+.reqfielderror{border: 1px #FFAFAF solid; background: #FFEFEF; padding: 1em; margin: 1em; display: none; width: 50%; font-weight: bold;}
+.ftsplugin-logo{float:right; margin: 1em; border: 1px #ccc solid; padding: 0.5em; background: #fff; display: block;}

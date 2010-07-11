@@ -1,104 +1,120 @@
 === URL Shortener ===
 Contributors: geraldyeo
-Donate link: http://fusedthought.com/donate/
-Tags: url-shortener, short-url, url, shorten, shortener, tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, cl.gs, short.to, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, awe.sm, social, tweet, twitter, goo.gl, digg, Voizle
+Donate link: http://wiki.fusedthought.com/contribute/
+Tags: url-shortener, short url, url, shortlink, shorten, shortener, tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, sn.im, cl.lk, cl.gs, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, awe.sm, social, tweet, twitter, soso.bz, digg, Voizle, tynie
 Requires at least: 2.7
-Tested up to: 2.9.1
-Stable tag: 2.1.1
+Tested up to: 3.0
+Stable tag: trunk
 
-Use your own URL Shortener or integrate 3rd Party Services with WordPress. Allows generating of shorturl with various services upon post/page publishing. 
+This plugin allows you to generate shortlinks for post/pages using URL Shorteners (e.g. Bit.ly, Su.pr, ping.fm, Digg and many others).
 
 == Description ==
 
-[URL Shortener](http://fusedthought.com/downloads/url-shortener-wordpress-plugin/ "URL Shortener") integrates multiple URL Shortening service with your WordPress.org installation bringing a similar functionality to that of WordPress.com's WP.me shortlinks feature but using 3rd party URL Shorteners.
+*NOTE:*
+*Version 3.0 is completely re-written. For those updating from previous versions, please check your settings again.*
 
-The Short URL generated during post/page publishing is cache and thus generated only once. Furthermore, as it uses the post ID to generate, changing the site permalinks will not break the Short URL.
+[URL Shortener](http://www.fusedthought.com/downloads#url-shortener-wordpress-plugin "URL Shortener") allows you to generate shortlinks for post/pages using URL Shorteners (e.g. Bit.ly, Su.pr, ping.fm, Digg and many others).
 
-You can also create your own short url using the WordPress Post ID (for eg: http://yoursite/POST-ID ). It provides two method of redirection, namely, wp_rewrite redirect and template_redirection (template redirect).
+Features:
 
-Version 2.1 provides integration with [Simply Tweeted](http://fusedthought.com/downloads/simply-tweeted-wordpress-plugin/ "Simply Tweeted") allowing you to automatically post the title and (Short)URL to twitter upon post/page publishing.
+* Automatic generation of a Short URL/Shortlinks
+* *Cached Shortlink* - thus generated only once. 
+* Choose to generate shortlinks using permalinks or the posts ID (e.g. http://your_site/index.php?p=1).
+* Relatively extensive shortlink support
+* *Action Hooks available* for other plugins to utilize generated shortlinks (From Version 3.0 Onwards)
 
-**Sample usage:**
-
-To show the generated links in your template just include this function within the loop:
-
-`<?php fts_show_shorturl($post); ?>`
-
-On-demand shortening function (V1.5) is also for use in your templates:
-
-`<?php fts_shorturl('http://www.google.com', 'supr'); ?>`
-
-
-Latest: Version 2.0 now supports bulk editing and generation of Short URLs.
+Refer to the documentation/wiki page at http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin for more information (eg. installation guide and known issues etc).
 
 
 **Services currently supported are:**
 
-* tinyurl 
-* is.gd 
-* su.pr 
-* bit.ly 
-* tr.im
-* short.ie 
-* snipurl (aka Snurl / Snipr)
+* bit.ly
+* Su.pr
+* tinyurl
+* Ping.fm
+* Digg
+* is.gd
+* snipurl / Snurl / Snipr / Sn.im / Cl.lk
+
 * cl.gs
-* short.to
-* ping.fm
+* short.ie 
 * chilp.it
 * smsh (aka sm00sh)
 * u.nu
 * unfake.it 
 * awe.sm
+* Voizle 
+* soso.bz
+
+**Available Template Tags**
+
+On-demand shortening function:
+
+`<?php fts_shorturl('http://www.google.com', 'bitly'); ?>`
+
+To show the generated links::
+
+`<?php fts_show_shorturl($post); ?>`
+
+Or if WordPress 3.0:
+
+`<?php the_shortlink(); ?>`
+http://codex.wordpress.org/Function_Reference/the_shortlink
 
 
-**Notes on Awe.sm usage:**
+**Available hooks and filters**
 
-*  Custom domain can be configured in your Awe.sm account on the awe.sm website.
-
-
-**Addon Module**
-
-Version 1.7 enables the inclusion of a addon module which will enable URL Shortening Services which are undergoing testing but not official supported under this main plugin. For more information, visit the [URL Shortener Addon Module information page](http://fusedthought.com/downloads/addon-module-for-url-shortener-wordpress-plugin/ "URL Shortener Addon Module information page")  
-
-**Addon Module Service list**
-
-*  goo.gl (Google URL Shortener)
-*  Digg
-*  Voizle
-*  urli.nl
+*  fts_use_shortlink (Action Hook)
+*  fts_filter_shortlink (Filter)
 
 **Future Versions:**
 
-*  Twitter and Facebook posting integration?
-*  More services can be added upon request.
+*  More services can be added upon request (http://code.google.com/p/url-shortener-plugin/issues/list)
 
 **Support via:**
 
 *  http://wordpress.org/tags/url-shortener
-*  Contact me via my website.
+*  Contact me via my website ( http://www.fusedthought.com/contact/ )
 
+**Notes:**
+Ver 3.0 is a major re-write, do report any bugs that you may find. Thanks.
 
 == Installation ==
 
 1. Upload files to your `/wp-content/plugins/` directory (preserve sub-directory structure if applicable)
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. To display/get the shorturl value in your templated, place '<?php echo fts_show_shorturl($post) ?>' in your template.
+
+Or
+
+1. Within your WordPress admin, go to plugins > add new
+1. Search for "URL Shortener". 
+1. Click Install Now for the plugin named "URL Shortener"
 
 
 == Screenshots ==
-1. post/page integration(ver 1.4)
-1. plugin admin interface (ver 1.4)
-1. plugin admin interface (ver 1.5)
-1. bulk editing options (ver 2.0)
+
+http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin
 
 == Changelog ==
+
+= 3.0 =
+* Plugin completely rewritten from gound up.
+* *UPDATED* to use WordPress 3.0 Hooks
+* *UPDATED* class.FTShorten to version 2.2 (with support for new services)
+* *ADDED* support for Digg Short URLs
+* *ADDED* Action hooks to easily add code to utilize shortlink after generation
+* *ADDED* option to use permalinks or Post/Page ID to generate shortlinks
+* *REMOVED* services that no longer available.
+* *REMOVED* wp_rewrite redirect
+* Addon module support halted temporarily
+* Admin Interface redesigned.
 
 = 2.1.1 =
 * Bugfix: Twitter User/Pass handling
 * Bugfix: Cli.gs non-authenticated processing
 
 = 2.1 =
-* AJAX-ed entire Bulk Short URL code. 
+* AJAX-ed entire Bulk Short URL code.
 * Improved Security of Bulk Short URL Request.
 * Included updated class.FTShorten (v2.0)
 * Added support for auto-updating twitter (post name / url)
@@ -170,4 +186,8 @@ Version 1.7 enables the inclusion of a addon module which will enable URL Shorte
 * Initial Private release.
 * supports TinyURL, is.gd
 
+== Upgrade Notice ==
 
+For those upgrading from a previous version to 3.0, please check your settings as Version 3.0 was completely re-written.
+
+Read More: http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/upgrade-notes

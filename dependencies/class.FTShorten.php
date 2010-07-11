@@ -1,24 +1,22 @@
 <?php
 /*
  * URL Shortner Services Class
- * @link: http://fusedthought.com/downloads/class-ftshorten
+ * @link: http://www.fusedthought.com/downloads#class-ftshorten
  * @author Gerald Yeo <contact@fusedthought.com>
- * @version 2.0
+ * @version 2.2
  * @package: class.FTShorten
  * Requires: inc.FTShared 
  * Also included in  URL Shortner Plugin for WordPress
  
  * Copyright Information and Usage
- * This class is packaged in the URL Shortener plugin and is also available as a separate download from http://fusedthought.com/downloads/class-ftshorten.
- * Permission is granted for re-use of the class in other plugins only if the that plugin is released under a similar license as the URL Shortener Plugin (http://fusedthought.com/downloads/url-shortener-wordpress-plugin/).
- * This class is not to be packaged as part of a commercial plugin or other any part of a paid download without prior notification to the author.
- * If in doubt, email your question to contact@fusedthought.com
+ * This class is packaged in the URL Shortener plugin and is also available as a separate download from http://www.fusedthought.com/downloads#class-ftshorten.
  */
+define('CLASS_FTSHORTEN_VERSION', '2.2'); 
 require_once(dirname(__FILE__).'/components/inc.FTShared.php');
 
 if (!class_exists('FTShorten')){
 	class FTShorten extends FTShared {
-		public $service, $url, $name, $apikey, $apiextend;	
+		public $service, $url, $name, $apikey, $generic;	
 		public $pingfmapi;
 	
 		protected function get_service($service, $url, $name = '', $userkey = ''){	
@@ -37,22 +35,21 @@ if (!class_exists('FTShorten')){
 					),
 				'bitly' => array(
 					'api' => 'http://bit.ly/api?url=[url]',
-					'auth' => 'http://api.bit.ly/shorten?version=2.0.1&format=json&longUrl=[url]&login=[user]&apiKey=[key]',
+					'auth' => 'http://api.bit.ly/v3/shorten?login=[user]&apiKey=[key]&longUrl=[url]&format=json',
 					'type' => 'json'
 					),
-				'trim'  => array(
-					'api' => 'http://api.tr.im/api/trim_simple?url=[url]',
-					'auth' => 'http://api.tr.im/api/trim_url.json?url=[url]&username=[user]&password=[key]'
-					),
+				'jmp' => array(
+					'api' => 'http://j.mp/api?url=[url]',
+					'auth' => 'http://api.j.mp/v3/shorten?format=json&longUrl=[url]&login=[user]&apiKey=[key]',
+					'type' => 'json'
+					),                    
 				'cligs' => array(
+					'api' => 'http://cli.gs/api/v1/cligs/create?url=[url]',
 					'auth' => 'http://cli.gs/api/v1/cligs/create?url=[url]&key=[key]&appid=ftsplugin'
 					),
 				'shortie'=> array(
 					'api' => 'http://short.ie/api?url=[url]',
 					'auth' => 'http://short.ie/api?url=&format=plain&private=true&email=[user]&secretKey=[key]'
-					),
-				'shortto' => array(
-					'api'=>'ttp://short.to/s.txt?url=[url]'
 					),
 				'chilpit' => array(
 					'api'=>'http://chilp.it/api.php?url=[url]'
@@ -96,12 +93,37 @@ if (!class_exists('FTShorten')){
 					'body' => 'sniplink=[url]&snipuser=[user]&snipapi=[key]&snipformat=simple',
 					'type' => 'txt-post'
 					),
+				'snim' => array(
+					'auth'=>'http://sn.im/site/getsnip',
+					'body' => 'sniplink=[url]&snipuser=[user]&snipapi=[key]&snipformat=simple',
+					'type' => 'txt-post'
+					),
+				'cllk' => array(
+					'auth'=>'http://cl.lk/site/getsnip',
+					'body' => 'sniplink=[url]&snipuser=[user]&snipapi=[key]&snipformat=simple',
+					'type' => 'txt-post'
+					),                    
 				'voizle' => array(
 					'api'=>'http://api.voizle.com/?crawl=no&type=all&property=voizleurl&u=[url]'
 					),
 				'urlinl' => array(
-					'api'=>'http://urli.nl/api.php?&format=simple&action=shorturl&url=[url]'
+					'api'=>'http://urli.nl/api.php?format=simple&action=shorturl&url=[url]'
 					),
+				'digg' => array(
+					'auth'=>'http://services.digg.com/1.0/endpoint/?method=shorturl.create&type=json&url=[url]',
+					'type' => 'json',
+                    'useragent'=> '1'
+					),
+				'sosobz' => array(
+					'api'=>'http://soso.bz/api.php?url=[url]'
+					),	
+				'tynie' => array(
+					'api'=>'http://tynie.net/maketynie.php?api=[url]'
+					),	
+				'yourls' => array(
+					'auth'=>$this->generic.'/yourls-api.php?action=shorturl&format=json&url=[url]',
+					'type'=>'json'
+				),		
 			);
 			$selected = $apiarray[$service];
 			$useragent = $selected['useragent'];	
@@ -113,7 +135,7 @@ if (!class_exists('FTShorten')){
 				$api  = $selected['api'];
 			}
 			$api = str_replace('[url]',$eurl, $api);
-			if ($useragent){
+			if ($useragent == '1'){
 				$ua = 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 GTB5';
 				ini_set('user_agent', "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 GTB5");
 			} else {
@@ -121,7 +143,7 @@ if (!class_exists('FTShorten')){
 			};		
 			switch($selected['type']){
 				case json:
-					$result = $this->openurl($api);
+					$result = $this->openurl($api, $ua);
 					$processed = $this->processjson($result);
 					if ($processed){
 						$data = $this->outpro($service, $processed);
@@ -145,10 +167,10 @@ if (!class_exists('FTShorten')){
 					$data = $this->openurl($api, $ua, 'POST', $body);
 					break;	
 				default :
-					$data = $this->openurl($api);
+					$data = $this->openurl($api, $ua);
 					break;
 			}
-			if ($useragent){ini_restore('user_agent');};	
+			if ($useragent == '1'){ini_restore('user_agent');};	
 			return $data;
 		}
 		protected function outpro($service, $result) {
@@ -156,32 +178,18 @@ if (!class_exists('FTShorten')){
 			switch ($service){
 				case 'supr': $data = $result->results->$nurl->shortUrl; break;
 				case 'pingfm': $data = $result->short_url; break;
-				case 'bitly': $data = $result->results->$nurl->shortUrl; break;
-				case 'trim': $data = $result->url; break;
+				case 'bitly': $data = $result->data->url; break;
+                case 'jmp': $data = $result->data->url; break;
 				case 'smsh': $data = $result->body; break;	
+                case 'digg': $data = $result->shorturls[0]->short_url; break;
+				case 'yourls': break;
 				default : break;
 			}
 			return $data;
 		}
-		public function shorturl(){
-			$nurl = $this->url;
-			$sservice = $this->service;
-			$sname = $this->name;
-			$skey = $this->apikey;
-			$ftsextend = $this->apiextend;
-			
-			$data = $this->get_service($sservice, $nurl, $sname, $skey);	
-				
-			if ($data == ''){
-				if (class_exists('FTShortenExtended') && $ftsextend == 'yes'){
-					$FTSE = new FTShortenExtended();
-					$FTSE->name = $sname;
-					$FTSE->service = $sservice;
-					$FTSE->url = $nurl;
-					$FTSE->apikey = $skey;
-					$data = $FTSE->shorturl();
-				}
-			}		
+		public function shorturl(){	
+            //$data = $this->service . $this->url . $this->name . $this->apikey; //Bypass for testing        
+			$data = $this->get_service($this->service, $this->url, $this->name, $this->apikey);	
 			return $data;
 		}//end fx shorten
 		
