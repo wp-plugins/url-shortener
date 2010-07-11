@@ -221,7 +221,7 @@ if ( !class_exists('FTS_URL_Shortener') ) :
 		private function manage_options(){
 			$options = array(		
 				'urlserviceenable' => 'yes',
-				'urlservice' => 'bitly',
+				'urlservice' => '',
                 'useslug' => 'no',
 				'niceid' => 'no',
                 'niceid_prefix' => '/',

@@ -6,7 +6,8 @@ $options = $this->my_options();
 $home_url = get_option('home');
 $urlservice = $options['urlservice'];
 if ($urlservice == ''){
-    $urlservice = 'tinyurl';
+    //$urlservice = 'tinyurl';
+	return '';
 }
 
 //some switches
