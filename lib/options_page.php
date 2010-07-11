@@ -33,53 +33,53 @@ $niceid = $options['niceid'];
 $niceid_prefix = $options['niceid_prefix'];
 ?>
 <div class="wrap">
-    <h2><?php _e('URL Shortener', 'FTShorten'); echo ' '.FTS_URL_SHORTENER_VERSION ?></h2>
+    <h2><?php _e('URL Shortener', 'url-shortener'); echo ' '.FTS_URL_SHORTENER_VERSION ?></h2>
 	<form method="post" action="<?php echo $action_url ?>" id="shorturl_options">
 		<?php wp_nonce_field('fts-urlshortener'); ?>
 		<input type="hidden" name="submitted" value="1" /> 
         <fieldset title="General Options for Plugin" class="fs0">
-            <h3><?php _e('Main Settings', 'FTShorten'); ?></h3> 
+            <h3><?php _e('Main Settings', 'url-shortener'); ?></h3> 
             <table class="form-table">
                 <tr>
-                    <th scope="row"><label for="urlserviceenable"><?php _e('URL Shortener Integration', 'FTShorten'); ?></label></th>
+                    <th scope="row"><label for="urlserviceenable"><?php _e('URL Shortener Integration', 'url-shortener'); ?></label></th>
                     <td>
                         <input name="urlserviceenable" id="urlserviceenable" type="checkbox" value="yes" <?php checked('yes', $urlserviceenable) ?> />
-                        <span class="description"><?php _e('Enable Short URL generation using your <a href="#shorturl_selector">configured service<a/>.', 'FTShorten'); ?></span>
+                        <span class="description"><?php _e('Enable Short URL generation using your <a href="#shorturl_selector">configured service<a/>.', 'url-shortener'); ?></span>
                     </td>
                 </tr>
 				<tr>
-                    <th scope="row"><label for="useslug"><?php _e('Use Permalinks for Short URLs', 'FTShorten'); ?></label></th>
+                    <th scope="row"><label for="useslug"><?php _e('Use Permalinks for Short URLs', 'url-shortener'); ?></label></th>
                     <td>
                         <input name="useslug" id="useslug" type="checkbox" value="yes" <?php checked('yes', $useslug) ?> />
-                        <span class="description"><?php _e('Use your <a href="'.get_option('siteurl').'/wp-admin/options-permalink.php">permalinks</a> to generate the Short URL.
-						<br />(Default: "http://yoursite/?p=123" or "http://yoursite/?page_id=123").', 'FTShorten'); ?></span>
+                        <span class="description"><?php sprintf(_e('Use your <a href="%s/wp-admin/options-permalink.php">permalinks</a> to generate the Short URL.'), get_option('siteurl'));?>
+						<br /><?php _e('(Default: "http://yoursite/?p=123" or "http://yoursite/?page_id=123")', 'url-shortener'); ?></span>
                     </td>
                 </tr>
             </table>
         </fieldset>   
         
         <fieldset title="Additional Features" class="fs0">
-            <h3><?php _e('Additional Features', 'FTShorten'); ?></h3> 
+            <h3><?php _e('Additional Features', 'url-shortener'); ?></h3> 
             <table class="form-table">
                 <tr>
                     <th scope="row">
-						<label for="niceid"><?php _e('Nice ID URLs', 'FTShorten'); ?></label><br />
-						<span class="description"><?php _e('(Formally named template_redirection)', 'FTShorten');?></span>
+						<label for="niceid"><?php _e('Nice ID URLs', 'url-shortener'); ?></label><br />
+						<span class="description"><?php _e('(Formally named template_redirection)', 'url-shortener');?></span>
 					</th>
                     <td>
                         <input name="niceid" id="niceid" type="checkbox" value="yes" <?php checked('yes', $niceid) ?> />
-                        <span class="description"><?php _e('Allows usage of "http://yoursite/123" instead of "http://yoursite/?p=123"', 'FTShorten'); ?></span></td>
+                        <span class="description"><?php _e('Allows usage of "http://yoursite/123" instead of "http://yoursite/?p=123"', 'url-shortener'); ?></span></td>
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="niceid"><?php _e('Nice ID URL Prefix', 'FTShorten'); ?></label></th>
+                    <th scope="row"><label for="niceid"><?php _e('Nice ID URL Prefix', 'url-shortener'); ?></label></th>
                     <td>
                         <input name="niceid_prefix" type="text" id="niceidprefix" value="<?php echo $niceid_prefix; ?>" class="regular-text code" />
                         <span class="description"><?php _e('default: "/"  (http://yoursite/123)</span>
                         <p>Examples:
                             <br />"<span class="red">prefix/</span>" = http://yoursite/<span class="red">prefix/</span>123
                             <br />"<span class="red">prefix-</span>" = http://yoursite/<span class="red">prefix-</span>123
-                        </p>', 'FTShorten'); ?>
+                        </p>', 'url-shortener'); ?>
                         </td>
                     </td>
                 </tr>                
@@ -87,23 +87,23 @@ $niceid_prefix = $options['niceid_prefix'];
         </fieldset>   
         
         <fieldset title="URL Shortening Services" id="shorturl_selector">
-            <h3><?php _e('URL Service Configuration', 'FTShorten'); ?></h3> 
-            <p><?php _e('Select and configure your desired Short URL service.', 'FTShorten'); ?></p> 
-            <p><?php _e('<span class="red">*</span> are required configurations for that service.', 'FTShorten'); ?></p>
+            <h3><?php _e('URL Service Configuration', 'url-shortener'); ?></h3> 
+            <p><?php _e('Select and configure your desired Short URL service.', 'url-shortener'); ?></p> 
+            <p><?php _e('<span class="red">*</span> are required configurations for that service.', 'url-shortener'); ?></p>
             <div class="reqfielderror"></div>
             <table id="shorturl_table" class="widefat post fixed" cellspacing="0">
             	<thead>
                     <tr>
-                        <th scope="col" id="sr" class="manage-column"><?php _e('Select', 'FTShorten'); ?></th>
-                        <th scope="col" id="ss" class="manage-column"><?php _e('Services', 'FTShorten'); ?></th>
-                        <th scope="col" id="sc" class="manage-column"><span class="csc"><?php _e('Configuration', 'FTShorten'); ?></span></th>
+                        <th scope="col" id="sr" class="manage-column"><?php _e('Select', 'url-shortener'); ?></th>
+                        <th scope="col" id="ss" class="manage-column"><?php _e('Services', 'url-shortener'); ?></th>
+                        <th scope="col" id="sc" class="manage-column"><span class="csc"><?php _e('Configuration', 'url-shortener'); ?></span></th>
                     </tr>
                 </thead>
             	<tfoot>
                     <tr>
-                        <th scope="col" class="manage-column"><?php _e('Select', 'FTShorten'); ?></th>
-                        <th scope="col" class="manage-column"><?php _e('Services', 'FTShorten'); ?></th>
-                        <th scope="col" class="manage-column"><span class="csc"><?php _e('Configuration', 'FTShorten'); ?></span></th>
+                        <th scope="col" class="manage-column"><?php _e('Select', 'url-shortener'); ?></th>
+                        <th scope="col" class="manage-column"><?php _e('Services', 'url-shortener'); ?></th>
+                        <th scope="col" class="manage-column"><span class="csc"><?php _e('Configuration', 'url-shortener'); ?></span></th>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -124,15 +124,15 @@ $niceid_prefix = $options['niceid_prefix'];
                         if (in_array($key, $this->authkey)){
                             $apireq .= '<label for="apikey_'.$key.'">'; 
                             in_array($key, $this->reqkey) ? $apireq .= ' <span>*</span>' : $apireq .= '';               
-							$apireq .= __('API/Key', 'FTShorten') . ': </label><input type="text" name="apikey_'.$key.'" id="apikey_'.$key.'" value="'.$options['apikey_'.$key].'" />';
+							$apireq .= __('API/Key', 'url-shortener') . ': </label><input type="text" name="apikey_'.$key.'" id="apikey_'.$key.'" value="'.$options['apikey_'.$key].'" />';
                         }
                         if (in_array($key, $this->authuser)){
                             $apireq .= '<label for="apiuser_'.$key.'">';
                             in_array($key, $this->requser) ? $apireq .='<span>*</span>' : $apireq .='';
-                            $apireq .= __('User/ID', 'FTShorten') . ': </label><input type="text" name="apiuser_'.$key.'" id="apiuser_'.$key.'" value="'.$options['apiuser_'.$key].'" />';
+                            $apireq .= __('User/ID', 'url-shortener') . ': </label><input type="text" name="apiuser_'.$key.'" id="apiuser_'.$key.'" value="'.$options['apiuser_'.$key].'" />';
                         }                          
                         if ($apireq == ''){
-                            $apireq = '<span class="nc">'. __('No Configuration Needed', 'FTShorten') .'</span>';
+                            $apireq = '<span class="nc">'. __('No Configuration Needed', 'url-shortener') .'</span>';
                         }    
                         $apirow.= $apireq;
                         $apirow.= '</div></td></tr>';
@@ -172,14 +172,14 @@ $niceid_prefix = $options['niceid_prefix'];
                     if($.inArray(checkopt, requser) == -1){}else{
                         var suser = jQuery.trim( $('#apiuser_'+checkopt).val() );
                         if (suser == ''){
-                            $('.reqfielderror').append('<?php _e('Please fill the required User/ID', 'FTShorten'); ?><br />');
+                            $('.reqfielderror').append('<?php _e('Please fill the required User/ID', 'url-shortener'); ?><br />');
                             errorcount = true;
                         }    
                     }
                     if($.inArray(checkopt, reqkey) == -1){}else{
                         var spass = jQuery.trim( $('#apikey_'+checkopt).val() );
                         if (spass == ''){
-                            $('.reqfielderror').append('<?php _e('Please fill in the required API/Key', 'FTShorten'); ?><br />');
+                            $('.reqfielderror').append('<?php _e('Please fill in the required API/Key', 'url-shortener'); ?><br />');
                             errorcount = true;
                         }
                     }
