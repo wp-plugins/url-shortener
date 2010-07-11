@@ -19,9 +19,10 @@ Features:
 
 * Automatic generation of a Short URL/Shortlinks
 * *Cached Shortlink* - thus generated only once. 
-* Choose to generate shortlinks using permalinks or the posts ID (e.g. http://your_site/index.php?p=1).
+* Choose to generate shortlinks using permalinks or the posts ID (e.g. http://your_site/index.php?p=123).
 * Relatively extensive shortlink support
 * *Action Hooks available* for other plugins to utilize generated shortlinks (From Version 3.0 Onwards)
+* Nice ID links - http://your_site/123 instead of http://your_site/index.php?p=123
 
 Refer to the documentation/wiki page at http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin for more information (eg. installation guide and known issues etc).
 
