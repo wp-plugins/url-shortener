@@ -37,6 +37,8 @@ Refer to the documentation/wiki page at http://wiki.fusedthought.com/docs/url-sh
 * is.gd
 * snipurl / Snurl / Snipr / Sn.im / Cl.lk
 
+as well as:
+
 * cl.gs
 * short.ie 
 * chilp.it
