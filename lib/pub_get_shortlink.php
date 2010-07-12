@@ -1,13 +1,14 @@
 <?php
 global $wp_query;
 $options = $this->my_options();
+$shortlink = '';
 
 //options
 $home_url = get_option('home');
 $urlservice = $options['urlservice'];
 if ($urlservice == ''){
     //$urlservice = 'tinyurl';
-	return '';
+	return $shortlink;
 }
 
 //some switches
@@ -18,7 +19,7 @@ if ( 'query' == $context ) {
     } elseif ( is_front_page() ) {
         $context = 'blog';
     } else {
-        return '';
+        return $shortlink;
     }
 } 
 
@@ -31,16 +32,16 @@ if ( 'blog' == $context ) {
 
 //get post
 $post = get_post($id);
-if ( empty($post) )
-    return '';
-    
+if ( empty($post) ){
+    return $shortlink;
+}  
+
 //post details    
 $post_id = $post->ID;
 $post_type = $post->post_type;
 $post_status = $post->post_status;
 $url = '';
 $saved_url = get_post_meta($post_id, 'shorturl', true);
-$shortlink = '';
 
 //check prior generation and publish status
 if (empty($saved_url) && $post_status == 'publish'){
