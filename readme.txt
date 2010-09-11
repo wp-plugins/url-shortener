@@ -11,6 +11,7 @@ This plugin allows you to generate shortlinks for post/pages using URL Shortener
 == Description ==
 
 *Version 3.1: Now you can generate/display shortlinks directly from posts using the [shortlink] shortcode!*
+
 *Version 3.0 is completely re-written. For those updating from previous versions, please check your settings again.*
 
 [URL Shortener](http://www.fusedthought.com/downloads#url-shortener-wordpress-plugin "URL Shortener") allows you to generate shortlinks for post/pages using URL Shorteners (e.g. Bit.ly, Su.pr, ping.fm, Digg and many others).
