@@ -5,10 +5,10 @@ Plugin URI: http://www.fusedthought.com/downloads#url-shortener-wordpress-plugin
 Description: This plugin provides integration of URL Shorteners  (e.g. Bit.ly, Su.pr, Ping.fm, Digg and many others). <strong>Please refer to <a href="http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/upgrade-notes/">Upgrade Notes</a> if you're upgrading to 3.0 from previous versions.</strong>
 Author: Gerald Yeo
 Author URI: http://www.fusedthought.com
-Version: 3.0
+Version: 3.1
 */
  
-define('FTS_URL_SHORTENER_VERSION', '3.0'); 
+define('FTS_URL_SHORTENER_VERSION', '3.1'); 
 require_once( dirname(__FILE__) . '/dependencies/class.FTShorten.php');
 
 //main class
@@ -30,7 +30,6 @@ if ( !class_exists('FTS_URL_Shortener') ) :
             'chilpit'=> 'Chilp.it', 
             'pingfm'=> 'Ping.fm', 
             'smsh'=> 'sm00sh / smsh.me', 
-            'unu'=> 'u.nu', 
             'unfakeit'=> 'unfake.it', 
             'awesm'=> 'awe.sm', 
             'snipurl'=> 'Snipurl', 
@@ -41,12 +40,15 @@ if ( !class_exists('FTS_URL_Shortener') ) :
             'voizle'=> 'Voizle', 
             'urlinl' => 'urli.nl',
 			'sosobz' => 'soso.bz',
-			'tynie' => 'tynie.net'
+			'tynie' => 'tynie.net',
+			'interdose' => 'Interdose API',
+			'cuthut' => 'cuthut.com',
             );
-        private $authuser = array('supr', 'bitly', 'jmp', 'snipurl', 'snurl', 'snipr', 'snim', 'cllk');
-        private $authkey = array('supr', 'bitly', 'jmp', 'snipurl', 'snurl', 'snipr', 'snim', 'cllk', 'awesm', 'pingfm', 'cligs');
+        private $authuser = array('supr', 'bitly', 'jmp', 'snipurl', 'snurl', 'snipr', 'snim', 'cllk', 'interdose');
+        private $authkey = array('supr', 'bitly', 'jmp', 'snipurl', 'snurl', 'snipr', 'snim', 'cllk', 'awesm', 'pingfm', 'cligs', 'interdose');
         private $requser = array('snipurl', 'snurl', 'snipr', 'snim', 'cllk');
         private $reqkey = array('snipurl', 'snurl', 'snipr', 'snim', 'cllk', 'awesm', 'pingfm');
+		private $generic = array('interdose');
         
 		private function is_active($plugin) {return in_array($plugin, apply_filters('active_plugins', get_option('active_plugins') ) );}
 		
@@ -93,6 +95,12 @@ if ( !class_exists('FTS_URL_Shortener') ) :
             if ($options['niceid']=='yes'){
                 add_filter('template_redirect', array(&$this, 'template_redirect'), 10, 2);     
             }
+
+			//Shortcode
+			if ($options['url_shortcode']!='no'){
+				add_shortcode('shortlink',  array(&$this, 'shortcode_support'));
+			}
+
         }
         
 //-------- for use in activation	
@@ -208,6 +216,29 @@ if ( !class_exists('FTS_URL_Shortener') ) :
                 }
             }
         }
+//--------Shortcode Support
+		public function shortcode_support($atts, $content = null){
+			$options = $this->my_options();
+			extract(shortcode_atts(array(
+					'name' => '',
+					'url' => '',
+					'service' => $options['urlservice'],
+					'key' => '',
+					'user'=>'',
+			), $atts));
+			global $post;
+			$post_id = $post->ID;
+			
+			if($content){$url = $content;}
+			
+			$url ? $shortlink = $this->od_get_shortlink($url, $service, $key, $user) : $shortlink = $this->pub_get_shortlink($post_id);
+
+			$output = '<a href="'.$shortlink.'">';
+			$name ? $output .= $name : $output .= $shortlink;
+			$output .= '</a>';
+			return $output;
+
+		}
 //--------Handle our options
         private function my_options(){
             return get_option($this->db_option);

@@ -8,7 +8,10 @@
  * Requires: class.json
  * Also included in  URL Shortner Plugin for WordPress
  */
-require_once(dirname(__FILE__).'/class.json.php');
+
+if (!class_exists('Services_JSON')){
+	require_once(dirname(__FILE__).'/class.json.php');
+}
 
 if (!class_exists('FTShared')){
 	class FTShared {

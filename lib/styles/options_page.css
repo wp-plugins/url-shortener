@@ -13,5 +13,8 @@ th, td, tr, input{margin: 5px !important;}
 .APIConfig .nc, .csc{padding-left: 5em;}
 #shorturl_options .fs0{margin: 1em 0 4em 0;}
 
+ .APIConfig .slabel{padding-left: 5em;}
+.val_interdose{margin: 0 1em;}
+
 .reqfielderror{border: 1px #FFAFAF solid; background: #FFEFEF; padding: 1em; margin: 1em; display: none; width: 50%; font-weight: bold;}
 .ftsplugin-logo{float:right; margin: 1em; border: 1px #ccc solid; padding: 0.5em; background: #fff; display: block;}
