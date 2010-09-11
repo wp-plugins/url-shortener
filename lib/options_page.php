@@ -12,6 +12,9 @@ if ( isset($_POST['submitted']) ) {
 	$options['niceid'] = $_POST['niceid'];
 	$options['niceid_prefix'] = $_POST['niceid_prefix'];
 	
+	//Shortcode
+	$options['url_shortcode'] = $_POST['url_shortcode'];
+
 	//Services
 	$options['urlservice'] = $_POST['urlservice'];
 	foreach ($this->authuser as $user){
@@ -20,6 +23,11 @@ if ( isset($_POST['submitted']) ) {
 	foreach ($this->authkey as $key){
 		$options['apikey_'.$key] = $_POST['apikey_'.$key];
 	}
+
+	foreach ($this->generic as $generic){
+		$options['generic_'.$generic] = $_POST['generic_'.$generic];
+	}
+
 	$this->save_options($options);
 	echo '<div class="updated fade"><p>Plugin settings saved.</p></div>';
 }
@@ -31,6 +39,8 @@ $urlservice = $options['urlservice'];
 $useslug = $options['useslug'];
 $niceid = $options['niceid'];
 $niceid_prefix = $options['niceid_prefix'];
+$url_shortcode = $options['url_shortcode'];
+$sfx = new FTShared();
 ?>
 <div class="wrap">
     <h2><?php _e('URL Shortener', 'url-shortener'); echo ' '.FTS_URL_SHORTENER_VERSION ?></h2>
@@ -82,7 +92,14 @@ $niceid_prefix = $options['niceid_prefix'];
                         </p>', 'url-shortener'); ?>
                         </td>
                     </td>
-                </tr>                
+                </tr>
+				<tr>	
+					 <th scope="row"><label for="url_shortcode"><?php _e('Disable Shortcode [shortlink]', 'url-shortener'); ?></label></th>
+					<td>
+                        <input name="url_shortcode" id="url_shortcode" type="checkbox" value="no" <?php checked('no', $url_shortcode) ?> />
+                        <span class="description"><?php _e('Disables the usage of URL Shortener shortcode [shortlink]', 'url-shortener'); ?></span></td>
+                    </td>
+				</tr>                
             </table>
         </fieldset>   
         
@@ -120,17 +137,44 @@ $niceid_prefix = $options['niceid_prefix'];
                         $apirow .= '<td class="ssl"><label for="'.$key.'">'.$value.'</label></td><td>';
                         
                         $apirow .= '<div id="userkey_'.$key.'" class="APIConfig '.$sh.'">';
-                        $apireq = '';          
+                        $apireq = '';    
+
+						//Key Authentication      
                         if (in_array($key, $this->authkey)){
                             $apireq .= '<label for="apikey_'.$key.'">'; 
                             in_array($key, $this->reqkey) ? $apireq .= ' <span>*</span>' : $apireq .= '';               
 							$apireq .= __('API/Key', 'url-shortener') . ': </label><input type="text" name="apikey_'.$key.'" id="apikey_'.$key.'" value="'.$options['apikey_'.$key].'" />';
                         }
+						
+						//User Authentication
                         if (in_array($key, $this->authuser)){
                             $apireq .= '<label for="apiuser_'.$key.'">';
                             in_array($key, $this->requser) ? $apireq .='<span>*</span>' : $apireq .='';
                             $apireq .= __('User/ID', 'url-shortener') . ': </label><input type="text" name="apiuser_'.$key.'" id="apiuser_'.$key.'" value="'.$options['apiuser_'.$key].'" />';
-                        }                          
+                        }
+			
+						//Generic Services
+                        if (in_array($key, $this->generic)){
+                            $apireq .= '<br /><label for="generic_'.$key.'">';
+
+							//Cases
+							switch ($key){
+								case 'interdose':
+									$apireq .= __('Service', 'url-shortener') . ': </label><input type="text" name="generic_'.$key.'" id="generic_'.$key.'" value="'.$options['generic_'.$key].'" />';
+									$data = $sfx->openurl('http://api.interdose.com/api/shorturl/v1/services.json');
+									$data = $sfx->processjson($data);
+									$count = count($data);
+									if ($count){
+										$apireq .= '<br /><span class="slabel">Public Services: </span>';
+										for ($i = 0; $i < $count; $i++){
+											$apireq .= '<a class="val_'.$key.'" href="#generic_'.$key.'">'.$data[$i]->service.'</a>';	
+										}			 
+									}
+									break;
+								default: 
+									break;
+							}
+                        }                      
                         if ($apireq == ''){
                             $apireq = '<span class="nc">'. __('No Configuration Needed', 'url-shortener') .'</span>';
                         }    
@@ -162,6 +206,11 @@ $niceid_prefix = $options['niceid_prefix'];
                     } 
                 });
                 
+				$('.val_interdose').click(function(){
+						linkval = $(this).html()
+						$('#generic_interdose').val(linkval);
+				})
+
                 //start submit
                 var requser = ['snipurl', 'snurl', 'snipr', 'snim', 'cllk'];
                 var reqkey = ['snipurl', 'snurl', 'snipr', 'snim', 'cllk', 'awesm', 'pingfm'];

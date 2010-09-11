@@ -3,7 +3,7 @@
  * URL Shortner Services Class
  * @link: http://www.fusedthought.com/downloads#class-ftshorten
  * @author Gerald Yeo <contact@fusedthought.com>
- * @version 2.2
+ * @version 2.3
  * @package: class.FTShorten
  * Requires: inc.FTShared 
  * Also included in  URL Shortner Plugin for WordPress
@@ -11,7 +11,7 @@
  * Copyright Information and Usage
  * This class is packaged in the URL Shortener plugin and is also available as a separate download from http://www.fusedthought.com/downloads#class-ftshorten.
  */
-define('CLASS_FTSHORTEN_VERSION', '2.2'); 
+define('CLASS_FTSHORTEN_VERSION', '2.3'); 
 require_once(dirname(__FILE__).'/components/inc.FTShared.php');
 
 if (!class_exists('FTShorten')){
@@ -19,8 +19,13 @@ if (!class_exists('FTShorten')){
 		public $service, $url, $name, $apikey, $generic;	
 		public $pingfmapi;
 	
-		protected function get_service($service, $url, $name = '', $userkey = ''){	
+		protected function get_service(){
+			$service = $this->service; 
+			$url = $this->url;
+			$name =  $this->name; 
+			$userkey = $this->apikey;
 			$eurl = urlencode($url);	
+
 			$apiarray = array(
 				'tinyurl' => array(
 					'api'=>'http://tinyurl.com/api-create.php?url=[url]'
@@ -60,15 +65,12 @@ if (!class_exists('FTShorten')){
 					'body' => array(
 							'api_key' => $this->pingfmapi,
 							'user_app_key' => $userkey,
-							'long_url' => $url
+							'long_url' => $this->url
 							)
 					),
 				'smsh' => array(
 					'api'=>'http://smsh.me/?api=json&url=[url]',
 					'type' => 'json'
-					),
-				'unu' => array(
-					'api'=>'http://u.nu/unu-api-simple?url=[url]'
 					),
 				'unfakeit' => array(
 					'api'=>'http://unfake.it/?a=api&url=[url]'
@@ -121,9 +123,16 @@ if (!class_exists('FTShorten')){
 					'api'=>'http://tynie.net/maketynie.php?api=[url]'
 					),	
 				'yourls' => array(
-					'auth'=>$this->generic.'/yourls-api.php?action=shorturl&format=json&url=[url]',
+					'auth'=>$this->generic.'/yourls-api.php?action=shorturl&format=json&signature=[key]&url=[url]',
 					'type'=>'json'
-				),		
+					),
+				'interdose' =>  array(
+					'api'=>'http://api.interdose.com/api/shorturl/v1/shorten?service='.$this->generic.'&url=[url]',
+					'auth'=>'http://api.interdose.com/api/shorturl/v1/shorten?service='.$this->generic.'&url=[url]&user=[user]&pass=[key]',
+					),
+				'cuthut' => array(
+					'api'=>'http://cuthut.com/api/?url=[nurl]',
+					),			
 			);
 			$selected = $apiarray[$service];
 			$useragent = $selected['useragent'];	
@@ -135,6 +144,8 @@ if (!class_exists('FTShorten')){
 				$api  = $selected['api'];
 			}
 			$api = str_replace('[url]',$eurl, $api);
+			$api = str_replace('[nurl]',$url, $api);
+
 			if ($useragent == '1'){
 				$ua = 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 GTB5';
 				ini_set('user_agent', "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 GTB5");
@@ -188,8 +199,8 @@ if (!class_exists('FTShorten')){
 			return $data;
 		}
 		public function shorturl(){	
-            //$data = $this->service . $this->url . $this->name . $this->apikey; //Bypass for testing        
-			$data = $this->get_service($this->service, $this->url, $this->name, $this->apikey);	
+           	//$data = $this->service . $this->url . $this->name . $this->apikey . $this->generic; //Bypass for testing        
+			$data = $this->get_service();	
 			return $data;
 		}//end fx shorten
 		
