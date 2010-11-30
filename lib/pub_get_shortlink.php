@@ -12,7 +12,7 @@ if ($urlservice == ''){
 }
 
 //some switches
-if ( 'query' == $context ) {
+if ($context == 'query') {
     if ( is_singular() ) {
         $id = $wp_query->get_queried_object_id();
         $context = 'post';
@@ -24,7 +24,7 @@ if ( 'query' == $context ) {
 } 
 
 //Homepage shortlink
-if ( 'blog' == $context ) {
+if ($context == 'blog') {
     if ( empty($id) )
         $url = $home_url;
     return $this->class_adapter($url, $urlservice);    
@@ -44,7 +44,7 @@ $url = '';
 $saved_url = get_post_meta($post_id, 'shorturl', true);
 
 //check prior generation and publish status
-if (empty($saved_url) && $post_status == 'publish'){
+if (empty($saved_url) && ($post_status == 'publish' || $transition == true)){
     //Use permalinks
     if ($options['useslug']=='yes'){
         $url = get_permalink($post_id);

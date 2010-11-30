@@ -3,7 +3,7 @@
  * URL Shortner Services Class
  * @link: http://www.fusedthought.com/downloads#class-ftshorten
  * @author Gerald Yeo <contact@fusedthought.com>
- * @version 2.3
+ * @version 2.3.1
  * @package: class.FTShorten
  * Requires: inc.FTShared 
  * Also included in  URL Shortner Plugin for WordPress
@@ -11,7 +11,10 @@
  * Copyright Information and Usage
  * This class is packaged in the URL Shortener plugin and is also available as a separate download from http://www.fusedthought.com/downloads#class-ftshorten.
  */
-define('CLASS_FTSHORTEN_VERSION', '2.3'); 
+define('CLASS_FTSHORTEN_VERSION', '2.3.1'); 
+if (!defined('FTS_DEV_ENV')) {
+    define('FTS_DEV_ENV', false);
+}
 require_once(dirname(__FILE__).'/components/inc.FTShared.php');
 
 if (!class_exists('FTShorten')){
@@ -199,8 +202,11 @@ if (!class_exists('FTShorten')){
 			return $data;
 		}
 		public function shorturl(){	
-           	//$data = $this->service . $this->url . $this->name . $this->apikey . $this->generic; //Bypass for testing        
-			$data = $this->get_service();	
+            if (FTS_DEV_ENV){
+                $data = 'http://'.$this->service .'----'. $this->url;       
+			}else{
+                $data = $this->get_service();	
+            }
 			return $data;
 		}//end fx shorten
 		

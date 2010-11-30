@@ -3,14 +3,12 @@ Contributors: geraldyeo
 Donate link: http://wiki.fusedthought.com/contribute/
 Tags: url-shortener, short url, url, shortlink, shorten, shortener, tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, sn.im, cl.lk, cl.gs, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, awe.sm, social, tweet, twitter, soso.bz, digg, Voizle, tynie
 Requires at least: 2.7
-Tested up to: 3.1
+Tested up to: 3.0.1
 Stable tag: trunk
 
 This plugin allows you to generate shortlinks for post/pages using URL Shorteners (e.g. Bit.ly, Su.pr, ping.fm, Digg and many others).
 
 == Description ==
-
-*Version 3.1: Now you can generate/display shortlinks directly from posts using the [shortlink] shortcode!*
 
 *Version 3.0 is completely re-written. For those updating from previous versions, please check your settings again.*
 
@@ -22,9 +20,10 @@ Features:
 * *Cached Shortlink* - thus generated only once. 
 * Choose to generate shortlinks using permalinks or the posts ID (e.g. http://your_site/index.php?p=123).
 * Relatively extensive shortlink support
-* *Action Hooks available* for other plugins to utilize generated shortlinks (From Version 3.0 Onwards)
+* *Action Hooks available* for other plugins to utilize generated shortlinks (From Ver 3.0 Onwards)
 * Nice ID links - http://your_site/123 instead of http://your_site/index.php?p=123
-* Shortcode support: Place [shortlink] in your article where you want to display the shortened url.
+* Shortcode support (Ver 3.1): Place [shortlink] in your article where you want to display the shortened url.
+* Append a link to short URL below your post content (Ver 3.1.1)
 
 Refer to the documentation/wiki page at http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin for more information (eg. installation guide and known issues etc).
 
@@ -103,6 +102,11 @@ Or
 http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin
 
 == Changelog ==
+
+= 3.1.1 =
+* Minor tweak to Admin Interface / categorization of options
+* Minor tweak to generation of Short URL when scheduled posts are published.
+* Ability to append a link to short URL to bottom of post/page content.
 
 = 3.1 =
 * *BUGFIX* Compatibility with Plugins using Services_JSON (http://code.google.com/p/url-shortener-plugin/issues/detail?id=6)

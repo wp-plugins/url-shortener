@@ -5,10 +5,12 @@ Plugin URI: http://www.fusedthought.com/downloads#url-shortener-wordpress-plugin
 Description: This plugin provides integration of URL Shorteners  (e.g. Bit.ly, Su.pr, Ping.fm, Digg and many others). <strong>Please refer to <a href="http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/upgrade-notes/">Upgrade Notes</a> if you're upgrading to 3.0 from previous versions.</strong>
 Author: Gerald Yeo
 Author URI: http://www.fusedthought.com
-Version: 3.1
+Version: 3.1.1
 */
- 
-define('FTS_URL_SHORTENER_VERSION', '3.1'); 
+
+define('FTS_URL_SHORTENER_VERSION', '3.1.1');
+define('FTS_URL_SHORTENER_STATUS', 'Stable'); //Alpha->Beta->Stable
+define('FTS_DEV_ENV', false);
 require_once( dirname(__FILE__) . '/dependencies/class.FTShorten.php');
 
 //main class
@@ -75,7 +77,9 @@ if ( !class_exists('FTS_URL_Shortener') ) :
                 }else{
                     //Register a shortlink handler for WP >= 3.0.
                     add_filter('get_shortlink', array(&$this, 'pub_gateway'), 10, 4);
-                }
+                }  
+                //Future to Present
+                add_action('future_to_publish', array(&$this, 'transition_get_shortlink'), 10, 1);           
             }
             
             //Options
@@ -99,8 +103,10 @@ if ( !class_exists('FTS_URL_Shortener') ) :
 			//Shortcode
 			if ($options['url_shortcode']!='no'){
 				add_shortcode('shortlink',  array(&$this, 'shortcode_support'));
-			}
-
+			}     
+            //Append Text
+            add_filter('the_content', array(&$this, 'fts_filter_append_post'));  
+  
         }
         
 //-------- for use in activation	
@@ -122,7 +128,7 @@ if ( !class_exists('FTS_URL_Shortener') ) :
            return $result;
         }
         //automatic shortener
-        private function pub_get_shortlink($id=0, $context='post', $allow_slugs=true){
+        private function pub_get_shortlink($id=0, $context='post', $allow_slugs=true, $transition=false){
             include( dirname(__FILE__) . '/lib/pub_get_shortlink.php');  
             return $shortlink;
         }
@@ -130,7 +136,11 @@ if ( !class_exists('FTS_URL_Shortener') ) :
         public function od_get_shortlink($url='', $service='', $key='', $user=''){
              include( dirname(__FILE__) . '/lib/od_get_shortlink.php');
              return $shortlink;
-        }      
+        }     
+        //future to publish status hook
+        public function transition_get_shortlink($post){
+            $shortlink = $this->pub_get_shortlink($post->ID, 'post', true, true);      
+        }
 //--------Function Calls, publishing page
         //WP >= 3.0
         public function pub_gateway($shortlink, $id, $context, $allow_slugs){
@@ -162,6 +172,21 @@ if ( !class_exists('FTS_URL_Shortener') ) :
 			$shortlink = $this->pub_get_shortlink($post_id);
 			return $shortlink;
 		}
+        
+        //The content filter
+        public function fts_filter_append_post($content){   
+            global $post;
+            $options = $this->my_options();
+            
+            if(is_home() && $options['appendurl']['home']=='yes'
+              || is_single() && $options['appendurl']['single']=='yes'
+              || is_page() && $options['appendurl']['page']=='yes'){
+                 
+                $shortlink = $this->pub_get_shortlink($post->ID);
+                $content .= '<div class="post-shortlink"><strong>'.$options['appendurl']['text'].'</strong> <a href="'.$shortlink.'">'.$shortlink.'</a></div>';
+            }
+            return $content;    
+        }
 //--------table page
         public function table_hover_link($actions, $post) {
             $shortlink = $this->pub_get_shortlink($post->ID);
@@ -250,12 +275,20 @@ if ( !class_exists('FTS_URL_Shortener') ) :
 			delete_option($this->db_option);
 		}
 		private function manage_options(){
-			$options = array(		
+			$options = array(
+                'about_plugin' => array('version' => FTS_URL_SHORTENER_VERSION,
+                                        'status' => FTS_URL_SHORTENER_STATUS,
+                                        ),
 				'urlserviceenable' => 'yes',
 				'urlservice' => '',
                 'useslug' => 'no',
 				'niceid' => 'no',
                 'niceid_prefix' => '/',
+                'appendurl' => array('home '=> 'no',
+                                     'single' => 'no',
+                                     'page' => 'no',
+                                     'text' => 'Short URL:',
+                                    ),
 			);
 		    $saved = get_option($this->db_option);
 		

@@ -7,7 +7,10 @@ if ( isset($_POST['submitted']) ) {
 	//Shortener
 	$options['urlserviceenable'] = $_POST['urlserviceenable']; 
 	$options['useslug'] = $_POST['useslug'];
-	
+    $options['appendurl']['home'] = $_POST['appendurl_home'];
+    $options['appendurl']['single'] = $_POST['appendurl_single'];
+	$options['appendurl']['text'] = strip_tags($_POST['appendurl_text']);
+    
 	//Nice ID
 	$options['niceid'] = $_POST['niceid'];
 	$options['niceid_prefix'] = $_POST['niceid_prefix'];
@@ -37,6 +40,7 @@ $options = $this->my_options();
 $urlserviceenable = $options['urlserviceenable'];
 $urlservice = $options['urlservice'];
 $useslug = $options['useslug'];
+$appendurl= $options['appendurl'];
 $niceid = $options['niceid'];
 $niceid_prefix = $options['niceid_prefix'];
 $url_shortcode = $options['url_shortcode'];
@@ -44,10 +48,21 @@ $sfx = new FTShared();
 ?>
 <div class="wrap">
     <h2><?php _e('URL Shortener', 'url-shortener'); echo ' '.FTS_URL_SHORTENER_VERSION ?></h2>
+    
+    <div class="j-show" id="tab-select">
+        Options: 
+        <ul>
+            <li><a rel="opt-gen" href="#">General</a></li>
+            <li><a rel="opt-add" href="#">Additional Features</a></li>
+        </ul>
+    </div>
+
+
+    
 	<form method="post" action="<?php echo $action_url ?>" id="shorturl_options">
 		<?php wp_nonce_field('fts-urlshortener'); ?>
 		<input type="hidden" name="submitted" value="1" /> 
-        <fieldset title="General Options for Plugin" class="fs0">
+        <fieldset title="General Options for Plugin" class="fs-opt opt-gen j-hide">
             <h3><?php _e('Main Settings', 'url-shortener'); ?></h3> 
             <table class="form-table">
                 <tr>
@@ -65,11 +80,30 @@ $sfx = new FTShared();
 						<br /><?php _e('(Default: "http://yoursite/?p=123" or "http://yoursite/?page_id=123")', 'url-shortener'); ?></span>
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row"><label><?php _e('Append Short URL to: ', 'url-shortener'); ?></label></th>
+                    <td>
+                        <input name="appendurl_home" id="appendurl_home" type="checkbox" value="yes" <?php checked('yes', $appendurl['home']) ?> />
+                        <label for="appendurl_home"><?php _e('Posts (Homepage)', 'url-shortener'); ?></label>
+                        <br />   
+                        <input name="appendurl_single" id="appendurl_single" type="checkbox" value="yes" <?php checked('yes', $appendurl['single']) ?> />
+                        <label for="appendurl_single"><?php _e('Posts (Individual)', 'url-shortener'); ?></label>
+                        <br />
+                        <input name="appendurl_page" id="appendurl_page" type="checkbox" value="yes" <?php checked('yes', $appendurl['page']) ?> />
+                        <label for="appendurl_page"><?php _e('Pages', 'url-shortener'); ?></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="appendurl_text"><?php _e('Text before Short URL link ', 'url-shortener'); ?></label></th>
+                    <td>
+                        <input name="appendurl_text" type="text" id="appendurl_text" value="<?php echo $appendurl['text']; ?>" class="regular-text code" />
+
+                    </td>
             </table>
         </fieldset>   
         
-        <fieldset title="Additional Features" class="fs0">
-            <h3><?php _e('Additional Features', 'url-shortener'); ?></h3> 
+        <fieldset title="Additional Features" class="fs-opt opt-add j-hide">
+            <h3><?php _e('Nice ID', 'url-shortener'); ?></h3> 
             <table class="form-table">
                 <tr>
                     <th scope="row">
@@ -93,6 +127,9 @@ $sfx = new FTShared();
                         </td>
                     </td>
                 </tr>
+            </table>
+            <h3 class="divider"><?php _e('Shortcode', 'url-shortener'); ?></h3> 
+            <table class="form-table">
 				<tr>	
 					 <th scope="row"><label for="url_shortcode"><?php _e('Disable Shortcode [shortlink]', 'url-shortener'); ?></label></th>
 					<td>
@@ -103,24 +140,24 @@ $sfx = new FTShared();
             </table>
         </fieldset>   
         
-        <fieldset title="URL Shortening Services" id="shorturl_selector">
-            <h3><?php _e('URL Service Configuration', 'url-shortener'); ?></h3> 
+        <fieldset title="URL Shortening Services" id="shorturl_selector" class="opt-gen j-hide">
+            <h3 class="divider"><?php _e('URL Service Configuration', 'url-shortener'); ?></h3> 
             <p><?php _e('Select and configure your desired Short URL service.', 'url-shortener'); ?></p> 
             <p><?php _e('<span class="red">*</span> are required configurations for that service.', 'url-shortener'); ?></p>
             <div class="reqfielderror"></div>
             <table id="shorturl_table" class="widefat post fixed" cellspacing="0">
             	<thead>
                     <tr>
-                        <th scope="col" id="sr" class="manage-column"><?php _e('Select', 'url-shortener'); ?></th>
-                        <th scope="col" id="ss" class="manage-column"><?php _e('Services', 'url-shortener'); ?></th>
-                        <th scope="col" id="sc" class="manage-column"><span class="csc"><?php _e('Configuration', 'url-shortener'); ?></span></th>
+                        <th scope="col" id="col1" class="manage-column"><?php _e('Select', 'url-shortener'); ?></th>
+                        <th scope="col" id="col2" class="manage-column"><?php _e('Services', 'url-shortener'); ?></th>
+                        <th scope="col" class="manage-column"><span class="col3c"><?php _e('Configuration', 'url-shortener'); ?></span></th>
                     </tr>
                 </thead>
             	<tfoot>
                     <tr>
                         <th scope="col" class="manage-column"><?php _e('Select', 'url-shortener'); ?></th>
                         <th scope="col" class="manage-column"><?php _e('Services', 'url-shortener'); ?></th>
-                        <th scope="col" class="manage-column"><span class="csc"><?php _e('Configuration', 'url-shortener'); ?></span></th>
+                        <th scope="col" class="manage-column"><span class="col3c"><?php _e('Configuration', 'url-shortener'); ?></span></th>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -128,7 +165,7 @@ $sfx = new FTShared();
                     foreach ($this->supported as $key => $value){ 
                         if($urlservice == $key){ 
                             $sh = 'show'; 
-                            $rh = 'class="rh"';
+                            $rh = 'class="detail"';
                         }else{    
                             $sh = 'hide';
                         }
@@ -193,16 +230,33 @@ $sfx = new FTShared();
         <div class="reqfielderror"></div>
         <script type="text/javascript">
             jQuery(document).ready(function($){
-                $('.hide, .csc, .reqfielderror').hide();
+            
+                //display modification
+                $('.hide, .col3c, .reqfielderror, .j-hide').hide();
+                $('#tab-select li:first a').addClass('tab-now');
+                $('.j-show').show();
                 
+                var tabnow = '.'+$('.tab-now').attr('rel');
+                $(tabnow).show();
+                
+                $('#tab-select a').click(function(){
+                    $('.j-hide').hide();
+                    $('.tab-now').removeClass('tab-now');
+                    $(this).addClass('tab-now'); 
+                    
+                    var tabnow = '.'+$('.tab-now').attr('rel');
+                    $(tabnow).fadeIn();
+                })
+                
+                //Service Selection Table
                 $('.ssr input[type="radio"]').change(function(){
-                    $('.rhs .APIConfig, .rh .APIConfig').hide();
-                    $('.rhs').removeClass('rhs');
+                    $('.showdetail .APIConfig, .detail .APIConfig').hide();
+                    $('.showdetail').removeClass('showdetail');
                     var pc = '';
                     pc = $(this).parent().parent();
                     if(($(this).is(':checked'))){// && !(pc.hasClass('rh'))){
-                        pc.addClass('rhs');
-                        $('.rhs .APIConfig').show();   
+                        pc.addClass('showdetail');
+                        $('.showdetail .APIConfig').show();   
                     } 
                 });
                 
@@ -211,7 +265,7 @@ $sfx = new FTShared();
 						$('#generic_interdose').val(linkval);
 				})
 
-                //start submit
+                //Submission Functions
                 var requser = ['snipurl', 'snurl', 'snipr', 'snim', 'cllk'];
                 var reqkey = ['snipurl', 'snurl', 'snipr', 'snim', 'cllk', 'awesm', 'pingfm'];
                 $('#shorturl_options').submit(function() { 
@@ -221,25 +275,26 @@ $sfx = new FTShared();
                     if($.inArray(checkopt, requser) == -1){}else{
                         var suser = jQuery.trim( $('#apiuser_'+checkopt).val() );
                         if (suser == ''){
-                            $('.reqfielderror').append('<?php _e('Please fill the required User/ID', 'url-shortener'); ?><br />');
+                            $('.reqfielderror').append('<?php _e('<strong>Service Configuration: </strong>Please fill the required User/ID', 'url-shortener'); ?><br />');
                             errorcount = true;
                         }    
                     }
                     if($.inArray(checkopt, reqkey) == -1){}else{
                         var spass = jQuery.trim( $('#apikey_'+checkopt).val() );
                         if (spass == ''){
-                            $('.reqfielderror').append('<?php _e('Please fill in the required API/Key', 'url-shortener'); ?><br />');
+                            $('.reqfielderror').append('<?php _e('<strong>Service Configuration: </strong>Please fill in the required API/Key', 'url-shortener'); ?><br />');
                             errorcount = true;
                         }
                     }
                     if (errorcount){
                         $('.reqfielderror').fadeIn(400);
-                        //return false;
+                        return false;
                     } else {
                         $('.reqfielderror').hide();
                         //return false;
                     }               
-                });//end submit
+                });//end submission
+                
             });//end js    
         </script>       
         
