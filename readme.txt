@@ -3,7 +3,7 @@ Contributors: geraldyeo
 Donate link: http://wiki.fusedthought.com/contribute/
 Tags: url-shortener, short url, url, shortlink, shorten, shortener, tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, sn.im, cl.lk, cl.gs, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, awe.sm, social, tweet, twitter, soso.bz, digg, Voizle, tynie
 Requires at least: 2.7
-Tested up to: 3.0.2
+Tested up to: 3.0.5
 Stable tag: trunk
 
 This plugin allows you to generate shortlinks for post/pages using URL Shorteners (e.g. Bit.ly, Su.pr, ping.fm, Digg and many others).
@@ -102,6 +102,9 @@ Or
 http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin
 
 == Changelog ==
+
+= 3.1.2 =
+* *BUGFIX* Bug in the On-Demand Shortening function preventing key/user retrieval (http://wordpress.org/support/topic/plugin-url-shortener-bug-with-api-username-api-key-and-service)
 
 = 3.1.1 =
 * Minor tweak to Admin Interface / categorization of options

@@ -5,10 +5,10 @@ Plugin URI: http://www.fusedthought.com/downloads#url-shortener-wordpress-plugin
 Description: This plugin provides integration of URL Shorteners  (e.g. Bit.ly, Su.pr, Ping.fm, Digg and many others). <strong>Please refer to <a href="http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/upgrade-notes/">Upgrade Notes</a> if you're upgrading to 3.0 from previous versions.</strong>
 Author: Gerald Yeo
 Author URI: http://www.fusedthought.com
-Version: 3.1.1
+Version: 3.1.2
 */
 
-define('FTS_URL_SHORTENER_VERSION', '3.1.1');
+define('FTS_URL_SHORTENER_VERSION', '3.1.2');
 define('FTS_URL_SHORTENER_STATUS', 'Stable'); //Alpha->Beta->Stable
 define('FTS_DEV_ENV', false);
 require_once( dirname(__FILE__) . '/dependencies/class.FTShorten.php');

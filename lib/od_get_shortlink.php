@@ -7,10 +7,10 @@
 		$service = $options['urlservice'];
 	}
 	if (!$key && in_array($service, $this->authkey)){
-		$key = $options['apiuser_'.$service];
+		$key = $options['apikey_'.$service];
 	}
     if (!$user && in_array($service, $this->authuser)){
-		$user = $options['apikey_'.$services];
+		$user = $options['apiuser_'.$service];
 	}
 	
 	$shortlink = $this->class_adapter($url, $service, $key, $user);
