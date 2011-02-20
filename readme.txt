@@ -103,8 +103,10 @@ http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin
 
 == Changelog ==
 
+
 = 3.1.2 =
 * *BUGFIX* Bug in the On-Demand Shortening function preventing key/user retrieval (http://wordpress.org/support/topic/plugin-url-shortener-bug-with-api-username-api-key-and-service)
+
 
 = 3.1.1 =
 * Minor tweak to Admin Interface / categorization of options
