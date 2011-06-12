@@ -1,20 +1,29 @@
 === URL Shortener ===
 Contributors: geraldyeo
 Donate link: http://wiki.fusedthought.com/contribute/
-Tags: url-shortener, short url, url, shortlink, shorten, shortener, tinyurl, is.gd, su.pr, bit.ly, tr.im, short.ie, snipurl, snurl, sn.im, cl.lk, cl.gs, ping.fm, chilp.it, smoosh, smsh.me, u.nu, unfake.it, awe.sm, social, tweet, twitter, soso.bz, digg, Voizle, tynie
+Tags: url-shortener, short url, url, shortlink, shorten, shortener, tinyurl, yourls, is.gd, su.pr, bit.ly, goo.gl, qr code, qr, snipurl, snurl, sn.im, cl.lk, cl.gs, chilp.it, smoosh, smsh.me, unfake.it, awe.sm, social, tweet, twitter, Voizle, tynie
 Requires at least: 2.7
-Tested up to: 3.0.5
+Tested up to: 3.1.3
 Stable tag: trunk
 
 This plugin allows you to generate shortlinks for post/pages using URL Shorteners (e.g. Bit.ly, Su.pr, ping.fm, Digg and many others).
 
 == Description ==
 
-*Version 3.0 is completely re-written. For those updating from previous versions, please check your settings again.*
+[URL Shortener](http://www.fusedthought.com/downloads#url-shortener-wordpress-plugin "URL Shortener") allows you to generate shortlinks for post/pages using URL Shorteners (e.g. Bit.ly, Su.pr and many others), with a few additional features.
 
-[URL Shortener](http://www.fusedthought.com/downloads#url-shortener-wordpress-plugin "URL Shortener") allows you to generate shortlinks for post/pages using URL Shorteners (e.g. Bit.ly, Su.pr, ping.fm, Digg and many others).
+**Please check your settings when upgrading to Version 4.0 from previous versions prior to it.**
 
-Features:
+
+
+**What's New with 4.0**
+
+* QR Code Support (using Google Chart API)
+* Additional Shorteners (Goo.gl, dlvr.it, yourls) 
+* Nice ID links with QR Code (i.e. http://your_site/123.qr)
+* Version 4.0 features completely refactored code once again. Now includes classes which allows developers to easily extend the plugin.
+
+**Features:**
 
 * Automatic generation of a Short URL/Shortlinks
 * *Cached Shortlink* - thus generated only once. 
@@ -25,32 +34,35 @@ Features:
 * Shortcode support (Ver 3.1): Place [shortlink] in your article where you want to display the shortened url.
 * Append a link to short URL below your post content (Ver 3.1.1)
 
+
 Refer to the documentation/wiki page at http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin for more information (eg. installation guide and known issues etc).
 
 
 **Services currently supported are:**
 
+* goo.gl (beta)
 * bit.ly
-* Su.pr
 * tinyurl
-* Ping.fm
-* Digg
 * is.gd
+* Su.pr
 * snipurl / Snurl / Snipr / Sn.im / Cl.lk
-
-as well as:
-
 * cl.gs
-* short.ie 
 * chilp.it
 * smsh (aka sm00sh)
 * urli.nl
 * unfake.it 
 * awe.sm
 * Voizle 
-* soso.bz
 * Interdose API
-* Cuthut.com
+* dlvr.it
+
+
+**Suspended**
+
+* Ping.fm (Will be suspended until they reopen their API)
+
+
+
 
 **Available Template Tags**
 
@@ -65,6 +77,7 @@ To show the generated links::
 Or if WordPress 3.0:
 
 `<?php the_shortlink(); ?>`
+
 http://codex.wordpress.org/Function_Reference/the_shortlink
 
 
@@ -73,17 +86,18 @@ http://codex.wordpress.org/Function_Reference/the_shortlink
 *  fts_use_shortlink (Action Hook)
 *  fts_filter_shortlink (Filter)
 
-**Future Versions:**
 
-*  More services can be added upon request (http://code.google.com/p/url-shortener-plugin/issues/list)
+**Future Versions and on:**
+
+*  More services/features can be added upon request (http://code.google.com/p/url-shortener-plugin/issues/list)
+*  Do Note that due to my increasing need to concentrate on my studies and a lack of financial contribution from such plugin development, I can possibly accede to all requests. 
+
 
 **Support via:**
 
 *  http://wordpress.org/tags/url-shortener
 *  Contact me via my website ( http://www.fusedthought.com/contact/ )
-
-**Notes:**
-Ver 3.0 is a major re-write, do report any bugs that you may find. Thanks.
+*  Please check the FAQ 
 
 == Installation ==
 
@@ -97,11 +111,75 @@ Or
 1. Click Install Now for the plugin named "URL Shortener"
 
 
+== Frequently Asked Questions ==
+
+For the most updated list, please check: http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/faq
+
+
+=Service Support Levels=
+
+* As I am increasingly busy with college work, I've classified services into Tiers... 
+* Problems with Tier 1 services will be dealt with faster than group 2 and so on)
+* Do note that the providers for beta services may change their API anytime... Do report if there are any issues.
+
+**Tier 1**
+
+* goo.gl (beta)
+* bit.ly
+* tinyurl
+* is.gd
+* Su.pr
+* snipurl / Snurl / Snipr / Sn.im / Cl.lk
+
+
+**Tier 2**
+
+
+**Tier 3**
+
+* cl.gs
+* chilp.it
+* smsh (aka sm00sh)
+* urli.nl
+* unfake.it 
+* awe.sm
+* Voizle 
+* Interdose API
+* dlvr.it
+
+
+=Depreciated=
+
+* Digg (They have stopped the service)
+* soso.bz (Service no longer available)
+* Cuthut (Service no longer available)
+* short.ie (Service not available)
+
+=Will deprciated services come back?=
+Normally it's only depreciated when the shortening service is down for a prolong period of time. However, if there is a request, I will definitely consider it.
+
+
+=Known Issues=
+http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/known-issues
+
+
 == Screenshots ==
 
 http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin
 
 == Changelog ==
+
+Expanded list can be found at: http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/release-history
+
+
+= 4.0 =
+* Code refactoring (Shortening portion completely rewritten)
+* *ADDED* QR Code output
+* *COMPABILITY* Check with WordPress 3.1 series
+* *Bugfix / Feature Request* for several issues from the forums / bugtracker
+* *FOR DEVELOPERS* Includes a option wrapper class
+* *FOR DEVELOPERS* Includes refactored shortening class
+* *FOR DEVELOPERS* Includes a shortening PHP Interface definition for plugging in new services
 
 
 = 3.1.2 =
@@ -210,6 +288,6 @@ http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin
 
 == Upgrade Notice ==
 
-For those upgrading from a previous version to 3.0, please check your settings as Version 3.0 was completely re-written.
+For those upgrading from a version prior to 4.0, please check your settings as Version 4.0 has options code that was re-written.
 
 Read More: http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/upgrade-notes

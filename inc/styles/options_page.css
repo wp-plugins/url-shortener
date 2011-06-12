@@ -4,22 +4,32 @@
 .ftsplugin-logo{float:right; margin: 1em; border: 1px #ccc solid; padding: 0.5em; background: #fff; display: block;}
 .clear{clear: both;}
 .divider {border-top: 2px #bbb solid; padding-top: 2em;}
+.checkit, .detail .ssl label {background: url(tick.png) center left no-repeat;  padding-left: 20px;}
+
+
+
 
 /*Selection Table*/
-#col1{width: 70px;}
-#col2{width: 300px;}
+.fixed #col1{width: 10%;}
+.fixed #col2{width: 25%;}
 .sname label{margin-left: 0.5em;}
 .show_detail{background: #FFFFDF;}
 .detail{background: #E8FFCF !important;}
 .ssl label{padding-left: 20px;}
-.detail .ssl  label{background: url(tick.png) center left no-repeat;}
+
 th, td, table, tr, input{vertical-align: middle !important;}
 th, td, tr, input{margin: 5px !important;}
 .APIConfig label{font-weight: bold; padding-left: 5em;}
 .APIConfig input{border: 1px #999 solid !important;}
 .APIConfig label span, span.red{color: #c00;}
 .APIConfig .nc, .col3c{padding-left: 5em;}
- .APIConfig .slabel{padding-left: 5em;}
+
+.APIConfig .slabel,
+.APIConfig .contentblock{padding-left: 5em;}
+
+.APIConfig .contentblock{margin-top: 5px;}
+.APIConfig .contentblock label{padding-left: 0;}
+
 .val_interdose{margin: 0 1em;}
 
 /*Submission*/
@@ -34,6 +44,16 @@ th, td, tr, input{margin: 5px !important;}
 .tab-now{background: #ccc; color: #000; font-weight: bold;}
 
 #tab-select, #tab-select a{-moz-border-radius: 10px; -border-radius: 10px; -webkit-border-radius: 10px;}
+
+
+/*component list table*/
+#component_list .name{margin: 0.5em 0;}
+#component_list .name strong{font-size: 1.2em;} 
+#component_list .name span{display: block; padding-left: 20px;}
+.fixed .colsmall{width: 15%;}
+
+
+
 
 /*
 Key:

@@ -1,59 +1,143 @@
 <?php
-//saving of values
+
+$options = $this->plugin_option;
+
+
+$options->refresh();
+
+
+/*
+*****************************************
+*
+* Option page saving
+*
+*****************************************
+*/
+
 if ( isset($_POST['submitted']) ) {
 	check_admin_referer('fts-urlshortener');
-	$options = array();
 	
 	//Shortener
-	$options['urlserviceenable'] = $_POST['urlserviceenable']; 
-	$options['useslug'] = $_POST['useslug'];
-    $options['appendurl']['home'] = $_POST['appendurl_home'];
-    $options['appendurl']['single'] = $_POST['appendurl_single'];
-	$options['appendurl']['text'] = strip_tags($_POST['appendurl_text']);
-    
+	$options->set('urlserviceenable', $_POST['urlserviceenable']);
+	$options->set('useslug', $_POST['useslug']);
+	$options->set('appendurl', array('home' => $_POST['appendurl_home'],
+									 'single' => $_POST['appendurl_single'],
+									 'page' => $_POST['appendurl_page'],
+									 'text' => strip_tags($_POST['appendurl_text']),
+									)
+								);
+
+	$options->set('appendqr', array('home' => $_POST['appendqr_home'],
+									'single' => $_POST['appendqr_single'],
+									'page' => $_POST['appendqr_page'],
+									'text' => strip_tags($_POST['appendqr_text']),
+								   )
+							  );	
+
 	//Nice ID
-	$options['niceid'] = $_POST['niceid'];
-	$options['niceid_prefix'] = $_POST['niceid_prefix'];
+	$options->set('niceid', $_POST['niceid']);
+	$options->set('niceid_prefix', $_POST['niceid_prefix']);
 	
 	//Shortcode
-	$options['url_shortcode'] = $_POST['url_shortcode'];
+	$options->set('url_shortcode', $_POST['url_shortcode']);
 
 	//Services
-	$options['urlservice'] = $_POST['urlservice'];
-	foreach ($this->authuser as $user){
-		$options['apiuser_'.$user] = $_POST['apiuser_'.$user];
-	}
-	foreach ($this->authkey as $key){
-		$options['apikey_'.$key] = $_POST['apikey_'.$key];
-	}
+	$service_list = $this->shortener->service_list('detailed');
 
-	foreach ($this->generic as $generic){
-		$options['generic_'.$generic] = $_POST['generic_'.$generic];
+	foreach ($service_list as $keys => $values){
+		
+		switch ( $values[2] ){
+			case 1:
+			case 4:
+				$options->set('apiuser_'.$keys, $_POST['apiuser_'.$keys]);
+				break;
+			case 2:
+			case 5:
+				$options->set('apikey_'.$keys, $_POST['apikey_'.$keys]);
+				break;						
+			case 3:
+			case 6:
+			case 101:
+				$options->set('apiuser_'.$keys, $_POST['apiuser_'.$keys]);
+				$options->set('apikey_'.$keys, $_POST['apikey_'.$keys]);
+				break;
+				
+			default: break;
+		}
 	}
+	
+	$options->set('generic_yourls', array('endpoint' => $_POST['generic_yourls_endpoint']
+										 )
+									);
 
-	$this->save_options($options);
+
+	$options->set('generic_interdose', array('service' => $_POST['generic_interdose_service']
+										 )
+									);
+
+
+
+	//last command includes save.
+	$options->set('urlservice', $_POST['urlservice']);
+	$options->save();
+	
+	
 	echo '<div class="updated fade"><p>Plugin settings saved.</p></div>';
 }
 
-//setting up of options page
-$options = $this->my_options();
-$urlserviceenable = $options['urlserviceenable'];
-$urlservice = $options['urlservice'];
-$useslug = $options['useslug'];
-$appendurl= $options['appendurl'];
-$niceid = $options['niceid'];
-$niceid_prefix = $options['niceid_prefix'];
-$url_shortcode = $options['url_shortcode'];
-$sfx = new FTShared();
+
+
+
+
+/*
+*****************************************
+*
+* Setup option page display
+*
+*****************************************
+*/
+
+
+$options->refresh();
+
+$urlserviceenable 	= $options->get('urlserviceenable');
+$urlservice 		= $options->get('urlservice');
+$useslug 			= $options->get('useslug');
+$appendurl			= $options->get('appendurl');
+$appendqr			= $options->get('appendqr');
+$niceid 			= $options->get('niceid');
+$niceid_prefix 		= $options->get('niceid_prefix');
+$url_shortcode 		= $options->get('url_shortcode');
+
+//$sfx = new FTShared();
+
+$supported 	= $this->shortener->service_list('detailed');
+$authkey 	= $this->shortener->service_list('authkey');
+$authuser 	= $this->shortener->service_list('authuser');
+$reqkey		= $this->shortener->service_list('reqkey');
+$requser 	= $this->shortener->service_list('requser');
+
+
+
+
+
+/*
+*****************************************
+*
+* Start of the form
+*
+*****************************************
+*/
 ?>
 <div class="wrap">
-    <h2><?php _e('URL Shortener', 'url-shortener'); echo ' '.FTS_URL_SHORTENER_VERSION ?></h2>
+    <h2><?php _e('URL Shortener', 'url-shortener'); echo ' '.$this->plugin_version ?></h2>
     
     <div class="j-show" id="tab-select">
         Options: 
         <ul>
-            <li><a rel="opt-gen" href="#">General</a></li>
-            <li><a rel="opt-add" href="#">Additional Features</a></li>
+            <li><a rel="opt-gen" href="#opt-general">General</a></li>
+            <li><a rel="opt-add" href="#opt-additional">Additional Features</a></li>
+			 <!--<li><a rel="opt-mod" href="#opt-modules">Modules</a></li>-->
         </ul>
     </div>
 
@@ -62,8 +146,18 @@ $sfx = new FTShared();
 	<form method="post" action="<?php echo $action_url ?>" id="shorturl_options">
 		<?php wp_nonce_field('fts-urlshortener'); ?>
 		<input type="hidden" name="submitted" value="1" /> 
-        <fieldset title="General Options for Plugin" class="fs-opt opt-gen j-hide">
-            <h3><?php _e('Main Settings', 'url-shortener'); ?></h3> 
+
+
+
+		<?php /*
+		*****************************************
+		*
+		* General Options
+		*
+		*****************************************
+		*/ ?>
+        <fieldset id="opt-general" title="General Options for Plugin" class="fs-opt opt-gen j-hide">
+            <h3 class="divider"><?php _e('Main Settings', 'url-shortener'); ?></h3> 
             <table class="form-table">
                 <tr>
                     <th scope="row"><label for="urlserviceenable"><?php _e('URL Shortener Integration', 'url-shortener'); ?></label></th>
@@ -97,13 +191,21 @@ $sfx = new FTShared();
                     <th><label for="appendurl_text"><?php _e('Text before Short URL link ', 'url-shortener'); ?></label></th>
                     <td>
                         <input name="appendurl_text" type="text" id="appendurl_text" value="<?php echo $appendurl['text']; ?>" class="regular-text code" />
-
                     </td>
+				</tr>
             </table>
         </fieldset>   
-        
-        <fieldset title="Additional Features" class="fs-opt opt-add j-hide">
-            <h3><?php _e('Nice ID', 'url-shortener'); ?></h3> 
+
+
+		<?php /*
+		*****************************************
+		*
+		* Additional options
+		*
+		*****************************************
+		*/ ?>
+        <fieldset id="opt-additional" title="Additional Features" class="fs-opt opt-add j-hide">
+            <h3 class="divider"><?php _e('Nice ID', 'url-shortener'); ?></h3> 
             <table class="form-table">
                 <tr>
                     <th scope="row">
@@ -133,13 +235,84 @@ $sfx = new FTShared();
 				<tr>	
 					 <th scope="row"><label for="url_shortcode"><?php _e('Disable Shortcode [shortlink]', 'url-shortener'); ?></label></th>
 					<td>
-                        <input name="url_shortcode" id="url_shortcode" type="checkbox" value="no" <?php checked('no', $url_shortcode) ?> />
+                        <input name="url_shortcode" id="url_shortcode" type="checkbox" value="disable" <?php checked('disable', $url_shortcode) ?> />
                         <span class="description"><?php _e('Disables the usage of URL Shortener shortcode [shortlink]', 'url-shortener'); ?></span></td>
                     </td>
 				</tr>                
             </table>
-        </fieldset>   
-        
+            <h3 class="divider"><?php _e('QR Code', 'url-shortener'); ?></h3> 
+            <table class="form-table">
+				<tr>
+                    <th scope="row"><label><?php _e('Append QR Code to: ', 'url-shortener'); ?></label></th>
+                    <td>
+                        <input name="appendqr_home" id="appendqr_home" type="checkbox" value="yes" <?php checked('yes', $appendqr['home']) ?> />
+                        <label for="appendqr_home"><?php _e('Posts (Homepage)', 'url-shortener'); ?></label>
+                        <br />   
+                        <input name="appendqr_single" id="appendqr_single" type="checkbox" value="yes" <?php checked('yes', $appendqr['single']) ?> />
+                        <label for="appendqr_single"><?php _e('Posts (Individual)', 'url-shortener'); ?></label>
+                        <br />
+                        <input name="appendqr_page" id="appendqr_page" type="checkbox" value="yes" <?php checked('yes', $appendqr['page']) ?> />
+                        <label for="appendqr_page"><?php _e('Pages', 'url-shortener'); ?></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="appendqr_text"><?php _e('Text before QR Code ', 'url-shortener'); ?></label></th>
+                    <td>
+                        <input name="appendqr_text" type="text" id="appendqr_text" value="<?php echo $appendqr['text']; ?>" class="regular-text code" />
+                    </td>
+				</tr>
+			</table>
+        </fieldset>  
+
+		<?php /*
+		*****************************************
+		*
+		* Modules
+		*
+		*****************************************
+        <fieldset id="opt-modules" title="List of Modules" class="fs-opt opt-mod j-hide">
+			<h3 class="divider"><?php _e('Shortener Modules', 'url-shortener'); ?></h3> 
+			<table id="component_list" class="widefat post fixed" cellspacing="0">
+            	<thead>
+                    <tr>
+                        <th scope="col" class="manage-column"><?php _e('Name', 'url-shortener'); ?></th>
+						<th scope="col" class="manage-column"><?php _e('Description', 'url-shortener'); ?></th>
+						<th scope="col" class="manage-column colsmall"><?php _e('ID', 'url-shortener'); ?></th>
+                    </tr>
+                </thead>
+            	<tfoot>
+                    <tr>
+                        <th scope="col" class="manage-column"><?php _e('Name', 'url-shortener'); ?></th>
+						<th scope="col" class="manage-column"><?php _e('Description', 'url-shortener'); ?></th>
+						<th scope="col" class="manage-column colsmall"><?php _e('ID', 'url-shortener'); ?></th>
+                    </tr>
+                </tfoot>
+				<tbody>
+				<?php foreach ($this->shortener_modules as $modules){ ?>
+					<tr>
+						<td class="name">
+							<strong class="checkit"><?php echo $modules['name']; ?></strong>
+							<span>Version: <?php echo $modules['version']; ?></span>
+						</td>
+						<td>
+
+							<?php echo $modules['description']; ?>
+						</td>
+						<td><?php echo $modules['classname']; ?></td>
+					</tr>
+				<?php } ?>
+				</tbody>
+			</table>
+        </fieldset>
+		*/ ?>
+ 
+		<?php /*
+		*****************************************
+		*
+		* Shortlink Service Table
+		*
+		*****************************************
+		*/ ?>
         <fieldset title="URL Shortening Services" id="shorturl_selector" class="opt-gen j-hide">
             <h3 class="divider"><?php _e('URL Service Configuration', 'url-shortener'); ?></h3> 
             <p><?php _e('Select and configure your desired Short URL service.', 'url-shortener'); ?></p> 
@@ -162,7 +335,17 @@ $sfx = new FTShared();
                 </tfoot>
                 <tbody>
                     <?php
-                    foreach ($this->supported as $key => $value){ 
+                    
+					/*
+					 *****************************************
+					 *
+					 * Individual configuration fields
+					 *
+					 *****************************************
+					 */ 
+
+                    foreach ($supported as $key => $value){
+                    	 
                         if($urlservice == $key){ 
                             $sh = 'show'; 
                             $rh = 'class="detail"';
@@ -171,33 +354,82 @@ $sfx = new FTShared();
                         }
                         $apirow = '<tr id="row_'.$key.'"'.$rh.'>';
                         $apirow .= '<th class="ssr" scope="row"><input name="urlservice" id="'.$key.'" type="radio" value="'.$key.'"'. checked($key, $urlservice, false) .'/></th>';
-                        $apirow .= '<td class="ssl"><label for="'.$key.'">'.$value.'</label></td><td>';
+                        $apirow .= '<td class="ssl"><label for="'.$key.'">'.$value[0].'</label></td><td>';
                         
                         $apirow .= '<div id="userkey_'.$key.'" class="APIConfig '.$sh.'">';
                         $apireq = '';    
+ 						
 
-						//Key Authentication      
-                        if (in_array($key, $this->authkey)){
-                            $apireq .= '<label for="apikey_'.$key.'">'; 
-                            in_array($key, $this->reqkey) ? $apireq .= ' <span>*</span>' : $apireq .= '';               
-							$apireq .= __('API/Key', 'url-shortener') . ': </label><input type="text" name="apikey_'.$key.'" id="apikey_'.$key.'" value="'.$options['apikey_'.$key].'" />';
-                        }
-						
-						//User Authentication
-                        if (in_array($key, $this->authuser)){
+
+						/*
+						 *****************************************
+						 * User Authentication
+						 *****************************************
+						 */    
+                        if ( in_array($key, $authuser) ){
                             $apireq .= '<label for="apiuser_'.$key.'">';
-                            in_array($key, $this->requser) ? $apireq .='<span>*</span>' : $apireq .='';
-                            $apireq .= __('User/ID', 'url-shortener') . ': </label><input type="text" name="apiuser_'.$key.'" id="apiuser_'.$key.'" value="'.$options['apiuser_'.$key].'" />';
+                            in_array($key, $requser) ? $apireq .='<span>*</span>' : $apireq .='';
+                            $apireq .= __('User/ID', 'url-shortener') . ': </label><input type="text" name="apiuser_'.$key.'" id="apiuser_'.$key.'" value="'.$options->get('apiuser_'.$key).'" />';
                         }
-			
-						//Generic Services
-                        if (in_array($key, $this->generic)){
+					
+	                       
+
+                        
+						/*
+						 *****************************************
+						 * Key Authentication
+						 *****************************************
+						 */      
+                        if (in_array($key, $authkey)){
+                            $apireq .= '<label for="apikey_'.$key.'">'; 
+                            in_array($key, $reqkey) ? $apireq .= ' <span>*</span>' : $apireq .= '';               
+							$apireq .= __('Key/API', 'url-shortener') . ': </label><input type="text" name="apikey_'.$key.'" id="apikey_'.$key.'" value="'.$options->get('apikey_'.$key).'" />';
+                        
+                        }
+
+						/*
+						 *****************************************
+						 * Misc Authentication Fields.. 
+						 * Case by Case Basis
+						 *****************************************
+						 */    
+
+						switch ($key) {
+							case 'yourls':
+								$apireq .= '<label for="apiuser_'.$key.'">';
+                            	$apireq .= __('User/ID', 'url-shortener') . ': </label><input type="text" name="apiuser_'.$key.'" id="apiuser_'.$key.'" value="'.$options->get('apiuser_'.$key).'" />';
+                       
+ 								$apireq .= '<label for="apikey_'.$key.'">';          
+								$apireq .= __('Password', 'url-shortener') . ': </label><input type="password" name="apikey_'.$key.'" id="apikey_'.$key.'" value="'.$options->get('apikey_'.$key).'" />';
+
+								$apireq .= '<div class="contentblock"><label for="generic_'.$key.'_endpoint">';
+								$generic = $options->get('generic_'.$key);
+								$apireq .= __('URL to the YOURLS API', 'url-shortener') . ': </label><input style="display: block; width: 80%;" type="text" name="generic_'.$key.'_endpoint" id="generic_'.$key.'_endpoint" value="'.$generic['endpoint'].'" />';
+								$apireq .= 'Example: http://site.com/yourls-api.php';
+								$apireq .= '<br /><strong>Note:</strong> Please check out <a href="http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/known-issues">Known issues</a> before activiting yourls support</strong>';
+								$apireq .= '</div>';
+
+								break;
+							case 'interdose':
+								$apireq .= '<div class="contentblock"><label for="generic_'.$key.'_service">';
+								$generic = $options->get('generic_'.$key);
+								$apireq .= '<span>*</span>' . __('Service/Domain', 'url-shortener') . ': </label><input style="display: block; width: 80%;" type="text" name="generic_'.$key.'_service" id="generic_'.$key.'_service" value="'.$generic['service'].'" />';
+								$apireq .= 'Example: piep.net, xlnk.cc';
+								$apireq .= '</div>';
+
+								break;
+
+							default: break;
+						}
+
+
+                        /*if (in_array($key, $this->generic)){
                             $apireq .= '<br /><label for="generic_'.$key.'">';
 
 							//Cases
 							switch ($key){
 								case 'interdose':
-									$apireq .= __('Service', 'url-shortener') . ': </label><input type="text" name="generic_'.$key.'" id="generic_'.$key.'" value="'.$options['generic_'.$key].'" />';
+									$apireq .= __('Service', 'url-shortener') . ': </label><input type="text" name="generic_'.$key.'" id="generic_'.$key.'" value="'.$options->get('generic_'.$key].'" />';
 									$data = $sfx->openurl('http://api.interdose.com/api/shorturl/v1/services.json');
 									$data = $sfx->processjson($data);
 									$count = count($data);
@@ -211,10 +443,12 @@ $sfx = new FTShared();
 								default: 
 									break;
 							}
-                        }                      
+                        } */    
+               
                         if ($apireq == ''){
                             $apireq = '<span class="nc">'. __('No Configuration Needed', 'url-shortener') .'</span>';
                         }    
+						
                         $apirow.= $apireq;
                         $apirow.= '</div></td></tr>';
                         $rh = '';
@@ -226,7 +460,8 @@ $sfx = new FTShared();
             
             <div class="clear"></div>
         </fieldset>
- 
+        
+        
         <div class="reqfielderror"></div>
         <script type="text/javascript">
             jQuery(document).ready(function($){
@@ -246,6 +481,7 @@ $sfx = new FTShared();
                     
                     var tabnow = '.'+$('.tab-now').attr('rel');
                     $(tabnow).fadeIn();
+					return false;
                 })
                 
                 //Service Selection Table
@@ -301,3 +537,6 @@ $sfx = new FTShared();
         <p class="submit"><input type="submit" id="submit-button" class="button-primary" value="<?php _e('Save Changes') ?>" /></p>	
     </form>
 </div>
+
+
+

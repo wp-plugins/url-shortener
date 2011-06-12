@@ -2,88 +2,144 @@
 /*
 Plugin Name: URL Shortener
 Plugin URI: http://www.fusedthought.com/downloads#url-shortener-wordpress-plugin
-Description: This plugin provides integration of URL Shorteners  (e.g. Bit.ly, Su.pr, Ping.fm, Digg and many others). <strong>Please refer to <a href="http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/upgrade-notes/">Upgrade Notes</a> if you're upgrading to 3.0 from previous versions.</strong>
+Description: This plugin provides integration of URL Shorteners  (e.g. Bit.ly, Su.pr, Ping.fm, Digg and many others). <strong>Please refer to <a href="http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/upgrade-notes/">Upgrade Notes</a> before updating.</strong>
 Author: Gerald Yeo
 Author URI: http://www.fusedthought.com
-Version: 3.1.2
+Version: 4.0
 */
 
-define('FTS_URL_SHORTENER_VERSION', '3.1.2');
-define('FTS_URL_SHORTENER_STATUS', 'Stable'); //Alpha->Beta->Stable
-define('FTS_DEV_ENV', false);
-require_once( dirname(__FILE__) . '/dependencies/class.FTShorten.php');
 
-//main class
+define('FTS_URL_SHORTENER_VERSION', '4.0');
+define('FTS_URL_SHORTENER_STATUS', 'stable');
+
+
+
+/*
+ *****************************************
+ *
+ *	Dependencies
+ *
+ *****************************************
+ */
+
+if ( !class_exists('jz_options') ) :
+	include( dirname(__FILE__) . '/components/class.jz_options.php' );
+endif;
+
+if ( !class_exists('jz_shortener') ) :
+	include( dirname(__FILE__) . '/components/class.jz_shortener.php' );
+endif;
+
+
+
+
+/*
+ *****************************************
+ *
+ *	Main Class Declaration
+ *
+ *****************************************
+ */
+
 if ( !class_exists('FTS_URL_Shortener') ) :
 	class FTS_URL_Shortener {
-	
-		private $db_option = 'fts_urlfx';
-		private $plugin_url;
-		private $plugin_page;
+
+
+
+
+
+/*
+ *****************************************
+ *
+ *	Class Variables
+ *
+ *****************************************
+ */
+
+
+
+        private $plugin_version, 
+                $plugin_status, 
+				$plugin_option,			//(global) plugin options
+				$plugin_url,			
+                $plugin_page,			//options page
+                $shortener,				//(global) shared shortener assignment
+                $shortener_modules;		//available modules for shortener
         
-        private $supported = array(
-            'tinyurl'=> 'TinyURL', 
-            'supr'=> 'Su.pr (by StumbleUpon)', 
-            'isgd'=> 'is.gd', 
-            'bitly'=> 'bit.ly',
-            'jmp' => 'j.mp',        
-            'cligs'=> 'Cli.gs', 
-            'shortie'=> 'Short.ie', 
-            'chilpit'=> 'Chilp.it', 
-            'pingfm'=> 'Ping.fm', 
-            'smsh'=> 'sm00sh / smsh.me', 
-            'unfakeit'=> 'unfake.it', 
-            'awesm'=> 'awe.sm', 
-            'snipurl'=> 'Snipurl', 
-            'snurl'=> 'Snurl', 
-            'snipr'=> 'Snipr',
-            'snim'=> 'Sn.im',
-            'cllk'=> 'Cl.lk',            
-            'voizle'=> 'Voizle', 
-            'urlinl' => 'urli.nl',
-			'sosobz' => 'soso.bz',
-			'tynie' => 'tynie.net',
-			'interdose' => 'Interdose API',
-			'cuthut' => 'cuthut.com',
-            );
-        private $authuser = array('supr', 'bitly', 'jmp', 'snipurl', 'snurl', 'snipr', 'snim', 'cllk', 'interdose');
-        private $authkey = array('supr', 'bitly', 'jmp', 'snipurl', 'snurl', 'snipr', 'snim', 'cllk', 'awesm', 'pingfm', 'cligs', 'interdose');
-        private $requser = array('snipurl', 'snurl', 'snipr', 'snim', 'cllk');
-        private $reqkey = array('snipurl', 'snurl', 'snipr', 'snim', 'cllk', 'awesm', 'pingfm');
-		private $generic = array('interdose');
-        
-		private function is_active($plugin) {return in_array($plugin, apply_filters('active_plugins', get_option('active_plugins') ) );}
-		
-//--------__construct()
-		public function activate_shortener() {	
-            $this->plugin_url = defined('WP_PLUGIN_URL') ? WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__)) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__)); 		
+
+
+/*
+ *****************************************
+ *
+ *	Constructors
+ *
+ *****************************************
+ */
+
+
+        //php 5.3.3
+        function __construct($version = '0.0', $status = 'dev') {
+            $this->FTS_URL_Shortener($version, $status);
+        }
+       
+        //backward compatibility
+        function FTS_URL_Shortener($version = '0.0', $status = 'dev'){
+            $this->plugin_version = $version;
+            $this->plugin_status = $status;
 			
-            $options = $this->my_options();
-            //Publishing
-            if ($options['urlserviceenable'] == 'yes'){
+			$this->plugin_option = new jz_options('fts_urlfx', $this->plugin_version, $this->plugin_status);
+            $this->shortener = new jz_shortener($this->plugin_status);
+			$this->shortener_modules = $this->shortener->get_modules();
+        }
+    
+
+   
+       
+/*
+ *****************************************
+ *
+ *	Plugin Activation Calls
+ *
+ *****************************************
+ */     
+
+		//hooks and loaders
+       	public function activate_shortener() {	
+			$this->plugin_url = defined('WP_PLUGIN_URL') ? WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__)) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__)); 
+
+			if ($this->plugin_option->get('urlserviceenable') == 'yes'){
                 //FX registration mirrors WP stats plugin
                 if (!function_exists('wp_get_shortlink')){    
                     //Register these only for WP < 3.0.
                     add_action('wp_head', array(&$this, 'fts_shortlink_wp_head'));
-                    add_action('wp', array(&$this, 'fts_shortlink_header'));                    
+                    add_action('wp', array(&$this, 'fts_shortlink_header')); 
+
+                   
                     //edit post-page button
                     if ($this->check_wp_version(2.9)){
                         add_filter('get_sample_permalink_html', array(&$this, 'fts_get_shortlink_html'), 10, 2 );
-                    } else{}   
+                    } 
+
+ 
                     //compatibility - remove wp.me
                     remove_action('wp_head', 'wpme_shortlink_wp_head');
                     remove_action('wp', 'wpme_shortlink_header');
-                    remove_filter('get_sample_permalink_html', 'wpme_get_shortlink_html', 10, 2 );       
+                    remove_filter('get_sample_permalink_html', 'wpme_get_shortlink_html', 10, 2 );   
+
+    
                 }else{
                     //Register a shortlink handler for WP >= 3.0.
                     add_filter('get_shortlink', array(&$this, 'pub_gateway'), 10, 4);
                 }  
+
+
                 //Future to Present
                 add_action('future_to_publish', array(&$this, 'transition_get_shortlink'), 10, 1);           
-            }
+           	}
             
             //Options
-            add_action('admin_menu', array(&$this, 'plugin_menu'));
+			add_action('admin_menu', array(&$this, 'plugin_menu'));
+			
             
             //Tables
             add_filter('post_row_actions',  array(&$this, 'table_hover_link'), 10, 2);
@@ -92,61 +148,213 @@ if ( !class_exists('FTS_URL_Shortener') ) :
 			add_action('load-edit.php', array(&$this, 'fts_urlshortener_edit_head'));
 			add_action('load-edit-pages.php', array(&$this, 'fts_urlshortener_edit_head')); 
 
+
             //AJAX Calls
             add_action('wp_ajax_urlshortener_act', array(&$this, 'fts_urlshortener_ajaxcallback'));
-			
+
+
             //Nice IDs
-            if ($options['niceid']=='yes'){
+            if ($this->plugin_option->get('niceid')=='yes'){
                 add_filter('template_redirect', array(&$this, 'template_redirect'), 10, 2);     
             }
 
+
 			//Shortcode
-			if ($options['url_shortcode']!='no'){
+			if ($this->plugin_option->get('url_shortcode') != 'disable'){
 				add_shortcode('shortlink',  array(&$this, 'shortcode_support'));
 			}     
+
             //Append Text
-            add_filter('the_content', array(&$this, 'fts_filter_append_post'));  
-  
-        }
-        
-//-------- for use in activation	
+            add_filter('the_content', array(&$this, 'fts_filter_append_post')); 
+
+            //Append QR Code
+            add_filter('the_content', array(&$this, 'fts_filter_append_post_qr')); 
+
+
+       	}
+
+
 		private function check_wp_version($version, $operator = ">="){
 			global $wp_version;
 			return version_compare($wp_version, $version, $operator);
-		}      
-        public function plugin_menu(){ 
-            if( !is_admin() )
-				return;
-            $this->plugin_page = add_options_page(__('URL Shortener','url-shortener'), __('URL Shortener','url-shortener'), 'administrator', 'shorturl', array(&$this, 'options_page'));
-            add_contextual_help($this->plugin_page, self::options_page_help());
-            add_action('load-'.$this->plugin_page,  array(&$this, 'options_style_scripts'));
-        }        
-//--------publishing logic     
-        //FTShorten adapter
-        private function class_adapter($url, $service, $key='', $user=''){
-           include( dirname(__FILE__) . '/lib/class_adapter.php');
-           return $result;
+		}    
+ 
+ 
+
+
+
+        /*
+         *****************************************
+         * Check if shortener loaded. 
+         * Attempt to load it otherwise
+         * Return false when all fails.
+         *****************************************
+         */
+         
+        private function shortener_loader(){
+
+            if ( !$this->shortener->load_status() ){
+
+            	$service = $this->plugin_option->get('urlservice');
+
+				$this->shortener->set_user( $this->plugin_option->get('apiuser_'.$service) );
+				$this->shortener->set_key( $this->plugin_option->get('apikey_'.$service) );
+				$this->shortener->set_generic( $this->plugin_option->get('generic_'.$service) );
+				$this->shortener->set_service($service);
+
+            	$result =  $this->shortener->init_shortener();
+
+                return ( $result == 'OK' ) ? true : false;
+            } 
+            
+            return true;
         }
-        //automatic shortener
+
+
+
+
+
+        /*
+         *****************************************
+         * Plugin Installer
+         * Includes setting of default values
+         * Migration Utility for v3.0 Series
+         *****************************************
+         */
+         
+       	public function install(){
+			$defaults = array(
+                        'urlserviceenable' => 'no',
+                        'urlservice' => '',
+                        'useslug' => 'no',
+                        'niceid' => 'no',
+                        'niceid_prefix' => '/',
+                        'appendurl' => array(
+                                        'home '=> 'no',
+                                        'single' => 'no',
+                                        'page' => 'no',
+                                        'text' => 'Short URL:',
+                                        ),
+                       'appendqr' => array(
+                                        'home '=> 'no',
+                                        'single' => 'no',
+                                        'page' => 'no',
+                                        'text' => '',
+                                        ),
+						'url_shortcode' => 'disable',
+                        );
+                        
+			$this->plugin_option->set_default($defaults);
+            
+            $this->plugin_option->migrate_options('about_plugin'); //check migration requirement
+       		$this->plugin_option->install_options(); 
+       	}
+       
+
+
+
+
+
+
+/*
+ *****************************************
+ *
+ *	Shortlink Generation Main Functions
+ *
+ *****************************************
+ */   
+
+
+		
+        /*
+         *****************************************
+         * Automatic shortener
+		 *
+         * Activated during Post Publishing or Post Viewing
+         *****************************************
+         */
+         
         private function pub_get_shortlink($id=0, $context='post', $allow_slugs=true, $transition=false){
-            include( dirname(__FILE__) . '/lib/pub_get_shortlink.php');  
+            include( dirname(__FILE__) . '/inc/pub_get_shortlink.php'); 
             return $shortlink;
         }
-        //ondemand shortener 
+
+
+
+
+
+        /*
+         *****************************************
+         * On demand shortener
+		 *
+         * For calls directly from the public.
+         * Shortener allocation must be different from global shortener
+		 * Fallback on default setting if service undefined
+         *****************************************
+         */
+         
         public function od_get_shortlink($url='', $service='', $key='', $user=''){
-             include( dirname(__FILE__) . '/lib/od_get_shortlink.php');
-             return $shortlink;
+			$shortlink = NULL;
+
+			if ( !empty($url) ){
+				$od_shortener = new jz_shortener($this->plugin_status);
+
+				if ( empty($service) ){
+
+		        	$service = $this->plugin_option->get('urlservice');
+					$od_shortener->set_user( $this->plugin_option->get('apiuser_'.$service) );
+					$od_shortener->set_key( $this->plugin_option->get('apikey_'.$service) );
+					$od_shortener->set_generic( $this->plugin_option->get('generic_'.$service) );
+					$od_shortener->set_service($service);
+
+				}else{
+		
+					$od_shortener->config($service, $key, $user);	
+
+				}
+
+				$status = $od_shortener->init_shortener();
+
+				$shortlink = ($status == 'OK') ? $od_shortener->generate($url) : NULL;
+			}
+
+			return $shortlink;
         }     
-        //future to publish status hook
+
+
+
+
+        /*
+         *****************************************
+         * Status hook for future posts
+         * Hook to ensure generation only during publishing
+         *****************************************
+         */
         public function transition_get_shortlink($post){
-            $shortlink = $this->pub_get_shortlink($post->ID, 'post', true, true);      
+            $shortlink = $this->pub_get_shortlink($post->ID, 'post', true, true);   
         }
-//--------Function Calls, publishing page
+
+
+
+
+
+
+/*
+ *****************************************
+ *
+ *	Publishing CALLBACKS
+ *
+ *****************************************
+ */
+
+
         //WP >= 3.0
+        
         public function pub_gateway($shortlink, $id, $context, $allow_slugs){
             $shortlink = $this->pub_get_shortlink($id, $context, $allow_slugs);
             return $shortlink;
         }
+        
         //WP < 3.0 
         public function fts_shortlink_wp_head() {
             global $wp_query;
@@ -155,6 +363,7 @@ if ( !class_exists('FTS_URL_Shortener') ) :
 				echo '<link rel="shortlink" href="' . $shortlink . '" />';
 			}
         }
+
         public function fts_shortlink_header() {
             global $wp_query;
             if ( headers_sent() )
@@ -162,37 +371,75 @@ if ( !class_exists('FTS_URL_Shortener') ) :
             $shortlink = $this->pub_get_shortlink(0, 'query');
             header('Link: <' . $shortlink . '>; rel=shortlink');
         }
+
         public function fts_get_shortlink_html($html, $post_id) {
-            $shortlink = $this->pub_get_shortlink($post_id);
+           	$shortlink = $this->pub_get_shortlink($post_id);
 			if ($shortlink){$html .= '<input id="shortlink" type="hidden" value="' . $shortlink . '" /><a href="' . $shortlink . '" class="button" onclick="prompt(&#39;URL:&#39;, jQuery(\'#shortlink\').val()); return false;">' . __('Get Shortlink') . '</a>';}
 			return $html;
-        } 	
-		//Template gateway
-		public function fts_get_shortlink_display($post_id){
-			$shortlink = $this->pub_get_shortlink($post_id);
-			return $shortlink;
-		}
+        } 
+
+
+
+
+
+
+
+
+/*
+ *****************************************
+ *
+ *	WordPress Admin Pages
+ *
+ *****************************************
+ */
+
+        /*
+         *****************************************
+         * Plugin Options Page
+         *****************************************
+         */
+        public function plugin_menu(){ 
+            if( !is_admin() )
+				return;
+
+            $this->plugin_page = add_options_page(__('URL Shortener','url-shortener'), __('URL Shortener','url-shortener'), 'manage_options', 'shorturl', array(&$this, 'options_page'));
+
+            add_action('load-'.$this->plugin_page,  array(&$this, 'options_style_scripts'));      
+			
+			include( dirname(__FILE__) . '/inc/options_page_help.php');	
+			add_contextual_help($this->plugin_page, $help_text);
+				
+		}		
+         
+        public function options_page(){
+            if( !is_admin() )
+				return;
+				
+            $action_url = $_SERVER['REQUEST_URI'];    
+            include( dirname(__FILE__) . '/inc/options_page.php');
+        }    
+
         
-        //The content filter
-        public function fts_filter_append_post($content){   
-            global $post;
-            $options = $this->my_options();
-            
-            if(is_home() && $options['appendurl']['home']=='yes'
-              || is_single() && $options['appendurl']['single']=='yes'
-              || is_page() && $options['appendurl']['page']=='yes'){
-                 
-                $shortlink = $this->pub_get_shortlink($post->ID);
-                $content .= '<div class="post-shortlink"><strong>'.$options['appendurl']['text'].'</strong> <a href="'.$shortlink.'">'.$shortlink.'</a></div>';
-            }
-            return $content;    
-        }
-//--------table page
+        public function options_style_scripts(){	
+            wp_enqueue_style('url_shortener_options_css', $this->plugin_url . '/inc/styles/options_page.css');
+        }  
+         
+
+
+
+
+
+        /*
+         *****************************************
+         * Table Pages
+         *****************************************
+         */
         public function table_hover_link($actions, $post) {
             $shortlink = $this->pub_get_shortlink($post->ID);
 			if ($shortlink){$actions['shortlink'] = '<a href="' . $shortlink . '" onclick="prompt(&#39;URL:&#39;, jQuery(this).attr(\'href\')); return false;">' . __('Get Shortlink') . '</a>';}
 			return $actions;
         } 
+
 		public function fts_urlshortener_adminhead(){?>
             <script type="text/javascript" >
                 var aaurl = '<?php echo admin_url('admin-ajax.php'); ?>';
@@ -200,120 +447,325 @@ if ( !class_exists('FTS_URL_Shortener') ) :
             </script>
             <?php
 		}
+
         public function fts_urlshortener_edit_head(){
-			wp_enqueue_script('fts_surl_ajax', $this->plugin_url.'/lib/scripts/jquery.ajaxq.js',array('jquery'),1.0);
-			wp_enqueue_script('fts_surl_edit', $this->plugin_url.'/lib/scripts/tablecol.js',array('jquery'),1.0);
-        }        
-//--------AJAX Callbacks
+			wp_enqueue_script('fts_surl_ajax', $this->plugin_url.'/inc/scripts/jquery.ajaxq.js',array('jquery'),1.0);
+			wp_enqueue_script('fts_surl_edit', $this->plugin_url.'/inc/scripts/tablecol.js',array('jquery'),1.0);
+        }  
+         
+   
+
+
+
+
+
+
+      
+/*
+ *****************************************
+ *
+ *	AJAX CALLBACKS
+ *
+ *****************************************
+ */
+
+
+        /*
+         *****************************************
+         * Bulk Delete in Table Pages
+         *****************************************
+         */
         public function fts_urlshortener_ajaxcallback(){
 			check_ajax_referer('urlshortener_ajax');
 			$post_id = $_POST['pid'];
 			delete_post_meta($post_id, 'shorturl');
         }
-//--------options page
-        public function options_page(){
-            if( !is_admin() )
-				return;
-            $action_url = $_SERVER['REQUEST_URI'];    
-            include( dirname(__FILE__) . '/lib/options_page.php');
-        }    
-        public function options_page_help(){
-            include( dirname(__FILE__) . '/lib/options_page_help.php');
-            return $help_text;
-        }
-        public function options_style_scripts(){	
-            wp_enqueue_style('url_shortener_options_css', $this->plugin_url . '/lib/styles/options_page.css');
-        }     
-//--------Nice ID Redirect Options
+        
+
+
+
+/*
+ *****************************************
+ *
+ *	Misc Functions
+ *
+ *****************************************
+ */
+
+
+
+        /*
+         *****************************************
+         * QR Code Support
+		 * Used in: 
+		 * - Shortcode
+		 * - Template Display
+		 * - Nice ID redirect
+         *****************************************
+
+         */
+		public function get_qrcode($url, $size = '57', $qr_error = 'M', $url_only = false){
+			$link = 'https://chart.googleapis.com/chart?cht=qr&chl='.$url.'&chs='.$size.'x'.$size.'&chld='.$qr_error;
+			return ($url_only) ? $link : '<img src="'.$link.'" alt="" />';
+		}
+
+
+
+
+
+        /*
+         *****************************************
+         * Nice ID URL Redirect
+         *****************************************
+         */
         public function template_redirect($requested_url=null, $do_redirect=true){
-            $options = $this->my_options();
+
             global $wp;
             global $wp_query; 
+
             if (is_404()){
                 $post_id='';
-                $request = $wp->request;              
+                $request = $wp->request;  
+				$qr = false;
+
+				//check for QR Code endings
+            	if ( substr($request, -3) == '.qr'){
+					$qr = true;
+					$request = substr($request, 0, -3); 
+				}	 
+				
+				//matching for post id
                 if (preg_match('/(\\d+)/', $request, $matches)){
                     $post_id = $matches[0];
                 }   
-                if(!empty($post_id) && is_numeric($post_id)){
-                    $redir_to = get_permalink($post_id);
-                    if($redir_to){status_header(200); wp_redirect($redir_to, 301); exit();}
-                }
-            }
-        }
-//--------Shortcode Support
-		public function shortcode_support($atts, $content = null){
-			$options = $this->my_options();
-			extract(shortcode_atts(array(
-					'name' => '',
-					'url' => '',
-					'service' => $options['urlservice'],
-					'key' => '',
-					'user'=>'',
-			), $atts));
-			global $post;
-			$post_id = $post->ID;
-			
-			if($content){$url = $content;}
-			
-			$url ? $shortlink = $this->od_get_shortlink($url, $service, $key, $user) : $shortlink = $this->pub_get_shortlink($post_id);
 
-			$output = '<a href="'.$shortlink.'">';
-			$name ? $output .= $name : $output .= $shortlink;
-			$output .= '</a>';
+				//determine if still 404
+                if(!empty($post_id) && is_numeric($post_id)){
+                    $full_url = get_permalink($post_id);
+
+                    if($full_url){
+						if ($qr){ header('Location: '.$this->get_qrcode($full_url, 150, 'M', true) ); exit();
+						} else { status_header(200); wp_redirect($full_url, 301); exit(); 
+						}
+					}
+                }
+
+            } //ends is_404 block
+
+        }       
+
+
+
+
+
+
+
+        /*
+         *****************************************
+         * For use in template to 
+		 * display shorturl
+         *****************************************
+         */
+
+		public function fts_get_shortlink_display($post_id){
+			$shortlink = $this->pub_get_shortlink($post_id);
+			return $shortlink;
+		}
+        
+
+
+
+
+
+
+
+        /*
+         *****************************************
+         * Shortcode Support
+         *****************************************
+         */
+
+		public function shortcode_support($atts, $content = null){
+			extract(shortcode_atts(array(
+					'name' 		=>	'',
+					'url'		=>	'',
+					'service' 	=>	$this->plugin_option->get('urlservice'),
+					'key' 		=>	'',
+					'user'		=>	'',
+					'qr'		=>	false,
+					'size'		=> 	'',
+					'qr_error'	=>	'',
+					'full'		=> 	false,
+			), $atts));
+
+			global $post;
+
+			$post_id = $post->ID;
+			$full_url = get_permalink($post_id);
+
+			//Assign URL as content if content not empty
+			if( !empty($content) ){$url = $content;}
+			
+
+			//check if url still empty
+			//Get shortlink if url true
+			//Get Post URL and shortlink if false
+			$shortlink = ($url) ? 	$this->od_get_shortlink($url, $service, $key, $user) : 
+									$this->pub_get_shortlink($post_id);	
+
+			//output type QR code?
+			if ( empty($qr) ){
+
+				$output = '<a href="'.$shortlink.'">';
+				$output .= ($name) ? $name : $shortlink;
+				$output .= '</a>';
+
+			} else {
+
+				//determine if full URL used in QR code
+				$output = ($full) ?	'<a href="'.$full_url.'">'.$this->get_qrcode($full_url, $size, $qr_error).'</a>' :
+									'<a href="'.$shortlink.'">'.$this->get_qrcode($shortlink, $size, $qr_error).'</a>';
+			}
+			
 			return $output;
 
 		}
-//--------Handle our options
-        private function my_options(){
-            return get_option($this->db_option);
+
+
+
+
+
+
+        /*
+         *****************************************
+         * Append Shortlink to content
+         *****************************************
+         */
+
+        public function fts_filter_append_post($content){   
+            global $post;
+            $append = $this->plugin_option->get('appendurl');
+
+            if( (is_home() && $append['home']=='yes')	||
+               	(is_single() && $append['single']=='yes') ||
+               	(is_page() && $append['page']=='yes') 
+			){
+                 
+                $shortlink = $this->pub_get_shortlink($post->ID);
+                $content .= '<div class="post-shortlink"><strong>'.$append['text'].'</strong> <a href="'.$shortlink.'">'.$shortlink.'</a></div>';
+            }
+            return $content;    
         }
-        private function save_options($options){
-            update_option($this->db_option, $options);
+
+
+
+
+
+
+        /*
+         *****************************************
+         * Append QR Code to content
+         *****************************************
+         */
+        public function fts_filter_append_post_qr($content){   
+            global $post;
+            $append = $this->plugin_option->get('appendqr');
+
+            if( (is_home() && $append['home']=='yes')	||
+               	(is_single() && $append['single']=='yes') ||
+               	(is_page() && $append['page']=='yes') 
+			){
+                 
+                $shortlink = $this->pub_get_shortlink($post->ID);
+                $content .= '<div class="post-qr">';
+                $content .= ( !empty($append['text']) )? '<strong>'.$append['text'].'</strong>' : '';
+                $content .= $this->get_qrcode($shortlink, 150).'</div>';
+            }
+            return $content;    
         }
-        public function del_options(){
-			delete_option($this->db_option);
-		}
-		private function manage_options(){
-			$options = array(
-                'about_plugin' => array('version' => FTS_URL_SHORTENER_VERSION,
-                                        'status' => FTS_URL_SHORTENER_STATUS,
-                                        ),
-				'urlserviceenable' => 'yes',
-				'urlservice' => '',
-                'useslug' => 'no',
-				'niceid' => 'no',
-                'niceid_prefix' => '/',
-                'appendurl' => array('home '=> 'no',
-                                     'single' => 'no',
-                                     'page' => 'no',
-                                     'text' => 'Short URL:',
-                                    ),
-			);
-		    $saved = get_option($this->db_option);
-		
-		    if (!empty($saved)) {
-				foreach ($saved as $key => $option){
-					$options[$key] = $option;
-				}
-		    }
-		    if ($saved != $options){update_option($this->db_option, $options);}
-		    return $options;
-		}        
-//--------Set up everything
-		public function install() {$this->manage_options();}       
+
+
+
+  
+
+
+//end class       
     }
 endif;
 
-//register
+
+
+
+
+
+
+
+/*
+ *****************************************
+ *
+ *	WordPress Call to
+ *	Initialize and Activate Object
+ *
+ *****************************************
+ */
 if (class_exists('FTS_URL_Shortener')) :
+
+
+
+
+	/*
+	 *****************************************
+	 * Plugin Activation and assignments
+	 *****************************************
+	 */
 	global $FTS_URL_Shortener;
-	$FTS_URL_Shortener = new FTS_URL_Shortener();
+	$FTS_URL_Shortener = new FTS_URL_Shortener(FTS_URL_SHORTENER_VERSION, FTS_URL_SHORTENER_STATUS);
     $FTS_URL_Shortener->activate_shortener();
+    
 	if (isset($FTS_URL_Shortener)) {
 		register_activation_hook(__FILE__, array(&$FTS_URL_Shortener, 'install') );
 	}
-    //template fx WP < 3.0
-	require_once( dirname(__FILE__) . '/lib/backward_fx.php');  
-endif;    
+
+    
+
+
+
+
+
+	/*
+	 *****************************************
+	 * Backward compatibility (template) functions 
+	 *****************************************
+	 */
+
+	//Show URL
+	function fts_show_shorturl($post, $output=true){
+		global $FTS_URL_Shortener;
+
+		$post_id = $post->ID;
+		$shorturl = $FTS_URL_Shortener->fts_get_shortlink_display($post_id);
+
+		if ($output){
+			echo $shorturl;
+		}else{
+			return $shorturl;
+		}
+	}
+
+	//On-demand URL Shortener
+	function fts_shorturl($url, $service, $output = true, $key='', $user=''){
+		global $FTS_URL_Shortener;
+
+		$shorturl = $FTS_URL_Shortener->od_get_shortlink($url, $service, $key, $user);
+
+		if ($output){
+			echo $shorturl;
+		}else{
+			return $shorturl;
+		}
+	}
+
+
+
+endif; 
 ?>
