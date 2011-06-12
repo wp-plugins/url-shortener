@@ -6,7 +6,7 @@ Requires at least: 2.7
 Tested up to: 3.1.3
 Stable tag: trunk
 
-This plugin allows you to generate shortlinks for post/pages using URL Shorteners (e.g. Bit.ly, Su.pr, ping.fm, Digg and many others).
+This plugin allows you to generate shortlinks for post/pages using URL Shorteners (e.g. Bit.ly, Su.pr, YOURLS, Goo.gl and many others).
 
 == Description ==
 
@@ -116,7 +116,7 @@ Or
 For the most updated list, please check: http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/faq
 
 
-=Service Support Levels=
+= Service Support Levels =
 
 * As I am increasingly busy with college work, I've classified services into Tiers... 
 * Problems with Tier 1 services will be dealt with faster than group 2 and so on)
@@ -148,18 +148,18 @@ For the most updated list, please check: http://wiki.fusedthought.com/docs/url-s
 * dlvr.it
 
 
-=Depreciated=
+= Depreciated =
 
 * Digg (They have stopped the service)
 * soso.bz (Service no longer available)
 * Cuthut (Service no longer available)
 * short.ie (Service not available)
 
-=Will deprciated services come back?=
+= Will deprciated services come back? =
 Normally it's only depreciated when the shortening service is down for a prolong period of time. However, if there is a request, I will definitely consider it.
 
 
-=Known Issues=
+= Known Issues =
 http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/known-issues
 
 
