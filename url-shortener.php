@@ -5,7 +5,7 @@ Plugin URI: http://www.fusedthought.com/downloads#url-shortener-wordpress-plugin
 Description: This plugin provides integration of URL Shorteners  (e.g. Bit.ly, Su.pr, Ping.fm, Digg and many others). <strong>Please refer to <a href="http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/upgrade-notes/">Upgrade Notes</a> before updating.</strong>
 Author: Gerald Yeo
 Author URI: http://www.fusedthought.com
-Version: 4.0
+Version: 4.0.1
 */
 
 

@@ -106,7 +106,7 @@ if ( !class_exists('jzsc_yourls') ) :
          *****************************************
          */
 		public function set_service($service){
-			parent:set_service('yourls', $this->api_config['yourls']);
+			parent::set_service('yourls', $this->api_config['yourls']);
 		}
 
 

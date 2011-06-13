@@ -208,7 +208,7 @@ if ( !class_exists('jzsc_simple') ) :
          *****************************************
          */
 		public function set_service($service){
-			parent:set_service($service, $this->api_config[$service]);
+			parent::set_service($service, $this->api_config[$service]);
 		}
 
 
