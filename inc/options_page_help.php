@@ -51,5 +51,3 @@ $help_text = '<div id="fts_help"><img class="ftsplugin-logo" src="'.$this->plugi
 	$help_text .= '<p>' . __('If you like this plugin and would like to <a href="http://wiki.fusedthought.com/contribute/">Contribute</a> back, I\'ll be very grateful!', 'url-shortener') . '</p>';  
 $help_text .= '</div>';
 ?>
-
-

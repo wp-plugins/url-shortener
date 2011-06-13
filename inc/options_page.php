@@ -537,6 +537,3 @@ $requser 	= $this->shortener->service_list('requser');
         <p class="submit"><input type="submit" id="submit-button" class="button-primary" value="<?php _e('Save Changes') ?>" /></p>	
     </form>
 </div>
-
-
-
