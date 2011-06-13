@@ -239,7 +239,7 @@ if ( !class_exists('jzsc_complex') ) :
          */
 
 		public function set_service($service){
-			parent:set_service($service, $this->api_config[$service]);
+			parent::set_service($service, $this->api_config[$service]);
 		}
 
 		public function config($key, $user, $generic){

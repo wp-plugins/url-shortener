@@ -109,7 +109,7 @@ if ( !class_exists('jzsc_googl') ) :
          *****************************************
          */
 		public function set_service($service){
-			parent:set_service('googl', $this->api_config['googl']);
+			parent::set_service('googl', $this->api_config['googl']);
 		}
 
 		public function config($key = '', $user = '', $generic = ''){
