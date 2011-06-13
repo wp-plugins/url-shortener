@@ -90,7 +90,7 @@ http://codex.wordpress.org/Function_Reference/the_shortlink
 **Future Versions and on:**
 
 *  More services/features can be added upon request (http://code.google.com/p/url-shortener-plugin/issues/list)
-*  Do Note that due to my increasing need to concentrate on my studies and a lack of financial contribution from such plugin development, I can possibly accede to all requests. 
+*  Do note that due to my increasing need to concentrate on my studies, and a lack of financial contribution from such plugin development, I cannot possibly accede to all requests. 
 
 
 **Support via:**
@@ -238,6 +238,7 @@ Expanded list can be found at: http://wiki.fusedthought.com/docs/url-shortener-w
 * Sn.im service is found to be down and marked to be removed in the next version of this plugin.
 
 = 1.7 =
+
 * Included an Addon module option
 * Addon functions for additional service display
 * Added support (via Addon Module) for Goo.gl
