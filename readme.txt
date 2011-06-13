@@ -171,6 +171,8 @@ http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin
 
 Expanded list can be found at: http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin/release-history
 
+= 4.0.2 =
+* *BUGFIX* Temp remove of jzsc interface
 
 = 4.0.1 =
 * *BUGFIX* missed out colon in parent declaration in component files
