@@ -29,9 +29,6 @@
  *
  *****************************************
  */
-if ( !interface_exists('jzsc_interface') ) :
-	include( dirname(__FILE__) . '/lib/jzsc.interface.php' );
-endif;
 
 if ( !class_exists('jzsc_shared') ) :
 	include( dirname(__FILE__) . '/lib/jzsc.shared.php' );
@@ -50,7 +47,7 @@ endif;
  */
 
 if ( !class_exists('jzsc_simple') ) :
-	class jzsc_simple extends jzsc_shared implements jzsc_interface{
+	class jzsc_simple extends jzsc_shared{
 
 
 
