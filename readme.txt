@@ -10,9 +10,10 @@ This plugin allows you to generate shortlinks for post/pages using URL Shortener
 
 == Description ==
 
-**Announcement: After looking through the support requests and the code, I've decided to do a major re-think on the shortening process. As such, I'll take a little longer to re-write the plugin. I'll be adding in buddypress support and new social sharing support in the new iteration as well..**
+**Notice: I've have since stopped development of this plugin as I feel that the state of URL Shortening services seems to have converged and there isn't much more progress I have in the pipeline for this plugin.**
 
-[URL Shortener](http://www.fusedthought.com/downloads#url-shortener-wordpress-plugin "URL Shortener") allows you to generate shortlinks for post/pages using URL Shorteners (e.g. Bit.ly, Su.pr and many others), with a few additional features.
+
+[URL Shortener](http://wiki.fusedthought.com/docs/url-shortener-wordpress-plugin "URL Shortener") allows you to generate shortlinks for post/pages using URL Shorteners (e.g. Bit.ly, Su.pr and many others), with a few additional features.
 
 **Please check your settings when upgrading to Version 4.0 from previous versions prior to it.**
 
